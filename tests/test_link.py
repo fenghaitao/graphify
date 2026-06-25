@@ -1,0 +1,342 @@
+"""Tests for doc↔code linking: code-manifest emission and the deterministic
+link-docs pass (graphify/link.py). See docs/doc-code-linking-design.md."""
+from __future__ import annotations
+
+import json
+
+import networkx as nx
+
+import graphify.__main__ as mainmod
+from graphify import link
+
+
+def _graph_from_records(nodes, edges):
+    G = nx.DiGraph()
+    for n in nodes:
+        G.add_node(n["id"], **{k: v for k, v in n.items() if k != "id"})
+    for e in edges:
+        G.add_edge(e["source"], e["target"], **{k: v for k, v in e.items() if k not in ("source", "target")})
+    return G
+
+
+# --- manifest builder ----------------------------------------------------------
+
+def test_manifest_attaches_signature_and_doc(tmp_path):
+    """A function node gets its signature (from source) and its docstring (via the
+    rationale_for edge); a sourceless stub is skipped."""
+    src = tmp_path / "mod.py"
+    src.write_text(
+        'def greet(name: str) -> str:\n'
+        '    """Say hello to someone."""\n'
+        '    return f"hi {name}"\n'
+    )
+    nodes = [
+        {"id": "mod_greet", "label": "greet()", "file_type": "code",
+         "source_file": "mod.py", "source_location": "L1"},
+        {"id": "mod_greet_rat", "label": "Say hello to someone.", "file_type": "rationale",
+         "source_file": "mod.py", "source_location": "L2"},
+        {"id": "ghost", "label": "External", "file_type": "code", "source_file": ""},
+    ]
+    edges = [{"source": "mod_greet_rat", "target": "mod_greet", "relation": "rationale_for"}]
+    G = _graph_from_records(nodes, edges)
+
+    recs = list(link.iter_manifest_records(G, root=tmp_path))
+    by_id = {r["id"]: r for r in recs}
+
+    assert "ghost" not in by_id, "sourceless stub must be skipped"
+    rec = by_id["mod_greet"]
+    assert rec["signature"] == "def greet(name: str) -> str"
+    assert rec["doc"] == "Say hello to someone."
+
+
+# --- Gap 1+2: doc-file container synthesis -------------------------------------
+
+def test_synthesize_doc_containers_groups_entities_under_file_node():
+    """A doc's already-extracted concept/rationale nodes get a synthesized document
+    file node + contains edges (weight 0.1). Code is untouched."""
+    nodes = [
+        {"id": "raw_arch_storage_module", "label": "Storage Module", "file_type": "concept",
+         "source_file": "raw/architecture.md", "source_location": None},
+        {"id": "raw_arch_repository_pattern", "label": "Repository Pattern", "file_type": "rationale",
+         "source_file": "raw/architecture.md", "source_location": None},
+        {"id": "raw_storage", "label": "storage.py", "file_type": "code",
+         "source_file": "raw/storage.py", "source_location": "L1"},
+    ]
+    G = _graph_from_records(nodes, [])
+    added = link.synthesize_doc_containers(G)
+
+    assert added == 1
+    assert G.nodes["raw_architecture"]["file_type"] == "document"
+    children = [
+        v for u, v, d in G.edges("raw_architecture", data=True)
+        if d.get("relation") == "contains"
+    ]
+    assert set(children) == {"raw_arch_storage_module", "raw_arch_repository_pattern"}
+    weights = {d["weight"] for u, v, d in G.edges("raw_architecture", data=True)}
+    assert weights == {0.1}
+    # The code node must NOT be pulled under any document container.
+    assert not G.has_edge("raw_architecture", "raw_storage")
+
+
+def test_synthesize_doc_containers_idempotent_and_codeonly_noop():
+    """Re-running adds nothing new; a pure-code graph yields no document nodes."""
+    code_only = _graph_from_records(
+        [{"id": "m", "label": "m.py", "file_type": "code", "source_file": "m.py",
+          "source_location": "L1"}],
+        [],
+    )
+    assert link.synthesize_doc_containers(code_only) == 0
+
+    doc = _graph_from_records(
+        [{"id": "d_a", "label": "A", "file_type": "concept", "source_file": "d.md",
+          "source_location": None}],
+        [],
+    )
+    assert link.synthesize_doc_containers(doc) == 1
+    assert link.synthesize_doc_containers(doc) == 0  # idempotent
+
+
+# --- deterministic matcher -----------------------------------------------------
+
+def test_matcher_resolves_filenames_and_unique_symbols():
+    records = [
+        {"id": "raw_storage_py", "label": "storage.py", "source_file": "raw/storage.py"},
+        {"id": "raw_storage_save_record", "label": "save_record()", "source_file": "raw/storage.py"},
+        {"id": "raw_api_list", "label": "list()", "source_file": "raw/api.py"},
+        {"id": "raw_db_list", "label": "list()", "source_file": "raw/db.py"},
+    ]
+    idx = link._MatchIndex(records)
+    text = (
+        "The persistence layer lives in `storage.py`. It exposes save_record for "
+        "writes. The ambiguous list() helper is intentionally not linked."
+    )
+    hits = link.scan_doc_references(text, idx)
+    assert "raw_storage_py" in hits          # filename via backticks
+    assert "raw_storage_save_record" in hits  # unique snake_case symbol
+    # `list` is defined in two files → ambiguous → must NOT be linked
+    assert "raw_api_list" not in hits and "raw_db_list" not in hits
+
+
+# --- full pipeline: extract --code-only then link-docs -------------------------
+
+def test_extract_code_only_then_link_docs(monkeypatch, tmp_path):
+    """End-to-end: code-only build emits a manifest with no LLM; link-docs then adds
+    a document node and a deterministic doc→code reference edge."""
+    (tmp_path / "storage.py").write_text(
+        'def save_record(rec):\n    """Persist a record."""\n    return True\n'
+    )
+    (tmp_path / "design.md").write_text(
+        "# Design\nPersistence is handled by `storage.py` via save_record.\n"
+    )
+    out_dir = tmp_path / "out"
+    gout = out_dir / "graphify-out"
+
+    for key in ("GEMINI_API_KEY", "GOOGLE_API_KEY", "OPENAI_API_KEY",
+                "ANTHROPIC_API_KEY", "DEEPSEEK_API_KEY", "MOONSHOT_API_KEY"):
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setattr("graphify.llm.detect_backend", lambda: None)
+    monkeypatch.setattr(mainmod, "_check_skill_version", lambda _: None)
+
+    # Step 1: code-only
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "extract", str(tmp_path), "--code-only", "--out", str(out_dir)],
+    )
+    try:
+        mainmod.main()
+    except SystemExit as exc:
+        assert exc.code in (0, None)
+    assert (gout / "code-manifest.jsonl").exists()
+
+    # Step 2: link-docs with the deterministic doc→code matcher enabled.
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "link-docs", str(tmp_path), "--out", str(out_dir), "--match-code"],
+    )
+    try:
+        mainmod.main()
+    except SystemExit as exc:
+        assert exc.code in (0, None)
+
+    graph = json.loads((gout / "graph.json").read_text())
+    nodes = {n["id"]: n for n in graph["nodes"]}
+    edges = graph.get("edges", graph.get("links", []))
+
+    doc_nodes = [n for n in graph["nodes"] if n.get("file_type") == "document"]
+    assert doc_nodes, "link-docs must synthesize a document node"
+
+    # There must be at least one doc→code reference edge added by the link pass.
+    link_edges = [
+        e for e in edges
+        if e.get("_origin") == "link" and e.get("relation") == "references"
+    ]
+    assert link_edges, "link-docs must add a doc→code reference edge"
+    for e in link_edges:
+        assert nodes[e["source"]].get("file_type") == "document"
+        assert nodes[e["target"]].get("file_type") == "code"
+
+
+def test_link_docs_match_code_is_opt_in(monkeypatch, tmp_path):
+    """link-docs creates document nodes always, but doc→code reference edges ONLY with
+    --match-code. Default (no flag) must add zero `references` edges."""
+    (tmp_path / "storage.py").write_text(
+        'def save_record(rec):\n    """Persist a record."""\n    return True\n'
+    )
+    (tmp_path / "design.md").write_text(
+        "# Design\nPersistence is handled by `storage.py` via save_record.\n"
+    )
+    out_dir = tmp_path / "out"
+    gout = out_dir / "graphify-out"
+
+    for key in ("GEMINI_API_KEY", "GOOGLE_API_KEY", "OPENAI_API_KEY",
+                "ANTHROPIC_API_KEY", "DEEPSEEK_API_KEY", "MOONSHOT_API_KEY"):
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setattr("graphify.llm.detect_backend", lambda: None)
+    monkeypatch.setattr(mainmod, "_check_skill_version", lambda _: None)
+
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "extract", str(tmp_path), "--code-only", "--out", str(out_dir)],
+    )
+    try:
+        mainmod.main()
+    except SystemExit as exc:
+        assert exc.code in (0, None)
+
+    def _link_edges():
+        graph = json.loads((gout / "graph.json").read_text())
+        edges = graph.get("edges", graph.get("links", []))
+        return [e for e in edges if e.get("_origin") == "link" and e.get("relation") == "references"]
+
+    # Default: no --match-code → document node created, but no reference edges.
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "link-docs", str(tmp_path), "--out", str(out_dir)],
+    )
+    try:
+        mainmod.main()
+    except SystemExit as exc:
+        assert exc.code in (0, None)
+    graph = json.loads((gout / "graph.json").read_text())
+    assert any(n.get("file_type") == "document" for n in graph["nodes"])
+    assert _link_edges() == [], "no doc→code edges without --match-code"
+
+    # Opt-in: --match-code → reference edges appear.
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "link-docs", str(tmp_path), "--out", str(out_dir), "--match-code"],
+    )
+    try:
+        mainmod.main()
+    except SystemExit as exc:
+        assert exc.code in (0, None)
+    assert _link_edges(), "doc→code edges must appear with --match-code"
+
+
+def _run_code_only(monkeypatch, corpus, out_dir):
+    for key in ("GEMINI_API_KEY", "GOOGLE_API_KEY", "OPENAI_API_KEY",
+                "ANTHROPIC_API_KEY", "DEEPSEEK_API_KEY", "MOONSHOT_API_KEY"):
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setattr("graphify.llm.detect_backend", lambda: None)
+    monkeypatch.setattr(mainmod, "_check_skill_version", lambda _: None)
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "extract", str(corpus), "--code-only", "--out", str(out_dir)],
+    )
+    try:
+        mainmod.main()
+    except SystemExit as exc:
+        assert exc.code in (0, None)
+
+
+def test_link_docs_reuses_cached_doc_concepts(monkeypatch, tmp_path):
+    """If a doc's semantic extraction is already cached, link-docs reuses it (no LLM)
+    and builds the contains hierarchy over the cached concepts."""
+    (tmp_path / "storage.py").write_text('def save_record(r):\n    """Persist."""\n    return True\n')
+    (tmp_path / "design.md").write_text("# Design\nThe storage layer notes.\n")
+    out_dir = tmp_path / "out"
+    gout = out_dir / "graphify-out"
+    _run_code_only(monkeypatch, tmp_path, out_dir)
+
+    # Pre-populate the semantic cache for design.md with a concept node.
+    from graphify.cache import save_semantic_cache
+    concept = {
+        "id": "design_storage_layer", "label": "Storage Layer", "file_type": "concept",
+        "source_file": str(tmp_path / "design.md"), "source_location": None,
+    }
+    save_semantic_cache([concept], [], [], root=out_dir)
+
+    # link-docs with NO backend must still pick up the cached concept.
+    monkeypatch.setattr("graphify.llm.detect_backend", lambda: None)
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "link-docs", str(tmp_path), "--out", str(out_dir)],
+    )
+    try:
+        mainmod.main()
+    except SystemExit as exc:
+        assert exc.code in (0, None)
+
+    graph = json.loads((gout / "graph.json").read_text())
+    nodes = {n["id"]: n for n in graph["nodes"]}
+    edges = graph.get("edges", graph.get("links", []))
+    assert nodes.get("design_storage_layer", {}).get("file_type") == "concept"
+    assert nodes.get("design", {}).get("file_type") == "document"
+    contains = [
+        e for e in edges
+        if e.get("relation") == "contains"
+        and {e.get("source"), e.get("target")} == {"design", "design_storage_layer"}
+    ]
+    assert contains, "cached concept must be contained under its document node"
+
+
+def test_link_docs_extracts_uncached_doc_concepts(monkeypatch, tmp_path):
+    """When a doc is not cached, link-docs runs the semantic pass for it (here mocked)
+    and merges the extracted concepts."""
+    (tmp_path / "storage.py").write_text('def save_record(r):\n    """Persist."""\n    return True\n')
+    (tmp_path / "design.md").write_text("# Design\nThe storage layer notes.\n")
+    out_dir = tmp_path / "out"
+    gout = out_dir / "graphify-out"
+    _run_code_only(monkeypatch, tmp_path, out_dir)
+
+    def _fake_extract(paths, **kwargs):
+        src = str(paths[0])
+        return {
+            "nodes": [{"id": "design_x", "label": "Concept X", "file_type": "concept",
+                       "source_file": src, "source_location": None}],
+            "edges": [], "hyperedges": [], "input_tokens": 10, "output_tokens": 5,
+        }
+
+    monkeypatch.setattr("graphify.llm.extract_corpus_parallel", _fake_extract)
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "link-docs", str(tmp_path), "--out", str(out_dir), "--backend", "claude"],
+    )
+    try:
+        mainmod.main()
+    except SystemExit as exc:
+        assert exc.code in (0, None)
+
+    graph = json.loads((gout / "graph.json").read_text())
+    nodes = {n["id"]: n for n in graph["nodes"]}
+    assert nodes.get("design_x", {}).get("file_type") == "concept"
+    edges = graph.get("edges", graph.get("links", []))
+    assert any(
+        e.get("relation") == "contains"
+        and {e.get("source"), e.get("target")} == {"design", "design_x"}
+        for e in edges
+    ), "freshly extracted concept must be contained under its document node"
+
+
+def test_link_docs_errors_without_manifest(tmp_path, capsys):
+    """link-docs must fail clearly when no manifest exists yet."""
+    (tmp_path / "graphify-out").mkdir()
+    (tmp_path / "graphify-out" / "graph.json").write_text('{"nodes": [], "edges": []}')
+    import graphify.__main__ as m
+    import pytest
+
+    m.sys.argv = ["graphify", "link-docs", str(tmp_path)]
+    with pytest.raises(SystemExit) as exc:
+        m.main()
+    assert exc.value.code == 1
+    assert "code-manifest" in capsys.readouterr().err

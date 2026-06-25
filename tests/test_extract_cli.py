@@ -235,3 +235,51 @@ def test_extract_without_key_still_errors_when_docs_present(
     assert "no LLM API key found" in err
     assert "code-only corpus needs no key" in err
     assert not (out_dir / "graphify-out" / "graph.json").exists()
+
+
+def test_extract_code_only_skips_llm_and_writes_manifest(
+    monkeypatch, tmp_path
+):
+    """`--code-only` must run a pure deterministic AST pipeline: no LLM call even
+    with docs present and no API key, and it must emit code-manifest.jsonl next to
+    graph.json. See docs/doc-code-linking-design.md."""
+    import json
+
+    corpus = _make_corpus(tmp_path)  # one Go file + one Markdown doc
+    out_dir = tmp_path / "out"
+    _clear_backend_keys(monkeypatch)
+    monkeypatch.setattr("graphify.llm.detect_backend", lambda: None)
+    monkeypatch.setattr(mainmod, "_check_skill_version", lambda _: None)
+
+    # Semantic extraction must never be invoked under --code-only.
+    def _boom(*_a, **_k):
+        raise AssertionError("semantic extraction must not run under --code-only")
+
+    monkeypatch.setattr("graphify.llm.extract_corpus_parallel", _boom)
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "extract", str(corpus), "--code-only", "--out", str(out_dir)],
+    )
+
+    try:
+        mainmod.main()
+    except SystemExit as exc:  # cluster path returns; no-cluster path exits 0
+        assert exc.code in (0, None)
+
+    gout = out_dir / "graphify-out"
+    assert (gout / "graph.json").exists(), "graph.json must be written"
+
+    manifest = gout / "code-manifest.jsonl"
+    assert manifest.exists(), "code-manifest.jsonl must be emitted under --code-only"
+    records = [
+        json.loads(line) for line in manifest.read_text().splitlines() if line.strip()
+    ]
+    assert records, "manifest should contain at least one code symbol"
+    assert all({"id", "label", "source_file"} <= set(r) for r in records)
+
+    # The graph must be pure code (+ rationale) — no doc concept/document nodes,
+    # since semantic extraction was skipped.
+    graph = json.loads((gout / "graph.json").read_text())
+    types = {n.get("file_type") for n in graph["nodes"]}
+    assert "code" in types
+    assert "concept" not in types and "document" not in types

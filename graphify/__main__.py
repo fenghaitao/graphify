@@ -4128,7 +4128,7 @@ def main() -> None:
             print(
                 "Usage: graphify extract <path> [--backend gemini|kimi|claude|openai|deepseek|ollama] "
                 "[--model M] [--mode deep] [--out DIR] [--google-workspace] [--no-cluster] "
-                "[--max-workers N] [--token-budget N] [--max-concurrency N] "
+                "[--code-only] [--max-workers N] [--token-budget N] [--max-concurrency N] "
                 "[--api-timeout S] [--postgres DSN] [--cargo]",
                 file=sys.stderr,
             )
@@ -4151,6 +4151,7 @@ def main() -> None:
         cli_postgres_dsn: str | None = None
         cli_cargo: bool = False
         no_cluster = False
+        code_only = False
         dedup_llm = False
         google_workspace = False
         global_merge = False
@@ -4209,6 +4210,8 @@ def main() -> None:
                 out_dir = Path(a.split("=", 1)[1]); i += 1
             elif a == "--no-cluster":
                 no_cluster = True; i += 1
+            elif a == "--code-only":
+                code_only = True; i += 1
             elif a == "--dedup-llm":
                 dedup_llm = True; i += 1
             elif a == "--google-workspace":
@@ -4330,6 +4333,16 @@ def main() -> None:
             unchanged_total = 0
 
         semantic_files = doc_files + paper_files + image_files
+        if code_only and semantic_files:
+            # --code-only: pure deterministic AST pipeline. Docs/papers/images are
+            # detected (so the manifest's source paths stay meaningful) but never
+            # sent to the LLM — `graphify link-docs` handles them as a separate,
+            # code-aware pass. See docs/doc-code-linking-design.md.
+            print(
+                f"[graphify extract] --code-only: skipping semantic extraction of "
+                f"{len(semantic_files)} doc/paper/image file(s); run `graphify link-docs` next"
+            )
+            semantic_files = []
         if incremental_mode:
             print(
                 f"[graphify extract] {len(code_files)} code, {len(doc_files)} docs, "
@@ -4640,6 +4653,17 @@ def main() -> None:
             graph_json_path.write_text(
                 json.dumps(merged, indent=2), encoding="utf-8"
             )
+            if code_only:
+                from graphify.link import (
+                    write_manifest_from_extraction as _write_manifest_dict,
+                    MANIFEST_FILENAME,
+                )
+                try:
+                    _mpath = graphify_out / MANIFEST_FILENAME
+                    _mcount = _write_manifest_dict(merged, _mpath, root=target)
+                    print(f"[graphify extract] wrote {_mpath}: {_mcount} code symbols")
+                except Exception as exc:
+                    print(f"[graphify extract] warning: could not write code manifest: {exc}", file=sys.stderr)
             cost = _estimate_cost(
                 backend, merged["input_tokens"], merged["output_tokens"]
             )
@@ -4703,6 +4727,19 @@ def main() -> None:
             )
             sys.exit(1)
 
+        # Gap 1+2: give documents a file node + `contains` hierarchy over their own
+        # extracted entities, BEFORE clustering so the hierarchy is reflected in
+        # communities. Deterministic, no LLM; a no-op on a code-only corpus. weight 0.1
+        # keeps clustering near-neutral. See docs/doc-code-graph-gaps.md.
+        from graphify.link import synthesize_doc_containers as _doc_containers
+        try:
+            _ndoc = _doc_containers(G)
+            if _ndoc:
+                print(f"[graphify extract] doc hierarchy: +{_ndoc} document node(s) "
+                      "with contains edges over extracted doc entities")
+        except Exception as exc:
+            print(f"[graphify extract] warning: doc-container synthesis failed: {exc}", file=sys.stderr)
+
         communities = _cluster(G, resolution=cli_resolution, exclude_hubs_percentile=cli_exclude_hubs)
         cohesion = _score_all(G, communities)
         try:
@@ -4717,6 +4754,14 @@ def main() -> None:
         from graphify.export import backup_if_protected as _backup
         _backup(graphify_out)
         _to_json(G, communities, str(graph_json_path), force=True)
+        if code_only:
+            from graphify.link import write_manifest as _write_manifest, MANIFEST_FILENAME
+            try:
+                _mpath = graphify_out / MANIFEST_FILENAME
+                _mcount = _write_manifest(G, _mpath, root=target)
+                print(f"[graphify extract] wrote {_mpath}: {_mcount} code symbols")
+            except Exception as exc:
+                print(f"[graphify extract] warning: could not write code manifest: {exc}", file=sys.stderr)
         if merged.get("output_tokens", 0) > 0:
             (graphify_out / ".graphify_semantic_marker").write_text(
                 json.dumps({"output_tokens": merged["output_tokens"]}), encoding="utf-8"
@@ -4779,6 +4824,90 @@ def main() -> None:
             "[graphify extract] next: run "
             f"`graphify cluster-only {graphify_out.parent}` "
             "to generate GRAPH_REPORT.md and name communities"
+        )
+
+    elif cmd == "link-docs":
+        # graphify link-docs <path> [--out DIR] [--backend B] [--model M] [--match-code]
+        # Step 2 of doc-code-linking-design.md. Ensures doc concepts exist (cache-first:
+        # reuse a cached semantic extraction, else LLM-extract the uncached docs), builds
+        # the Gap 1+2 contains hierarchy, optionally adds deterministic doc→code edges
+        # (--match-code), then merges + re-clusters. Runs after `extract --code-only`.
+        if len(sys.argv) < 3 or sys.argv[2].startswith("-"):
+            print("Usage: graphify link-docs <path> [--out DIR] [--backend B] [--model M] [--match-code]",
+                  file=sys.stderr)
+            sys.exit(1)
+        target = Path(sys.argv[2]).resolve()
+        if not target.exists():
+            print(f"error: path not found: {target}", file=sys.stderr)
+            sys.exit(1)
+        out_dir = None
+        match_code = False
+        backend = None
+        model = None
+        i = 3
+        while i < len(sys.argv):
+            if sys.argv[i] in ("--out",) and i + 1 < len(sys.argv):
+                out_dir = Path(sys.argv[i + 1]); i += 2
+            elif sys.argv[i].startswith("--out="):
+                out_dir = Path(sys.argv[i].split("=", 1)[1]); i += 1
+            elif sys.argv[i] == "--backend" and i + 1 < len(sys.argv):
+                backend = sys.argv[i + 1]; i += 2
+            elif sys.argv[i].startswith("--backend="):
+                backend = sys.argv[i].split("=", 1)[1]; i += 1
+            elif sys.argv[i] == "--model" and i + 1 < len(sys.argv):
+                model = sys.argv[i + 1]; i += 2
+            elif sys.argv[i].startswith("--model="):
+                model = sys.argv[i].split("=", 1)[1]; i += 1
+            elif sys.argv[i] == "--match-code":
+                match_code = True; i += 1
+            else:
+                i += 1
+        out_root = out_dir.resolve() if out_dir else target
+        graphify_out = out_root / _GRAPHIFY_OUT
+        # Resolve a backend only to extract docs that are not already cached. Cached
+        # docs (and a code-only re-run) need no key; uncached docs without a backend are
+        # reported and skipped, not fatal.
+        if backend is None:
+            from graphify.llm import detect_backend as _detect_backend
+            backend = _detect_backend()
+        from graphify.link import apply_doc_links
+        try:
+            summary = apply_doc_links(
+                graphify_out, target, match_code=match_code, backend=backend, model=model
+            )
+        except FileNotFoundError as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            sys.exit(1)
+        _concept_bits = []
+        if summary.get("cache_hits"):
+            _concept_bits.append(f"{summary['cache_hits']} cached")
+        if summary.get("extracted"):
+            _concept_bits.append(f"{summary['extracted']} extracted via {backend}")
+        if summary.get("skipped_uncached"):
+            _concept_bits.append(
+                f"{summary['skipped_uncached']} uncached skipped (set a backend/API key to extract)"
+            )
+        print(
+            f"[graphify link-docs] {summary['doc_files']} doc file(s)"
+            + (f" — concepts: {', '.join(_concept_bits)}" if _concept_bits else "")
+        )
+        print(
+            f"[graphify link-docs] +{summary['concept_nodes_added']} concept nodes, "
+            f"+{summary['doc_nodes_added']} document nodes, "
+            + (f"+{summary['reference_edges_added']} doc→code edges"
+               if match_code else "doc→code matching off (pass --match-code to enable)")
+            + (f", {summary['dropped_collisions']} collision(s) dropped"
+               if summary["dropped_collisions"] else "")
+        )
+        if summary.get("output_tokens"):
+            print(
+                f"[graphify link-docs] tokens: {summary['input_tokens']:,} in / "
+                f"{summary['output_tokens']:,} out"
+            )
+        print(
+            f"[graphify link-docs] re-clustered: {summary['nodes']} nodes, "
+            f"{summary['edges']} edges, {summary['communities']} communities → "
+            f"{graphify_out / 'graph.json'}"
         )
 
     elif cmd == "cache-check":
