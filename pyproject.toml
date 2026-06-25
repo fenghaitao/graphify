@@ -74,8 +74,11 @@ sql = ["tree-sitter-sql"]
 # must compile from source (needs a C toolchain + python3-dev). Keeping it optional
 # avoids breaking the default `uv tool install graphifyy` for everyone (#1104).
 dm = ["tree-sitter-dm"]
+# tree-sitter-dml (Simics Device Modeling Language) is not on PyPI; install from
+# the source git repo (needs a C toolchain + tree-sitter C headers to build).
+dml = ["tree-sitter-dml @ git+https://github.com/wangli-ustc/tree-sitter-dml.git"]
 terraform = ["tree-sitter-hcl"]
-all = ["mcp", "starlette>=1.3.1", "neo4j", "falkordb", "pypdf>=6.12.0", "markdownify", "watchdog", "graspologic; python_version < '3.13'", "python-docx", "openpyxl", "faster-whisper; python_version >= '3.11'", "yt-dlp>=2026.6.9", "matplotlib", "numpy>=2.0; python_version >= '3.13'", "openai", "tiktoken", "boto3", "anthropic", "tree-sitter-sql", "jieba", "tree-sitter-dm", "tree-sitter-hcl"]
+all = ["mcp", "starlette>=1.3.1", "neo4j", "falkordb", "pypdf>=6.12.0", "markdownify", "watchdog", "graspologic; python_version < '3.13'", "python-docx", "openpyxl", "faster-whisper; python_version >= '3.11'", "yt-dlp>=2026.6.9", "matplotlib", "numpy>=2.0; python_version >= '3.13'", "openai", "tiktoken", "boto3", "anthropic", "tree-sitter-sql", "jieba", "tree-sitter-dm", "tree-sitter-dml @ git+https://github.com/wangli-ustc/tree-sitter-dml.git", "tree-sitter-hcl"]
 
 [project.scripts]
 graphify = "graphify.__main__:main"

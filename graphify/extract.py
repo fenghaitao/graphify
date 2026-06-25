@@ -1995,6 +1995,19 @@ def _swift_extra_walk(node, source: bytes, file_nid: str, stem: str, str_path: s
 
 # ── Language configs ──────────────────────────────────────────────────────────
 
+_DML_CONFIG = LanguageConfig(
+    ts_module="tree_sitter_dml",
+    class_types=frozenset(),           # DML has no class_definition equivalent
+    function_types=frozenset({"method"}),
+    import_types=frozenset({"import_statement"}),
+    call_types=frozenset({"call_expression"}),
+    call_function_field="",            # call_expression first child is callee expr
+    call_accessor_node_types=frozenset({"member_expression"}),
+    call_accessor_field="",
+    function_boundary_types=frozenset({"method"}),
+    import_handler=None,
+)
+
 _PYTHON_CONFIG = LanguageConfig(
     ts_module="tree_sitter_python",
     class_types=frozenset({"class_definition"}),
@@ -3945,6 +3958,279 @@ def _extract_python_rationale(path: Path, result: dict) -> None:
 
 
 # ── Public API ────────────────────────────────────────────────────────────────
+
+def extract_dml(path: Path) -> dict:
+    """Extract DML device model elements: devices, templates, banks, registers,
+    fields, connects, interfaces, attributes, events, ports, implements,
+    subdevices, groups, and methods. Also extract imports, template inheritance,
+    interface implementation, and method calls."""
+    try:
+        import tree_sitter_dml._binding as tsdml_binding
+        from tree_sitter import Language, Parser
+        language = Language(tsdml_binding.language())
+        parser = Parser(language)
+        source = path.read_bytes()
+        tree = parser.parse(source)
+        root = tree.root_node
+    except Exception as e:
+        return {"nodes": [], "edges": [], "error": str(e)}
+
+    stem = _file_stem(path)
+    str_path = str(path)
+    nodes: list[dict] = []
+    edges: list[dict] = []
+    seen_ids: set[str] = set()
+
+    def add_node(nid: str, label: str, line: int) -> None:
+        if nid not in seen_ids:
+            seen_ids.add(nid)
+            nodes.append({"id": nid, "label": label, "file_type": "code",
+                          "source_file": str_path, "source_location": f"L{line}",
+                          "confidence_score": 1.0})
+
+    def add_edge(src: str, tgt: str, relation: str, line: int,
+                 confidence: str = "EXTRACTED", score: float = 1.0) -> None:
+        edges.append({"source": src, "target": tgt, "relation": relation,
+                      "confidence": confidence, "confidence_score": score,
+                      "source_file": str_path, "source_location": f"L{line}",
+                      "weight": 1.0})
+
+    file_nid = _make_id(str(path))
+    add_node(file_nid, path.name, 1)
+
+    # Collected method bodies for call-graph pass: (caller_nid, compound_statement)
+    function_bodies: list[tuple[str, object]] = []
+
+    # DML object types that should be extracted as structural nodes
+    _DML_OBJECT_TYPES = frozenset({
+        "device", "template", "bank", "register", "field", "connect",
+        "interface", "attribute", "event", "port", "implement",
+        "subdevice", "group",
+    })
+
+    def _dml_name(node, source_bytes: bytes) -> str | None:
+        """Return the name of a DML object node.
+        For template/method/shared_method the name is in the ``name`` field;
+        for all other objects it is the first ``identifier`` child."""
+        name_node = node.child_by_field_name("name")
+        if name_node is not None:
+            return _read_text(name_node, source_bytes)
+        for child in node.children:
+            if child.type == "identifier":
+                return _read_text(child, source_bytes)
+        return None
+
+    def _dml_body_node(node) -> object | None:
+        """Return the body node of a DML object/method, or None.
+        Objects have an ``object_spec`` child that is either ';' or '{' ... '}'.
+        Methods have a ``compound_statement`` child."""
+        # Try compound_statement first (for methods)
+        for child in node.children:
+            if child.type == "compound_statement":
+                return child
+        # Try object_spec body (for objects with bodies)
+        for child in node.children:
+            if child.type == "object_spec":
+                # object_spec may be just ';' or '{' ... '}'
+                for grandchild in child.children:
+                    if grandchild.type in ("{", "}"):
+                        return child  # has a body
+                return None
+        return None
+
+    def _dml_is_template(node, parent_nid: str, line: int) -> None:
+        """Extract ``is <template>`` clauses and emit ``inherits`` edges."""
+        for child in node.children:
+            if child.type == "is_template":
+                _walk_dml_template_refs(child, parent_nid, line, "inherits")
+                return
+
+    def _walk_dml_template_refs(node, parent_nid: str, line: int,
+                                 relation: str) -> None:
+        """Walk is_template or implement children and emit edges for each
+        template/interface reference."""
+        for child in node.children:
+            if child.type == "objident":
+                name = _read_text(child, source)
+                tgt_nid = _make_id(name)
+                add_node(tgt_nid, name, line)
+                add_edge(parent_nid, tgt_nid, relation, line)
+            elif child.type == "objident_list":
+                for gc in child.children:
+                    if gc.type == "objident":
+                        name = _read_text(gc, source)
+                        tgt_nid = _make_id(name)
+                        add_node(tgt_nid, name, line)
+                        add_edge(parent_nid, tgt_nid, relation, line)
+
+    def _walk_dml_children(node, parent_nid: str, walk_fn) -> None:
+        """Walk children of a DML object body."""
+        body = _dml_body_node(node)
+        if body is not None:
+            for child in body.children:
+                walk_fn(child, parent_nid)
+
+    def walk(node, parent_nid: str | None = None) -> None:
+        t = node.type
+
+        # --- Import statements ---
+        if t == "import_statement":
+            for child in node.children:
+                if child.type == "string_literal":
+                    raw = _read_text(child, source).strip('"')
+                    line = node.start_point[0] + 1
+                    tgt_nid = _make_id(raw)
+                    add_node(tgt_nid, raw, line)
+                    add_edge(file_nid, tgt_nid, "imports_from", line)
+            return
+
+        # --- Device / Template / Object nodes ---
+        if t in _DML_OBJECT_TYPES:
+            name = _dml_name(node, source)
+            if name:
+                line = node.start_point[0] + 1
+                p = parent_nid or file_nid
+                nid = _make_id(p, name)
+                add_node(nid, name, line)
+                add_edge(p, nid, "contains", line)
+                # Handle is_template → inherits edges
+                _dml_is_template(node, nid, line)
+                # Handle implement → implements edges
+                # The implement node's name IS the interface being implemented
+                if t == "implement":
+                    interface_nid = _make_id(name)
+                    add_node(interface_nid, name, line)
+                    add_edge(nid, interface_nid, "implements", line)
+                # Walk children inside the object body
+                _walk_dml_children(node, nid, walk)
+            return
+
+        # --- Method ---
+        if t == "method":
+            name = _dml_name(node, source)
+            if name:
+                line = node.start_point[0] + 1
+                p = parent_nid or file_nid
+                nid = _make_id(p, name)
+                add_node(nid, f"{name}()", line)
+                add_edge(p, nid, "contains", line)
+                # Collect body for call-graph pass
+                body_node = _dml_body_node(node)
+                if body_node is not None:
+                    function_bodies.append((nid, body_node))
+            return
+
+        # Default: recurse children
+        for child in node.children:
+            walk(child, parent_nid)
+
+    walk(root)
+
+    # ── Call-graph pass ─────────────────────────────────────────────────────
+    if function_bodies:
+        # Build label → nid map for call resolution
+        label_to_nid: dict[str, str] = {}
+        label_to_nid_ci: dict[str, str] = {}
+        for nd in nodes:
+            lbl = nd["label"]
+            label_to_nid[lbl] = nd["id"]
+            label_to_nid_ci.setdefault(lbl.lower(), nd["id"])
+            # Also index without trailing "()" so call resolution works
+            if lbl.endswith("()"):
+                bare = lbl[:-2]
+                label_to_nid.setdefault(bare, nd["id"])
+                label_to_nid_ci.setdefault(bare.lower(), nd["id"])
+
+        seen_call_pairs: set[tuple[str, str]] = set()
+
+        def walk_calls(body_node, caller_nid: str) -> None:
+            # Stop at method boundaries
+            if body_node.type in ("method",):
+                return
+
+            if body_node.type == "call_expression":
+                line = body_node.start_point[0] + 1
+                callee_name = None
+                # DML call_expression: first child is `expression`, which wraps
+                # either `primary_expression` (for simple calls) or
+                # `member_expression` (for member calls like this.signal.raise).
+                first = body_node.children[0] if body_node.children else None
+                if first is not None and first.type == "expression":
+                    first = first.children[0] if first.children else None
+                if first is not None and first.type == "primary_expression":
+                    first = first.children[0] if first.children else None
+                if first is not None:
+                    if first.type == "identifier":
+                        callee_name = _read_text(first, source)
+                    elif first.type == "member_expression":
+                        # Get the last identifier (method name)
+                        for child in reversed(first.children):
+                            if child.type == "identifier":
+                                callee_name = _read_text(child, source)
+                                break
+
+                if callee_name:
+                    # Resolve: try exact match first, then case-insensitive
+                    tgt_nid = label_to_nid.get(callee_name)
+                    if tgt_nid is None:
+                        tgt_nid = label_to_nid_ci.get(callee_name.lower())
+                    if tgt_nid is not None and tgt_nid != caller_nid:
+                        pair = (caller_nid, tgt_nid)
+                        if pair not in seen_call_pairs:
+                            seen_call_pairs.add(pair)
+                            add_edge(caller_nid, tgt_nid, "calls", line,
+                                     confidence="INFERRED", score=0.7)
+
+            for child in body_node.children:
+                walk_calls(child, caller_nid)
+
+        for caller_nid, body in function_bodies:
+            walk_calls(body, caller_nid)
+
+    if os.environ.get("GRAPHIFY_DML_DEBUG"):
+        _dump_dml_debug(path, nodes, edges, function_bodies, source)
+
+    return {"nodes": nodes, "edges": edges}
+
+
+def _dump_dml_debug(
+    path: Path,
+    nodes: list[dict],
+    edges: list[dict],
+    function_bodies: list,
+    source: bytes,
+) -> None:
+    """Write DML extraction debug info to ``dml_dbg.txt`` next to the source file."""
+    dbg_path = path.with_suffix(".dml_dbg.txt")
+    lines = []
+    lines.append(f"=== DML extraction debug: {path} ===\n")
+    lines.append(f"Nodes: {len(nodes)}")
+    lines.append(f"Edges: {len(edges)}")
+    lines.append(f"Function bodies: {len(function_bodies)}\n")
+
+    lines.append("--- Nodes ---")
+    for nd in nodes:
+        lines.append(
+            f"  [{nd['id']}] {nd['label']}  ({nd['source_location']})"
+        )
+
+    lines.append("\n--- Edges ---")
+    for e in edges:
+        lines.append(
+            f"  {e['source']} --{e['relation']}--> {e['target']}"
+            f"  [{e['confidence']}]  L{e['source_location']}"
+        )
+
+    lines.append("\n--- Function bodies (caller → body snippet) ---")
+    for caller_nid, body_node in function_bodies:
+        text = source[body_node.start_byte:body_node.end_byte].decode(
+            "utf-8", errors="replace"
+        )
+        lines.append(f"  {caller_nid}")
+        lines.append(f"    {text!r}")
+
+    dbg_path.write_text("\n".join(lines), encoding="utf-8")
+    print(f"[graphify] DML debug written to {dbg_path}", file=sys.stderr)
 
 def extract_python(path: Path) -> dict:
     """Extract classes, functions, and imports from a .py file via tree-sitter AST."""
@@ -12022,6 +12308,7 @@ _DISPATCH: dict[str, Any] = {
     ".cshtml": extract_razor,
     ".cls": extract_apex,
     ".trigger": extract_apex,
+    ".dml": extract_dml,
 }
 
 
