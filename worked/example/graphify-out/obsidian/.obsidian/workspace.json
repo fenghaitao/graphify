@@ -1,0 +1,256 @@
+{
+  "main": {
+    "id": "39febc318292c12c",
+    "type": "split",
+    "children": [
+      {
+        "id": "79251d95dd0955d1",
+        "type": "split",
+        "children": [
+          {
+            "id": "aeccc70ec471d712",
+            "type": "tabs",
+            "children": [
+              {
+                "id": "6b54d3e04f108df9",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "validator.py.md",
+                    "mode": "source",
+                    "source": false
+                  },
+                  "icon": "lucide-file",
+                  "title": "validator.py"
+                }
+              }
+            ]
+          },
+          {
+            "id": "5d835034795309c5",
+            "type": "tabs",
+            "children": [
+              {
+                "id": "f86cd3637c256a89",
+                "type": "leaf",
+                "state": {
+                  "type": "terminal-view",
+                  "state": {
+                    "tabs": [
+                      {
+                        "name": "Terminal 1",
+                        "color": "",
+                        "cwd": "/home/hfeng1/graphify/worked/example/graphify-out/obsidian",
+                        "bufferSerial": "\u001b[32;1mhfeng1@iv-yenvq3kqv43z47gmiwu3\u001b[0m:\u001b[34;1m~/graphify/worked/example/graphify-out/obsidian\u001b[0m$ ls\r\n'Accept a list of file paths, run the full pipeline on each,     and return a sum.md'\r\n'Add keyword index and cross-references to a validated document..md'\r\n'API Module (api.py).md'\r\n'API module - exposes the document pipeline over HTTP. Thin layer over parser, va.md'\r\n api.py.md\r\n'batch_parse().md'\r\n'check_format().md'\r\n'check_required_fields().md'\r\n'Clean up text fields using the processor..md'\r\n'_COMMUNITY_Document Enrichment & Processing.md'\r\n'_COMMUNITY_HTTP API Layer.md'\r\n'_COMMUNITY_Input Parsing.md'\r\n'_COMMUNITY_Keyword Relevance & Cross-referencing.md'\r\n'_COMMUNITY_Pipeline Architecture & Design.md'\r\n'_COMMUNITY_Schema Validation.md'\r\n'_COMMUNITY_Storage & Index Persistence.md'\r\n'Cross-reference Detection.md'\r\n'Delete a document by ID..md'\r\n'delete_record().md'\r\n'Document Pipeline.md'\r\n'Embedding-based Similarity.md'\r\n'Enrich a validated document and persist it. Returns the record ID..md'\r\n'enrich_document().md'\r\n'_ensure_storage().md'\r\n Exception.md\r\n'extract_keywords().md'\r\n'Extract title, sections, and links from markdown..md'\r\n'Fetch a document by ID and return it..md'\r\n'Fetch a single document by ID..md'\r\n'find_cross_references().md'\r\n'Flat JSON File Storage.md'\r\n'Full pipeline parse, validate, save. Returns the saved record ID..md'\r\n graph.canvas\r\n'handle_delete().md'\r\n'handle_enrich().md'\r\n'handle_get().md'\r\n'handle_list().md'\r\n'handle_search().md'\r\n'handle_upload().md'\r\n'Keyword Extraction.md'\r\n'Keyword Index.md'\r\n'Keyword Overlap Threshold.md'\r\n'Linear Pipeline Design.md'\r\n'List all document IDs in storage..md'\r\n'list_records().md'\r\n'load_index().md'\r\n'load_record().md'\r\n'Load the full document index from disk..md'\r\n'Look up the index and return IDs of related documents by keyword overlap..md'\r\n'Lowercase, strip extra whitespace, remove control characters..md'\r\n'normalize_fields().md'\r\n'normalize_text().md'\r\n'Parse a JSON document into a structured dict..md'\r\n'Parse a list of files and return their record IDs..md'\r\n'parse_and_save().md'\r\n'parse_file().md'\r\n'parse_json().md'\r\n'parse_markdown().md'\r\n'parse_plaintext().md'\r\n'Parser Module (parser.py).md'\r\n'Parser module - reads raw input documents and converts them into a structured fo.md'\r\n parser.py.md\r\n'Parsing Stage.md'\r\n'Persist the index to disk..md'\r\n'Pipeline Orchestration.md'\r\n'process_and_save().md'\r\n'Processing Stage.md'\r\n'Processor Module (processor.py).md'\r\n'Processor module - transforms validated documents into enriched records ready fo.md'\r\n processor.py.md\r\n'Pull non-stopword tokens from text, deduplicated..md'\r\n'Raise if any required field is missing..md'\r\n'Raise if the format is not in the allowed list..md'\r\n'Read a file from disk and return a structured document..md'\r\n'Re-enrich a document to pick up new cross-references..md'\r\n'Re-enrich all records in the index. Returns count of records updated..md'\r\n'Remove a document and its index entry. Returns True if it existed..md'\r\n'Repository Pattern.md'\r\n'reprocess_all().md'\r\n'Return all record IDs currently in storage..md'\r\n'Run all validation checks on a parsed document. Raises ValidationError on failur.md'\r\n'save_index().md'\r\n'save_parsed().md'\r\n'save_processed().md'\r\n'Simple keyword search over the index.     Returns documents whose keyword list o.md'\r\n'Split plaintext into paragraphs..md'\r\n'SQLite Migration.md'\r\n'Storage Index.md'\r\n'Storage module - persists documents to disk and maintains the search index. All.md'\r\n'Storage Module (storage.py).md'\r\n storage.py.md\r\n'Storage Stage.md'\r\n'TF-IDF Weighting.md'\r\n'Transactional Write Risk.md'\r\n'Validate a list of documents. Returns (valid_docs, errors)..md'\r\n'validate_batch().md'\r\n'validate_document().md'\r\n ValidationError.md\r\n'Validation Stage.md'\r\n'Validator module - checks that parsed documents meet schema requirements before.md'\r\n'Validator Module (validator.py).md'\r\n validator.py.md\r\n'Write an enriched document to storage, updating the index with keywords..md'\r\n'Write a parsed document to storage. Returns the assigned record ID..md'\r\n\u001b[32;1mhfeng1@iv-yenvq3kqv43z47gmiwu3\u001b[0m:\u001b[34;1m~/graphify/worked/example/graphify-out/obsidian\u001b[0m$ ls validator.py.md \r\nvalidator.py.md\r\n\u001b[32;1mhfeng1@iv-yenvq3kqv43z47gmiwu3\u001b[0m:\u001b[34;1m~/graphify/worked/example/graphify-out/obsidian\u001b[0m$ ls *.md.md\r\nls: cannot access '*.md.md': No such file or directory\r\n\u001b[32;1mhfeng1@iv-yenvq3kqv43z47gmiwu3\u001b[0m:\u001b[34;1m~/graphify/worked/example/graphify-out/obsidian\u001b[0m$ \u001b[?2004h"
+                      }
+                    ],
+                    "activeIndex": 0
+                  },
+                  "icon": "terminal",
+                  "title": "Terminal"
+                }
+              }
+            ]
+          }
+        ],
+        "direction": "horizontal"
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "a9feaf8150c7ef9d",
+    "type": "split",
+    "children": [
+      {
+        "id": "2f35e9f0f753e838",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bacec56660e18a94",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "65d3f6d04b827edb",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "7299e4b4ceb1932e",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "5b709333f6ac5fbf",
+    "type": "split",
+    "children": [
+      {
+        "id": "d1017298a43f170e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d44a5cb5089b0629",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "validator.py.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for validator.py"
+            }
+          },
+          {
+            "id": "ad0c9350940eb121",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "validator.py.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from validator.py"
+            }
+          },
+          {
+            "id": "e2724f66fc68f7f5",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "24b0d6ffbd24f963",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "c2d4b8c078204d04",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "validator.py.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of validator.py"
+            }
+          },
+          {
+            "id": "860f7f6a5f89d8fd",
+            "type": "leaf",
+            "state": {
+              "type": "claudian-view",
+              "state": {},
+              "icon": "bot",
+              "title": "Claudian"
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "realclaudian:Open Claudian": false,
+      "lean-terminal:Open terminal": false
+    }
+  },
+  "active": "f86cd3637c256a89",
+  "lastOpenFiles": [
+    "notes_1.md",
+    "architecture_1.md",
+    "README.md",
+    "graphify-out.md",
+    "graphify.md",
+    "notes.md",
+    "architecture.md",
+    "api.py_1.md",
+    "storage.py_1.md",
+    "processor.py_1.md",
+    "validator.py_1.md",
+    "parser.py_1.md",
+    "Document Pipeline_1.md",
+    "Reproducible Example.md",
+    "Keyword Relevance & Cross-referencing.md",
+    "HTTP API Layer.md",
+    "Schema Validation.md",
+    "Input Parsing.md",
+    "Document Enrichment & Processing.md",
+    "Pipeline Architecture & Design.md",
+    "Storage & Index Persistence.md",
+    "index.md"
+  ]
+}

@@ -1,0 +1,1379 @@
+{
+  "nodes": [
+    {
+      "id": "g0",
+      "type": "group",
+      "label": "Pipeline Architecture & Design",
+      "x": 0,
+      "y": 0,
+      "width": 880,
+      "height": 720,
+      "color": "1"
+    },
+    {
+      "id": "n_raw_processor_rationale_33",
+      "type": "file",
+      "file": "Add keyword index and cross-references to a validated document..md",
+      "x": 20,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_processor_rationale_58",
+      "type": "file",
+      "file": "Enrich a validated document and persist it. Returns the record ID..md",
+      "x": 220,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_processor_rationale_45",
+      "type": "file",
+      "file": "Look up the index and return IDs of related documents by keyword overlap..md",
+      "x": 420,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_processor_rationale_13",
+      "type": "file",
+      "file": "Lowercase, strip extra whitespace, remove control characters..md",
+      "x": 20,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_processor_rationale_1",
+      "type": "file",
+      "file": "Processor module - transforms validated documents into enriched records ready fo.md",
+      "x": 220,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_processor_rationale_21",
+      "type": "file",
+      "file": "Pull non-stopword tokens from text, deduplicated..md",
+      "x": 420,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_api_rationale_68",
+      "type": "file",
+      "file": "Re-enrich a document to pick up new cross-references..md",
+      "x": 20,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_processor_rationale_65",
+      "type": "file",
+      "file": "Re-enrich all records in the index. Returns count of records updated..md",
+      "x": 220,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_processor_enrich_document",
+      "type": "file",
+      "file": "enrich_document().md",
+      "x": 420,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_processor_extract_keywords",
+      "type": "file",
+      "file": "extract_keywords().md",
+      "x": 20,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_processor_find_cross_references",
+      "type": "file",
+      "file": "find_cross_references().md",
+      "x": 220,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_api_handle_enrich",
+      "type": "file",
+      "file": "handle_enrich().md",
+      "x": 420,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_processor_normalize_text",
+      "type": "file",
+      "file": "normalize_text().md",
+      "x": 20,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_processor_process_and_save",
+      "type": "file",
+      "file": "process_and_save().md",
+      "x": 220,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_processor",
+      "type": "file",
+      "file": "processor.py.md",
+      "x": 420,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_processor_reprocess_all",
+      "type": "file",
+      "file": "reprocess_all().md",
+      "x": 20,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g1",
+      "type": "group",
+      "label": "Storage & Index Persistence",
+      "x": 960,
+      "y": 0,
+      "width": 880,
+      "height": 620,
+      "color": "2"
+    },
+    {
+      "id": "n_raw_storage_rationale_66",
+      "type": "file",
+      "file": "Fetch a single document by ID..md",
+      "x": 980,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_rationale_21",
+      "type": "file",
+      "file": "Load the full document index from disk..md",
+      "x": 1180,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_rationale_27",
+      "type": "file",
+      "file": "Persist the index to disk..md",
+      "x": 1380,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_rationale_75",
+      "type": "file",
+      "file": "Remove a document and its index entry. Returns True if it existed..md",
+      "x": 980,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_rationale_1",
+      "type": "file",
+      "file": "Storage module - persists documents to disk and maintains the search index. All.md",
+      "x": 1180,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_rationale_33",
+      "type": "file",
+      "file": "Write a parsed document to storage. Returns the assigned record ID..md",
+      "x": 1380,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_rationale_50",
+      "type": "file",
+      "file": "Write an enriched document to storage, updating the index with keywords..md",
+      "x": 980,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_ensure_storage",
+      "type": "file",
+      "file": "_ensure_storage().md",
+      "x": 1180,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_delete_record",
+      "type": "file",
+      "file": "delete_record().md",
+      "x": 1380,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_load_index",
+      "type": "file",
+      "file": "load_index().md",
+      "x": 980,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_load_record",
+      "type": "file",
+      "file": "load_record().md",
+      "x": 1180,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_save_index",
+      "type": "file",
+      "file": "save_index().md",
+      "x": 1380,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_save_parsed",
+      "type": "file",
+      "file": "save_parsed().md",
+      "x": 980,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_save_processed",
+      "type": "file",
+      "file": "save_processed().md",
+      "x": 1180,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage",
+      "type": "file",
+      "file": "storage.py.md",
+      "x": 1380,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g2",
+      "type": "group",
+      "label": "Document Enrichment & Processing",
+      "x": 1920,
+      "y": 0,
+      "width": 880,
+      "height": 620,
+      "color": "3"
+    },
+    {
+      "id": "n_raw_validator_rationale_40",
+      "type": "file",
+      "file": "Clean up text fields using the processor..md",
+      "x": 1940,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_exception",
+      "type": "file",
+      "file": "Exception.md",
+      "x": 2140,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_validator_rationale_26",
+      "type": "file",
+      "file": "Raise if any required field is missing..md",
+      "x": 2340,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_validator_rationale_33",
+      "type": "file",
+      "file": "Raise if the format is not in the allowed list..md",
+      "x": 1940,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_validator_rationale_18",
+      "type": "file",
+      "file": "Run all validation checks on a parsed document. Raises ValidationError on failur.md",
+      "x": 2140,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_validator_rationale_53",
+      "type": "file",
+      "file": "Validate a list of documents. Returns (valid_docs, errors)..md",
+      "x": 2340,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_validator_validationerror",
+      "type": "file",
+      "file": "ValidationError.md",
+      "x": 1940,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_validator_rationale_1",
+      "type": "file",
+      "file": "Validator module - checks that parsed documents meet schema requirements before.md",
+      "x": 2140,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_validator_check_format",
+      "type": "file",
+      "file": "check_format().md",
+      "x": 2340,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_validator_check_required_fields",
+      "type": "file",
+      "file": "check_required_fields().md",
+      "x": 1940,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_validator_normalize_fields",
+      "type": "file",
+      "file": "normalize_fields().md",
+      "x": 2140,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_validator_validate_batch",
+      "type": "file",
+      "file": "validate_batch().md",
+      "x": 2340,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_validator_validate_document",
+      "type": "file",
+      "file": "validate_document().md",
+      "x": 1940,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_validator",
+      "type": "file",
+      "file": "validator.py.md",
+      "x": 2140,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g3",
+      "type": "group",
+      "label": "Schema Validation",
+      "x": 0,
+      "y": 800,
+      "width": 880,
+      "height": 620,
+      "color": "4"
+    },
+    {
+      "id": "n_raw_api_rationale_1",
+      "type": "file",
+      "file": "API module - exposes the document pipeline over HTTP. Thin layer over parser, va.md",
+      "x": 20,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_api_rationale_12",
+      "type": "file",
+      "file": "Accept a list of file paths, run the full pipeline on each,     and return a sum.md",
+      "x": 220,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_api_rationale_36",
+      "type": "file",
+      "file": "Delete a document by ID..md",
+      "x": 420,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_api_rationale_28",
+      "type": "file",
+      "file": "Fetch a document by ID and return it..md",
+      "x": 20,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_api_rationale_44",
+      "type": "file",
+      "file": "List all document IDs in storage..md",
+      "x": 220,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_rationale_88",
+      "type": "file",
+      "file": "Return all record IDs currently in storage..md",
+      "x": 420,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_api_rationale_49",
+      "type": "file",
+      "file": "Simple keyword search over the index.     Returns documents whose keyword list o.md",
+      "x": 20,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_api",
+      "type": "file",
+      "file": "api.py.md",
+      "x": 220,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_api_handle_delete",
+      "type": "file",
+      "file": "handle_delete().md",
+      "x": 420,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_api_handle_get",
+      "type": "file",
+      "file": "handle_get().md",
+      "x": 20,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_api_handle_list",
+      "type": "file",
+      "file": "handle_list().md",
+      "x": 220,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_api_handle_search",
+      "type": "file",
+      "file": "handle_search().md",
+      "x": 420,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_api_handle_upload",
+      "type": "file",
+      "file": "handle_upload().md",
+      "x": 20,
+      "y": 1200,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_storage_list_records",
+      "type": "file",
+      "file": "list_records().md",
+      "x": 220,
+      "y": 1200,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g4",
+      "type": "group",
+      "label": "Input Parsing",
+      "x": 960,
+      "y": 800,
+      "width": 880,
+      "height": 620,
+      "color": "5"
+    },
+    {
+      "id": "n_raw_parser_rationale_30",
+      "type": "file",
+      "file": "Extract title, sections, and links from markdown..md",
+      "x": 980,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_parser_rationale_63",
+      "type": "file",
+      "file": "Full pipeline parse, validate, save. Returns the saved record ID..md",
+      "x": 1180,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_parser_rationale_50",
+      "type": "file",
+      "file": "Parse a JSON document into a structured dict..md",
+      "x": 1380,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_parser_rationale_71",
+      "type": "file",
+      "file": "Parse a list of files and return their record IDs..md",
+      "x": 980,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_parser_rationale_1",
+      "type": "file",
+      "file": "Parser module - reads raw input documents and converts them into a structured fo.md",
+      "x": 1180,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_parser_rationale_13",
+      "type": "file",
+      "file": "Read a file from disk and return a structured document..md",
+      "x": 1380,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_parser_rationale_57",
+      "type": "file",
+      "file": "Split plaintext into paragraphs..md",
+      "x": 980,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_parser_batch_parse",
+      "type": "file",
+      "file": "batch_parse().md",
+      "x": 1180,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_parser_parse_and_save",
+      "type": "file",
+      "file": "parse_and_save().md",
+      "x": 1380,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_parser_parse_file",
+      "type": "file",
+      "file": "parse_file().md",
+      "x": 980,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_parser_parse_json",
+      "type": "file",
+      "file": "parse_json().md",
+      "x": 1180,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_parser_parse_markdown",
+      "type": "file",
+      "file": "parse_markdown().md",
+      "x": 1380,
+      "y": 1120,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_parser_parse_plaintext",
+      "type": "file",
+      "file": "parse_plaintext().md",
+      "x": 980,
+      "y": 1200,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_raw_parser",
+      "type": "file",
+      "file": "parser.py.md",
+      "x": 1180,
+      "y": 1200,
+      "width": 180,
+      "height": 60
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_raw_api_raw_api_handle_delete",
+      "fromNode": "n_raw_api",
+      "toNode": "n_raw_api_handle_delete",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_api_raw_api_handle_enrich",
+      "fromNode": "n_raw_api",
+      "toNode": "n_raw_api_handle_enrich",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_api_raw_api_handle_get",
+      "fromNode": "n_raw_api",
+      "toNode": "n_raw_api_handle_get",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_api_raw_api_handle_list",
+      "fromNode": "n_raw_api",
+      "toNode": "n_raw_api_handle_list",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_api_raw_api_handle_search",
+      "fromNode": "n_raw_api",
+      "toNode": "n_raw_api_handle_search",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_api_raw_api_handle_upload",
+      "fromNode": "n_raw_api",
+      "toNode": "n_raw_api_handle_upload",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_api_raw_api_rationale_1",
+      "fromNode": "n_raw_api",
+      "toNode": "n_raw_api_rationale_1",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_api_handle_upload_raw_parser_batch_parse",
+      "fromNode": "n_raw_api_handle_upload",
+      "toNode": "n_raw_parser_batch_parse",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_raw_api_handle_upload_raw_api_rationale_12",
+      "fromNode": "n_raw_api_handle_upload",
+      "toNode": "n_raw_api_rationale_12",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_api_handle_get_raw_storage_load_record",
+      "fromNode": "n_raw_api_handle_get",
+      "toNode": "n_raw_storage_load_record",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_raw_api_handle_get_raw_api_rationale_28",
+      "fromNode": "n_raw_api_handle_get",
+      "toNode": "n_raw_api_rationale_28",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_api_handle_delete_raw_storage_delete_record",
+      "fromNode": "n_raw_api_handle_delete",
+      "toNode": "n_raw_storage_delete_record",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_raw_api_handle_delete_raw_api_rationale_36",
+      "fromNode": "n_raw_api_handle_delete",
+      "toNode": "n_raw_api_rationale_36",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_api_handle_list_raw_storage_list_records",
+      "fromNode": "n_raw_api_handle_list",
+      "toNode": "n_raw_storage_list_records",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_raw_api_handle_list_raw_api_rationale_44",
+      "fromNode": "n_raw_api_handle_list",
+      "toNode": "n_raw_api_rationale_44",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_api_handle_search_raw_storage_load_index",
+      "fromNode": "n_raw_api_handle_search",
+      "toNode": "n_raw_storage_load_index",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_raw_api_handle_search_raw_api_rationale_49",
+      "fromNode": "n_raw_api_handle_search",
+      "toNode": "n_raw_api_rationale_49",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_api_handle_enrich_raw_processor_process_and_save",
+      "fromNode": "n_raw_api_handle_enrich",
+      "toNode": "n_raw_processor_process_and_save",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_raw_api_handle_enrich_raw_storage_load_record",
+      "fromNode": "n_raw_api_handle_enrich",
+      "toNode": "n_raw_storage_load_record",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_raw_api_handle_enrich_raw_validator_validate_document",
+      "fromNode": "n_raw_api_handle_enrich",
+      "toNode": "n_raw_validator_validate_document",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_raw_api_handle_enrich_raw_api_rationale_68",
+      "fromNode": "n_raw_api_handle_enrich",
+      "toNode": "n_raw_api_rationale_68",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_raw_parser_batch_parse",
+      "fromNode": "n_raw_parser",
+      "toNode": "n_raw_parser_batch_parse",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_raw_parser_parse_and_save",
+      "fromNode": "n_raw_parser",
+      "toNode": "n_raw_parser_parse_and_save",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_raw_parser_parse_file",
+      "fromNode": "n_raw_parser",
+      "toNode": "n_raw_parser_parse_file",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_raw_parser_parse_json",
+      "fromNode": "n_raw_parser",
+      "toNode": "n_raw_parser_parse_json",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_raw_parser_parse_markdown",
+      "fromNode": "n_raw_parser",
+      "toNode": "n_raw_parser_parse_markdown",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_raw_parser_parse_plaintext",
+      "fromNode": "n_raw_parser",
+      "toNode": "n_raw_parser_parse_plaintext",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_raw_parser_rationale_1",
+      "fromNode": "n_raw_parser",
+      "toNode": "n_raw_parser_rationale_1",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_parse_file_raw_parser_parse_and_save",
+      "fromNode": "n_raw_parser_parse_file",
+      "toNode": "n_raw_parser_parse_and_save",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_parse_file_raw_parser_parse_json",
+      "fromNode": "n_raw_parser_parse_file",
+      "toNode": "n_raw_parser_parse_json",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_parse_file_raw_parser_parse_markdown",
+      "fromNode": "n_raw_parser_parse_file",
+      "toNode": "n_raw_parser_parse_markdown",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_parse_file_raw_parser_parse_plaintext",
+      "fromNode": "n_raw_parser_parse_file",
+      "toNode": "n_raw_parser_parse_plaintext",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_parse_file_raw_parser_rationale_13",
+      "fromNode": "n_raw_parser_parse_file",
+      "toNode": "n_raw_parser_rationale_13",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_parse_markdown_raw_parser_rationale_30",
+      "fromNode": "n_raw_parser_parse_markdown",
+      "toNode": "n_raw_parser_rationale_30",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_parse_json_raw_parser_rationale_50",
+      "fromNode": "n_raw_parser_parse_json",
+      "toNode": "n_raw_parser_rationale_50",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_parse_plaintext_raw_parser_rationale_57",
+      "fromNode": "n_raw_parser_parse_plaintext",
+      "toNode": "n_raw_parser_rationale_57",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_parse_and_save_raw_parser_batch_parse",
+      "fromNode": "n_raw_parser_parse_and_save",
+      "toNode": "n_raw_parser_batch_parse",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_parse_and_save_raw_storage_save_parsed",
+      "fromNode": "n_raw_parser_parse_and_save",
+      "toNode": "n_raw_storage_save_parsed",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_raw_parser_parse_and_save_raw_validator_validate_document",
+      "fromNode": "n_raw_parser_parse_and_save",
+      "toNode": "n_raw_validator_validate_document",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_raw_parser_parse_and_save_raw_parser_rationale_63",
+      "fromNode": "n_raw_parser_parse_and_save",
+      "toNode": "n_raw_parser_rationale_63",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_parser_batch_parse_raw_parser_rationale_71",
+      "fromNode": "n_raw_parser_batch_parse",
+      "toNode": "n_raw_parser_rationale_71",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_raw_processor_enrich_document",
+      "fromNode": "n_raw_processor",
+      "toNode": "n_raw_processor_enrich_document",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_raw_processor_extract_keywords",
+      "fromNode": "n_raw_processor",
+      "toNode": "n_raw_processor_extract_keywords",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_raw_processor_find_cross_references",
+      "fromNode": "n_raw_processor",
+      "toNode": "n_raw_processor_find_cross_references",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_raw_processor_normalize_text",
+      "fromNode": "n_raw_processor",
+      "toNode": "n_raw_processor_normalize_text",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_raw_processor_process_and_save",
+      "fromNode": "n_raw_processor",
+      "toNode": "n_raw_processor_process_and_save",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_raw_processor_reprocess_all",
+      "fromNode": "n_raw_processor",
+      "toNode": "n_raw_processor_reprocess_all",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_raw_processor_rationale_1",
+      "fromNode": "n_raw_processor",
+      "toNode": "n_raw_processor_rationale_1",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_normalize_text_raw_processor_extract_keywords",
+      "fromNode": "n_raw_processor_normalize_text",
+      "toNode": "n_raw_processor_extract_keywords",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_normalize_text_raw_processor_rationale_13",
+      "fromNode": "n_raw_processor_normalize_text",
+      "toNode": "n_raw_processor_rationale_13",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_normalize_text_raw_validator_normalize_fields",
+      "fromNode": "n_raw_processor_normalize_text",
+      "toNode": "n_raw_validator_normalize_fields",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_raw_processor_extract_keywords_raw_processor_enrich_document",
+      "fromNode": "n_raw_processor_extract_keywords",
+      "toNode": "n_raw_processor_enrich_document",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_extract_keywords_raw_processor_rationale_21",
+      "fromNode": "n_raw_processor_extract_keywords",
+      "toNode": "n_raw_processor_rationale_21",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_enrich_document_raw_processor_find_cross_references",
+      "fromNode": "n_raw_processor_enrich_document",
+      "toNode": "n_raw_processor_find_cross_references",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_enrich_document_raw_processor_process_and_save",
+      "fromNode": "n_raw_processor_enrich_document",
+      "toNode": "n_raw_processor_process_and_save",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_enrich_document_raw_processor_rationale_33",
+      "fromNode": "n_raw_processor_enrich_document",
+      "toNode": "n_raw_processor_rationale_33",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_find_cross_references_raw_storage_load_index",
+      "fromNode": "n_raw_processor_find_cross_references",
+      "toNode": "n_raw_storage_load_index",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_raw_processor_find_cross_references_raw_processor_rationale_45",
+      "fromNode": "n_raw_processor_find_cross_references",
+      "toNode": "n_raw_processor_rationale_45",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_process_and_save_raw_storage_save_processed",
+      "fromNode": "n_raw_processor_process_and_save",
+      "toNode": "n_raw_storage_save_processed",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_raw_processor_process_and_save_raw_processor_rationale_58",
+      "fromNode": "n_raw_processor_process_and_save",
+      "toNode": "n_raw_processor_rationale_58",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_process_and_save_raw_processor_reprocess_all",
+      "fromNode": "n_raw_processor_process_and_save",
+      "toNode": "n_raw_processor_reprocess_all",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_reprocess_all_raw_processor_rationale_65",
+      "fromNode": "n_raw_processor_reprocess_all",
+      "toNode": "n_raw_processor_rationale_65",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_processor_reprocess_all_raw_storage_load_index",
+      "fromNode": "n_raw_processor_reprocess_all",
+      "toNode": "n_raw_storage_load_index",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_raw_storage_raw_storage_delete_record",
+      "fromNode": "n_raw_storage",
+      "toNode": "n_raw_storage_delete_record",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_raw_storage_ensure_storage",
+      "fromNode": "n_raw_storage",
+      "toNode": "n_raw_storage_ensure_storage",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_raw_storage_list_records",
+      "fromNode": "n_raw_storage",
+      "toNode": "n_raw_storage_list_records",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_raw_storage_load_index",
+      "fromNode": "n_raw_storage",
+      "toNode": "n_raw_storage_load_index",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_raw_storage_load_record",
+      "fromNode": "n_raw_storage",
+      "toNode": "n_raw_storage_load_record",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_raw_storage_save_index",
+      "fromNode": "n_raw_storage",
+      "toNode": "n_raw_storage_save_index",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_raw_storage_save_parsed",
+      "fromNode": "n_raw_storage",
+      "toNode": "n_raw_storage_save_parsed",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_raw_storage_save_processed",
+      "fromNode": "n_raw_storage",
+      "toNode": "n_raw_storage_save_processed",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_raw_storage_rationale_1",
+      "fromNode": "n_raw_storage",
+      "toNode": "n_raw_storage_rationale_1",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_ensure_storage_raw_storage_delete_record",
+      "fromNode": "n_raw_storage_ensure_storage",
+      "toNode": "n_raw_storage_delete_record",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_ensure_storage_raw_storage_load_index",
+      "fromNode": "n_raw_storage_ensure_storage",
+      "toNode": "n_raw_storage_load_index",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_ensure_storage_raw_storage_load_record",
+      "fromNode": "n_raw_storage_ensure_storage",
+      "toNode": "n_raw_storage_load_record",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_ensure_storage_raw_storage_save_index",
+      "fromNode": "n_raw_storage_ensure_storage",
+      "toNode": "n_raw_storage_save_index",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_ensure_storage_raw_storage_save_parsed",
+      "fromNode": "n_raw_storage_ensure_storage",
+      "toNode": "n_raw_storage_save_parsed",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_ensure_storage_raw_storage_save_processed",
+      "fromNode": "n_raw_storage_ensure_storage",
+      "toNode": "n_raw_storage_save_processed",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_load_index_raw_storage_delete_record",
+      "fromNode": "n_raw_storage_load_index",
+      "toNode": "n_raw_storage_delete_record",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_load_index_raw_storage_list_records",
+      "fromNode": "n_raw_storage_load_index",
+      "toNode": "n_raw_storage_list_records",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_load_index_raw_storage_rationale_21",
+      "fromNode": "n_raw_storage_load_index",
+      "toNode": "n_raw_storage_rationale_21",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_load_index_raw_storage_save_parsed",
+      "fromNode": "n_raw_storage_load_index",
+      "toNode": "n_raw_storage_save_parsed",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_load_index_raw_storage_save_processed",
+      "fromNode": "n_raw_storage_load_index",
+      "toNode": "n_raw_storage_save_processed",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_save_index_raw_storage_delete_record",
+      "fromNode": "n_raw_storage_save_index",
+      "toNode": "n_raw_storage_delete_record",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_save_index_raw_storage_rationale_27",
+      "fromNode": "n_raw_storage_save_index",
+      "toNode": "n_raw_storage_rationale_27",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_save_index_raw_storage_save_parsed",
+      "fromNode": "n_raw_storage_save_index",
+      "toNode": "n_raw_storage_save_parsed",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_save_index_raw_storage_save_processed",
+      "fromNode": "n_raw_storage_save_index",
+      "toNode": "n_raw_storage_save_processed",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_save_parsed_raw_storage_rationale_33",
+      "fromNode": "n_raw_storage_save_parsed",
+      "toNode": "n_raw_storage_rationale_33",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_save_processed_raw_storage_rationale_50",
+      "fromNode": "n_raw_storage_save_processed",
+      "toNode": "n_raw_storage_rationale_50",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_load_record_raw_storage_rationale_66",
+      "fromNode": "n_raw_storage_load_record",
+      "toNode": "n_raw_storage_rationale_66",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_delete_record_raw_storage_rationale_75",
+      "fromNode": "n_raw_storage_delete_record",
+      "toNode": "n_raw_storage_rationale_75",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_storage_list_records_raw_storage_rationale_88",
+      "fromNode": "n_raw_storage_list_records",
+      "toNode": "n_raw_storage_rationale_88",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_raw_validator_check_format",
+      "fromNode": "n_raw_validator",
+      "toNode": "n_raw_validator_check_format",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_raw_validator_check_required_fields",
+      "fromNode": "n_raw_validator",
+      "toNode": "n_raw_validator_check_required_fields",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_raw_validator_normalize_fields",
+      "fromNode": "n_raw_validator",
+      "toNode": "n_raw_validator_normalize_fields",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_raw_validator_validate_batch",
+      "fromNode": "n_raw_validator",
+      "toNode": "n_raw_validator_validate_batch",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_raw_validator_validate_document",
+      "fromNode": "n_raw_validator",
+      "toNode": "n_raw_validator_validate_document",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_raw_validator_validationerror",
+      "fromNode": "n_raw_validator",
+      "toNode": "n_raw_validator_validationerror",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_raw_validator_rationale_1",
+      "fromNode": "n_raw_validator",
+      "toNode": "n_raw_validator_rationale_1",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_validationerror_raw_validator_check_format",
+      "fromNode": "n_raw_validator_validationerror",
+      "toNode": "n_raw_validator_check_format",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_validationerror_raw_validator_check_required_fields",
+      "fromNode": "n_raw_validator_validationerror",
+      "toNode": "n_raw_validator_check_required_fields",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_validationerror_exception",
+      "fromNode": "n_raw_validator_validationerror",
+      "toNode": "n_exception",
+      "label": "inherits [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_validate_document_raw_validator_rationale_18",
+      "fromNode": "n_raw_validator_validate_document",
+      "toNode": "n_raw_validator_rationale_18",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_validate_document_raw_validator_validate_batch",
+      "fromNode": "n_raw_validator_validate_document",
+      "toNode": "n_raw_validator_validate_batch",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_validate_document_raw_validator_check_format",
+      "fromNode": "n_raw_validator_validate_document",
+      "toNode": "n_raw_validator_check_format",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_validate_document_raw_validator_check_required_fields",
+      "fromNode": "n_raw_validator_validate_document",
+      "toNode": "n_raw_validator_check_required_fields",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_validate_document_raw_validator_normalize_fields",
+      "fromNode": "n_raw_validator_validate_document",
+      "toNode": "n_raw_validator_normalize_fields",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_check_required_fields_raw_validator_rationale_26",
+      "fromNode": "n_raw_validator_check_required_fields",
+      "toNode": "n_raw_validator_rationale_26",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_check_format_raw_validator_rationale_33",
+      "fromNode": "n_raw_validator_check_format",
+      "toNode": "n_raw_validator_rationale_33",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_normalize_fields_raw_validator_rationale_40",
+      "fromNode": "n_raw_validator_normalize_fields",
+      "toNode": "n_raw_validator_rationale_40",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_raw_validator_validate_batch_raw_validator_rationale_53",
+      "fromNode": "n_raw_validator_validate_batch",
+      "toNode": "n_raw_validator_rationale_53",
+      "label": "rationale_for [EXTRACTED]"
+    }
+  ]
+}

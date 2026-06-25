@@ -1,0 +1,207 @@
+{
+  "communities": {
+    "0": [
+      "raw_api_handle_enrich",
+      "raw_api_rationale_68",
+      "raw_processor",
+      "raw_processor_enrich_document",
+      "raw_processor_extract_keywords",
+      "raw_processor_find_cross_references",
+      "raw_processor_normalize_text",
+      "raw_processor_process_and_save",
+      "raw_processor_rationale_1",
+      "raw_processor_rationale_13",
+      "raw_processor_rationale_21",
+      "raw_processor_rationale_33",
+      "raw_processor_rationale_45",
+      "raw_processor_rationale_58",
+      "raw_processor_rationale_65",
+      "raw_processor_reprocess_all"
+    ],
+    "1": [
+      "raw_storage",
+      "raw_storage_delete_record",
+      "raw_storage_ensure_storage",
+      "raw_storage_load_index",
+      "raw_storage_load_record",
+      "raw_storage_rationale_1",
+      "raw_storage_rationale_21",
+      "raw_storage_rationale_27",
+      "raw_storage_rationale_33",
+      "raw_storage_rationale_50",
+      "raw_storage_rationale_66",
+      "raw_storage_rationale_75",
+      "raw_storage_save_index",
+      "raw_storage_save_parsed",
+      "raw_storage_save_processed"
+    ],
+    "2": [
+      "exception",
+      "raw_validator",
+      "raw_validator_check_format",
+      "raw_validator_check_required_fields",
+      "raw_validator_normalize_fields",
+      "raw_validator_rationale_1",
+      "raw_validator_rationale_18",
+      "raw_validator_rationale_26",
+      "raw_validator_rationale_33",
+      "raw_validator_rationale_40",
+      "raw_validator_rationale_53",
+      "raw_validator_validate_batch",
+      "raw_validator_validate_document",
+      "raw_validator_validationerror"
+    ],
+    "3": [
+      "raw_api",
+      "raw_api_handle_delete",
+      "raw_api_handle_get",
+      "raw_api_handle_list",
+      "raw_api_handle_search",
+      "raw_api_handle_upload",
+      "raw_api_rationale_1",
+      "raw_api_rationale_12",
+      "raw_api_rationale_28",
+      "raw_api_rationale_36",
+      "raw_api_rationale_44",
+      "raw_api_rationale_49",
+      "raw_storage_list_records",
+      "raw_storage_rationale_88"
+    ],
+    "4": [
+      "raw_parser",
+      "raw_parser_batch_parse",
+      "raw_parser_parse_and_save",
+      "raw_parser_parse_file",
+      "raw_parser_parse_json",
+      "raw_parser_parse_markdown",
+      "raw_parser_parse_plaintext",
+      "raw_parser_rationale_1",
+      "raw_parser_rationale_13",
+      "raw_parser_rationale_30",
+      "raw_parser_rationale_50",
+      "raw_parser_rationale_57",
+      "raw_parser_rationale_63",
+      "raw_parser_rationale_71"
+    ]
+  },
+  "cohesion": {
+    "0": 0.16666666666666666,
+    "1": 0.24761904761904763,
+    "2": 0.2087912087912088,
+    "3": 0.14285714285714285,
+    "4": 0.1978021978021978
+  },
+  "gods": [
+    {
+      "id": "raw_storage_load_index",
+      "label": "load_index()",
+      "degree": 10
+    },
+    {
+      "id": "raw_validator_validate_document",
+      "label": "validate_document()",
+      "degree": 8
+    },
+    {
+      "id": "raw_storage_ensure_storage",
+      "label": "_ensure_storage()",
+      "degree": 7
+    },
+    {
+      "id": "raw_parser_parse_file",
+      "label": "parse_file()",
+      "degree": 6
+    },
+    {
+      "id": "raw_parser_parse_and_save",
+      "label": "parse_and_save()",
+      "degree": 6
+    },
+    {
+      "id": "raw_processor_process_and_save",
+      "label": "process_and_save()",
+      "degree": 6
+    },
+    {
+      "id": "raw_storage_save_index",
+      "label": "save_index()",
+      "degree": 6
+    },
+    {
+      "id": "raw_storage_save_parsed",
+      "label": "save_parsed()",
+      "degree": 6
+    },
+    {
+      "id": "raw_storage_save_processed",
+      "label": "save_processed()",
+      "degree": 6
+    },
+    {
+      "id": "raw_storage_delete_record",
+      "label": "delete_record()",
+      "degree": 6
+    }
+  ],
+  "surprises": [
+    {
+      "source": "handle_upload()",
+      "target": "batch_parse()",
+      "source_files": [
+        "raw/api.py",
+        "raw/parser.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "handle_get()",
+      "target": "load_record()",
+      "source_files": [
+        "raw/api.py",
+        "raw/storage.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "handle_delete()",
+      "target": "delete_record()",
+      "source_files": [
+        "raw/api.py",
+        "raw/storage.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "handle_search()",
+      "target": "load_index()",
+      "source_files": [
+        "raw/api.py",
+        "raw/storage.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "handle_enrich()",
+      "target": "load_record()",
+      "source_files": [
+        "raw/api.py",
+        "raw/storage.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    }
+  ],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}
