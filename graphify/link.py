@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Iterable
 
@@ -371,6 +372,138 @@ def synthesize_doc_containers(G: nx.Graph, weight: float = 0.1) -> int:
     return added
 
 
+# --- LLM concept→code linking (code-aware, edge-only) --------------------------
+
+LINK_RELATIONS = ("specifies", "motivates", "describes")
+
+_LINK_SYSTEM = """\
+You connect documentation concepts to the code they describe. You are given DOC CONCEPTS
+(already extracted) and CODE NODES (the real code graph). Output EDGES ONLY.
+
+HARD RULES:
+- Never create or invent a node. Output edges only.
+- An edge "target" MUST be an id copied verbatim from CODE NODES. If a concept refers to
+  code not in CODE NODES, skip it.
+- Link only when the concept clearly refers to THAT specific entity. Use signature + doc to
+  disambiguate same-named functions.
+- A concept may link to zero, one, or several code nodes. No edge is a valid answer.
+- When two targets are equally plausible and you cannot decide, mark the edge AMBIGUOUS.
+
+Choose the relation — the most specific that applies, in priority order:
+  specifies — the doc states a requirement/spec/rule the code must satisfy.   [code implements doc]
+  motivates — the doc explains WHY the code is the way it is (rationale, trade-off, risk).
+  describes — the doc explains what existing code is/does (no requirement, no rationale).
+
+Output JSON only, no prose:
+{"edges":[{"source":"<concept id>","target":"<code id, verbatim>",
+  "relation":"specifies|motivates|describes","confidence":"EXTRACTED|INFERRED|AMBIGUOUS",
+  "confidence_score":0.0}]}
+confidence_score (never 0.5): EXTRACTED 1.0 · INFERRED 0.85 or 0.65 · AMBIGUOUS 0.2
+"""
+
+
+def concept_description(attrs: dict) -> str:
+    """Grounding text for a concept node: its label plus any rationale attribute."""
+    label = str(attrs.get("label", "")).strip()
+    rationale = str(attrs.get("rationale", "")).strip()
+    return f"{label} — {rationale}" if rationale else label
+
+
+def _manifest_for_prompt(records: list[dict]) -> list[dict]:
+    out = []
+    for r in records:
+        item = {"id": r.get("id"), "label": r.get("label"), "file": r.get("source_file")}
+        if r.get("signature"):
+            item["signature"] = r["signature"]
+        if r.get("doc"):
+            item["doc"] = r["doc"]
+        out.append(item)
+    return out
+
+
+def build_concept_link_prompt(concepts: list[dict], records: list[dict]) -> str:
+    """Assemble the single-call prompt: system rules + DOC CONCEPTS + CODE NODES."""
+    return (
+        _LINK_SYSTEM
+        + "\nDOC CONCEPTS:\n"
+        + json.dumps(concepts, ensure_ascii=False)
+        + "\n\nCODE NODES (link targets — copy ids verbatim):\n"
+        + json.dumps(_manifest_for_prompt(records), ensure_ascii=False)
+        + "\n"
+    )
+
+
+def _parse_edges_json(text: str) -> list[dict]:
+    """Parse the model reply into an edge list, tolerating code fences / preamble."""
+    if not text:
+        return []
+    s = text.strip()
+    if s.startswith("```"):
+        s = s.split("```", 2)[1] if "```" in s[3:] else s
+        s = s.lstrip("json").strip("`").strip()
+    try:
+        obj = json.loads(s)
+    except Exception:
+        start, end = s.find("{"), s.rfind("}")
+        if start == -1 or end <= start:
+            return []
+        try:
+            obj = json.loads(s[start : end + 1])
+        except Exception:
+            return []
+    edges = obj.get("edges") if isinstance(obj, dict) else None
+    return edges if isinstance(edges, list) else []
+
+
+def link_concepts_to_code(
+    concepts: list[dict],
+    records: list[dict],
+    *,
+    backend: str,
+    model: str | None = None,
+) -> list[dict]:
+    """Ask the LLM to link doc concepts to real code nodes; return validated edges.
+
+    ``concepts`` are ``{id, label, description}`` dicts (the residual the deterministic
+    matcher didn't resolve). ``records`` is the code manifest (the only allowed targets).
+    Edges whose source/target/relation are not valid are dropped — the boundary rule is
+    *enforced* here, not merely requested in the prompt. See docs/doc-code-linking-design.md.
+    """
+    if not concepts or not records:
+        return []
+    from graphify.llm import _call_llm
+
+    prompt = build_concept_link_prompt(concepts, records)
+    reply = _call_llm(prompt, backend=backend, model=model, max_tokens=4096)
+    raw = _parse_edges_json(reply)
+
+    valid_concept_ids = {c.get("id") for c in concepts}
+    valid_code_ids = {r.get("id") for r in records}
+    edges: list[dict] = []
+    seen: set[tuple] = set()
+    for e in raw:
+        if not isinstance(e, dict):
+            continue
+        src, tgt, rel = e.get("source"), e.get("target"), e.get("relation")
+        if src not in valid_concept_ids or tgt not in valid_code_ids or rel not in LINK_RELATIONS:
+            continue
+        key = (src, tgt, rel)
+        if key in seen:
+            continue
+        seen.add(key)
+        edges.append({
+            "source": src,
+            "target": tgt,
+            "relation": rel,
+            "confidence": e.get("confidence", "INFERRED"),
+            "confidence_score": e.get("confidence_score", 0.65),
+            "source_location": None,
+            "weight": 1.0,
+            "_origin": "link",
+        })
+    return edges
+
+
 def _find_doc_files(target_root: Path) -> list[Path]:
     """Detect doc files under target_root, reusing graphify's classifier."""
     from graphify.detect import detect
@@ -450,6 +583,7 @@ def apply_doc_links(
     target_root: str | Path,
     *,
     match_code: bool = False,
+    link_code: bool = False,
     backend: str | None = None,
     model: str | None = None,
 ) -> dict:
@@ -529,6 +663,35 @@ def apply_doc_links(
         if e["source"] in seen_ids:
             merged_edges.append(e); seen_edges.add(key); ref_added += 1
 
+    # LLM concept→code linking (code-aware, edge-only) on the residual: doc concepts not
+    # already linked by the deterministic matcher. Opt-in via link_code + a backend.
+    link_edge_added = 0
+    if link_code and backend:
+        node_by_id = {n.get("id"): n for n in merged_nodes if isinstance(n, dict)}
+        already_linked = {
+            e.get("source") for e in merged_edges if e.get("relation") in LINK_RELATIONS
+        }
+        residual = [
+            {"id": nid, "label": n.get("label", ""), "description": concept_description(n)}
+            for nid, n in node_by_id.items()
+            if n.get("file_type") in ("concept", "rationale")
+            and Path(n.get("source_file") or "").suffix.lower() in _DOC_EXTENSIONS
+            and nid not in already_linked
+        ]
+        if residual:
+            try:
+                llm_edges = link_concepts_to_code(
+                    residual, records, backend=backend, model=model
+                )
+            except Exception as exc:  # never let the LLM bridge abort the pass
+                print(f"[graphify link-docs] warning: concept→code linking failed: {exc}", file=sys.stderr)
+                llm_edges = []
+            for e in llm_edges:
+                key = (e["source"], e["target"], e["relation"])
+                if key in seen_edges or e["source"] not in seen_ids or e["target"] not in seen_ids:
+                    continue
+                merged_edges.append(e); seen_edges.add(key); link_edge_added += 1
+
     merged = {"nodes": merged_nodes, "edges": merged_edges}
 
     from graphify.build import build_from_json
@@ -548,6 +711,7 @@ def apply_doc_links(
         "concept_nodes_added": concept_added,
         "doc_nodes_added": docnode_added,
         "reference_edges_added": ref_added,
+        "link_edges_added": link_edge_added,
         "dropped_collisions": dropped,
         "communities": len(communities),
         "nodes": G.number_of_nodes(),

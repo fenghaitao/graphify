@@ -4833,8 +4833,8 @@ def main() -> None:
         # the Gap 1+2 contains hierarchy, optionally adds deterministic doc→code edges
         # (--match-code), then merges + re-clusters. Runs after `extract --code-only`.
         if len(sys.argv) < 3 or sys.argv[2].startswith("-"):
-            print("Usage: graphify link-docs <path> [--out DIR] [--backend B] [--model M] [--match-code]",
-                  file=sys.stderr)
+            print("Usage: graphify link-docs <path> [--out DIR] [--backend B] [--model M] "
+                  "[--match-code] [--link-code]", file=sys.stderr)
             sys.exit(1)
         target = Path(sys.argv[2]).resolve()
         if not target.exists():
@@ -4842,6 +4842,7 @@ def main() -> None:
             sys.exit(1)
         out_dir = None
         match_code = False
+        link_code = False
         backend = None
         model = None
         i = 3
@@ -4860,6 +4861,8 @@ def main() -> None:
                 model = sys.argv[i].split("=", 1)[1]; i += 1
             elif sys.argv[i] == "--match-code":
                 match_code = True; i += 1
+            elif sys.argv[i] == "--link-code":
+                link_code = True; i += 1
             else:
                 i += 1
         out_root = out_dir.resolve() if out_dir else target
@@ -4873,7 +4876,8 @@ def main() -> None:
         from graphify.link import apply_doc_links
         try:
             summary = apply_doc_links(
-                graphify_out, target, match_code=match_code, backend=backend, model=model
+                graphify_out, target, match_code=match_code, link_code=link_code,
+                backend=backend, model=model,
             )
         except FileNotFoundError as exc:
             print(f"error: {exc}", file=sys.stderr)
@@ -4896,6 +4900,7 @@ def main() -> None:
             f"+{summary['doc_nodes_added']} document nodes, "
             + (f"+{summary['reference_edges_added']} doc→code edges"
                if match_code else "doc→code matching off (pass --match-code to enable)")
+            + (f", +{summary['link_edges_added']} concept→code edges" if link_code else "")
             + (f", {summary['dropped_collisions']} collision(s) dropped"
                if summary["dropped_collisions"] else "")
         )

@@ -25,8 +25,16 @@ Two **distinct, complementary** deterministic mechanisms now exist — don't con
 | **Gap 3 (partial)** `link-docs` — literal-mention doc→code `references` edges | **done, opt-in** | `link.py` `synthesize_doc_links` / `_MatchIndex`; **off by default**, enable with `link-docs --match-code` |
 | `link-docs` — **cache-first doc concept pass** (reuse cached semantic extraction, else LLM-extract) | **done** | `link.py` `load_or_extract_doc_concepts`; merged + contains-hierarchied in `apply_doc_links` |
 | `link-docs` — merge + re-cluster + collision safety net | **done** | `link.py` `apply_doc_links` |
-| `link-docs` — **code-aware grounding** (feed manifest so concepts link to real code; semantic concept→code edges, no mirror nodes) | **pending** | future; see "Deferred" |
+| `link-docs` — **LLM concept→code linking** (code-aware, edge-only, validated) | **done, opt-in** | `link.py` `link_concepts_to_code`; **off by default**, enable with `link-docs --link-code`; relations `describes`/`specifies`/`motivates` |
 | Non-Python doc-comment extraction | **deferred** | see "Deferred" |
+
+**Concept→code linking verified with a real model** (`worked/example` + `kimi`): +36 concept→code
+edges, **0 invalid targets** (return-validation enforces the boundary rule), relations 24
+`describes` / 12 `motivates`. Doc-side mirror nodes get *bridged* — `API Module (api.py)`
+(concept) → `api.py` (code) — and semantic concepts the matcher cannot resolve get linked
+(`Document Pipeline` → `handle_upload()`). Failures (missing backend pkg/key) warn and continue,
+never abort. Tests: `test_link_concepts_to_code_validates_targets`,
+`test_link_docs_link_code_adds_concept_to_code_edges` (both mock the LLM).
 
 **Cache-first concept loading:** `link-docs` ensures the doc concepts exist before building
 the hierarchy — for each doc it reuses a cached semantic extraction when present, otherwise
@@ -166,6 +174,68 @@ A pure edge list, merged via `build_merge` (no code-graph rewrite):
 
 Linker boundary rule (prevents regression to ghost mirrors):
 **concept nodes allowed · new *code* nodes forbidden · cross-layer targets MUST be a manifest id.**
+
+## Concept→code linking (LLM, code-aware) — task #4
+
+With concepts now loaded cache-first, the LLM step is **edge-only linking, not re-extraction**:
+feed it the *existing* doc concepts + the code manifest and ask only for edges. This reuses the
+cache, costs less, and *bridges* the doc-side mirror nodes (`Storage Module (storage.py)`) to
+the real code node — consistent with the "keep separate node + bridge edge" decision. It runs on
+the **residual** — concepts the deterministic `--match-code` matcher could not resolve.
+
+### Relation ontology (doc-concept → code, single canonical direction)
+
+| Relation | doc→code meaning | inverse (code-side reading) | Source |
+|---|---|---|---|
+| `references` | doc *file* literally mentions this code | mentioned-by | deterministic matcher |
+| `describes` | doc concept **explains** existing code | described-by | LLM linker |
+| `specifies` | doc concept is a **spec/requirement** the code realizes | **implements** | LLM linker |
+| `motivates` | doc rationale is the **why** behind the code | motivated-by | LLM linker |
+
+All anchored doc-concept→code (per the spec's "store one direction, backlinks give the inverse"
+rule); "code implements the spec" is the backlink of `specifies`. Kept deliberately small —
+`constrains`/`illustrates`/`deprecates` fold into these or are dropped (the spec warns
+over-granular ontologies collapse into noise). Extend only when a real query need appears.
+
+### Prompt (single-call, via `llm._call_llm`)
+
+System + task in one prompt; output is strict JSON edges. Hard rules carry the design:
+
+```
+You connect documentation concepts to the code they describe. You are given DOC CONCEPTS
+(already extracted) and CODE NODES (the real code graph). Output EDGES ONLY.
+
+HARD RULES:
+- Never create or invent a node. Output edges only.
+- An edge "target" MUST be an id copied verbatim from CODE NODES. If a concept refers to
+  code not in CODE NODES, skip it.
+- Link only when the concept clearly refers to THAT specific entity. Use signature + doc to
+  disambiguate same-named functions.
+- A concept may link to zero, one, or several code nodes. No edge is a valid answer.
+- When two targets are equally plausible and you cannot decide, mark the edge AMBIGUOUS.
+
+Choose the relation — most specific that applies, in priority order:
+  specifies — the doc states a requirement/spec/rule the code must satisfy.   [code implements doc]
+  motivates — the doc explains WHY the code is the way it is (rationale, trade-off, risk).
+  describes — the doc explains what existing code is/does (no requirement, no rationale).
+
+DOC CONCEPTS: [{"id","label","description"}]   # description = label + rationale text
+CODE NODES:   [{"id","label","file","signature","doc"}]   # link targets, copy ids verbatim
+
+Output JSON only:
+{"edges":[{"source":"<concept id>","target":"<code id, verbatim>",
+  "relation":"specifies|motivates|describes","confidence":"EXTRACTED|INFERRED|AMBIGUOUS",
+  "confidence_score":0.0}]}
+confidence_score rubric (never 0.5): EXTRACTED 1.0 · INFERRED 0.85 / 0.65 · AMBIGUOUS 0.2
+```
+
+### Return validation (enforces the guardrail, not just requests it)
+
+After the call, **drop any edge** whose `target` is not a real manifest id, whose `source` is
+not a real concept id, or whose `relation` is outside the enum. Tag survivors `_origin: "link"`.
+Token control: include the full manifest under a budget; above it, pre-filter CODE NODES to the
+files the deterministic matcher already hit for that doc + community neighbors. Gated behind
+`link-docs --link-code` (off by default — costs tokens), paralleling `--match-code`.
 
 ## Insertion points in the existing pipeline
 

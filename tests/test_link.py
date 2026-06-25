@@ -328,6 +328,79 @@ def test_link_docs_extracts_uncached_doc_concepts(monkeypatch, tmp_path):
     ), "freshly extracted concept must be contained under its document node"
 
 
+def test_link_concepts_to_code_validates_targets(monkeypatch):
+    """The LLM linker enforces the boundary rule: edges with an unknown target id, an
+    unknown source id, or a relation outside the enum are dropped."""
+    concepts = [{"id": "d_repo", "label": "Repository Pattern", "description": "..."}]
+    records = [{"id": "raw_storage", "label": "storage.py", "source_file": "raw/storage.py"}]
+    reply = json.dumps({"edges": [
+        {"source": "d_repo", "target": "raw_storage", "relation": "describes",
+         "confidence": "INFERRED", "confidence_score": 0.85},
+        {"source": "d_repo", "target": "NONEXISTENT", "relation": "describes"},   # bad target
+        {"source": "GHOST", "target": "raw_storage", "relation": "describes"},    # bad source
+        {"source": "d_repo", "target": "raw_storage", "relation": "frobnicates"}, # bad relation
+    ]})
+    monkeypatch.setattr("graphify.llm._call_llm", lambda *a, **k: reply)
+
+    edges = link.link_concepts_to_code(concepts, records, backend="claude")
+    assert len(edges) == 1
+    e = edges[0]
+    assert (e["source"], e["target"], e["relation"]) == ("d_repo", "raw_storage", "describes")
+    assert e["_origin"] == "link"
+
+
+def test_link_docs_link_code_adds_concept_to_code_edges(monkeypatch, tmp_path):
+    """Full path: --link-code links an extracted concept to a real code node id (both the
+    concept extraction and the LLM linker are mocked)."""
+    import re as _re
+
+    (tmp_path / "storage.py").write_text('def save_record(r):\n    """Persist."""\n    return True\n')
+    (tmp_path / "design.md").write_text("# Design\nThe Repository Pattern wraps storage.\n")
+    out_dir = tmp_path / "out"
+    gout = out_dir / "graphify-out"
+    _run_code_only(monkeypatch, tmp_path, out_dir)
+
+    def _fake_extract(paths, **kwargs):
+        return {
+            "nodes": [{"id": "design_repository_pattern", "label": "Repository Pattern",
+                       "file_type": "concept", "source_file": str(paths[0]), "source_location": None}],
+            "edges": [], "hyperedges": [], "input_tokens": 1, "output_tokens": 1,
+        }
+
+    def _fake_link(prompt, **kwargs):
+        # Pick a real code node id out of the prompt's CODE NODES list.
+        m = _re.search(r'"(\w*save_record\w*)"', prompt)
+        target = m.group(1) if m else None
+        return json.dumps({"edges": [{
+            "source": "design_repository_pattern", "target": target,
+            "relation": "describes", "confidence": "INFERRED", "confidence_score": 0.85,
+        }]})
+
+    monkeypatch.setattr("graphify.llm.extract_corpus_parallel", _fake_extract)
+    monkeypatch.setattr("graphify.llm._call_llm", _fake_link)
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "link-docs", str(tmp_path), "--out", str(out_dir),
+         "--backend", "claude", "--link-code"],
+    )
+    try:
+        mainmod.main()
+    except SystemExit as exc:
+        assert exc.code in (0, None)
+
+    graph = json.loads((gout / "graph.json").read_text())
+    nodes = {n["id"]: n for n in graph["nodes"]}
+    edges = graph.get("edges", graph.get("links", []))
+    bridge = [
+        e for e in edges
+        if e.get("relation") == "describes" and e.get("_origin") == "link"
+        and "design_repository_pattern" in (e.get("source"), e.get("target"))
+    ]
+    assert bridge, "concept→code describes edge must be added with --link-code"
+    other = bridge[0]["target"] if bridge[0]["source"] == "design_repository_pattern" else bridge[0]["source"]
+    assert nodes[other].get("file_type") == "code"
+
+
 def test_link_docs_errors_without_manifest(tmp_path, capsys):
     """link-docs must fail clearly when no manifest exists yet."""
     (tmp_path / "graphify-out").mkdir()
