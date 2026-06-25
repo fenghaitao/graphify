@@ -4052,14 +4052,14 @@ def extract_dml(path: Path) -> dict:
         for child in node.children:
             if child.type == "objident":
                 name = _read_text(child, source)
-                tgt_nid = _make_id(name)
+                tgt_nid = _make_id(stem, name)
                 add_node(tgt_nid, name, line)
                 add_edge(parent_nid, tgt_nid, relation, line)
             elif child.type == "objident_list":
                 for gc in child.children:
                     if gc.type == "objident":
                         name = _read_text(gc, source)
-                        tgt_nid = _make_id(name)
+                        tgt_nid = _make_id(stem, name)
                         add_node(tgt_nid, name, line)
                         add_edge(parent_nid, tgt_nid, relation, line)
 
@@ -4089,16 +4089,21 @@ def extract_dml(path: Path) -> dict:
             name = _dml_name(node, source)
             if name:
                 line = node.start_point[0] + 1
-                p = parent_nid or file_nid
-                nid = _make_id(p, name)
+                if parent_nid is not None:
+                    # Nested inside another object: chain from parent
+                    nid = _make_id(parent_nid, name)
+                else:
+                    # Top-level: scope to file stem (like Python's _make_id(stem, name))
+                    nid = _make_id(stem, name)
                 add_node(nid, name, line)
+                p = parent_nid or file_nid
                 add_edge(p, nid, "contains", line)
                 # Handle is_template → inherits edges
                 _dml_is_template(node, nid, line)
                 # Handle implement → implements edges
-                # The implement node's name IS the interface being implemented
                 if t == "implement":
-                    interface_nid = _make_id(name)
+                    # Scope the interface ref to this file's stem
+                    interface_nid = _make_id(stem, name)
                     add_node(interface_nid, name, line)
                     add_edge(nid, interface_nid, "implements", line)
                 # Walk children inside the object body
@@ -4110,9 +4115,12 @@ def extract_dml(path: Path) -> dict:
             name = _dml_name(node, source)
             if name:
                 line = node.start_point[0] + 1
-                p = parent_nid or file_nid
-                nid = _make_id(p, name)
+                if parent_nid is not None:
+                    nid = _make_id(parent_nid, name)
+                else:
+                    nid = _make_id(stem, name)
                 add_node(nid, f"{name}()", line)
+                p = parent_nid or file_nid
                 add_edge(p, nid, "contains", line)
                 # Collect body for call-graph pass
                 body_node = _dml_body_node(node)
