@@ -479,6 +479,9 @@ def link_concepts_to_code(
 
     valid_concept_ids = {c.get("id") for c in concepts}
     valid_code_ids = {r.get("id") for r in records}
+    # Concept id → its doc source_file, so each bridge edge can be attributed to
+    # the doc it came from (build_from_json requires the field on every edge).
+    concept_source = {c.get("id"): c.get("source_file") for c in concepts}
     edges: list[dict] = []
     seen: set[tuple] = set()
     for e in raw:
@@ -497,6 +500,7 @@ def link_concepts_to_code(
             "relation": rel,
             "confidence": e.get("confidence", "INFERRED"),
             "confidence_score": e.get("confidence_score", 0.65),
+            "source_file": concept_source.get(src),
             "source_location": None,
             "weight": 1.0,
             "_origin": "link",
@@ -675,10 +679,19 @@ def apply_doc_links(
         already_linked = {
             e.get("source") for e in merged_edges if e.get("relation") in LINK_RELATIONS
         }
+        # Doc entities extracted from markdown are emitted with file_type
+        # "document" (see detect.py / the llm.py extraction prompt), not
+        # "concept"; include both so the bridge actually sees them. Exclude the
+        # synthesized doc *file* node (``_origin == "link"``), which is the
+        # container, not a concept. Rationale nodes are code-side (their
+        # source_file is .py/.dml, never a doc extension) and are already linked
+        # to code via ``rationale_for``, so the extension check leaves them out.
         residual = [
-            {"id": nid, "label": n.get("label", ""), "description": concept_description(n)}
+            {"id": nid, "label": n.get("label", ""), "description": concept_description(n),
+             "source_file": n.get("source_file")}
             for nid, n in node_by_id.items()
-            if n.get("file_type") in ("concept", "rationale")
+            if n.get("file_type") in ("concept", "document")
+            and n.get("_origin") != "link"
             and Path(n.get("source_file") or "").suffix.lower() in _DOC_EXTENSIONS
             and nid not in already_linked
         ]

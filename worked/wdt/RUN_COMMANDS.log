@@ -1,0 +1,43 @@
+# wdt knowledge-graph build — reproduction commands
+# ---------------------------------------------------
+# Run from the repo root (/home/hfeng1/graphify). The `.log` suffix is
+# deliberate: graphify's file classifier returns None for it, so this file is
+# NOT ingested by `graphify extract` / `graphify link-docs`.
+#
+# Backend: kimi (Moonshot), selected automatically from MOONSHOT_API_KEY.
+# The kimi backend uses the OpenAI-compatible client, so the `openai` package
+# must be present in the venv.
+
+# 0. One-time: install the LLM client the kimi backend needs.
+uv pip install openai
+
+# 1. Code-only extraction (deterministic AST pipeline).
+#    .dml files are classified as code and parsed with tree-sitter-dml;
+#    leading/trailing doc comments become `rationale` nodes (rationale_for edges).
+#    Docs are detected but skipped here — link-docs handles them next.
+.venv/bin/graphify extract worked/wdt/ --code-only
+
+# 2. Link the doc (wdt_en.md) to the code.
+#    --link-code: LLM concept→code semantic bridges (describes/motivates/specifies).
+#    --match-code intentionally omitted (deterministic literal matching not wanted).
+.venv/bin/graphify link-docs worked/wdt/ --link-code
+
+# Output: worked/wdt/graphify-out/graph.json
+#   code nodes (.dml AST) + rationale nodes (DML doc comments)
+#   + document/concept nodes (wdt_en.md) bridged to code via `describes` edges.
+
+# 3. Export an interactive HTML graph (standalone; opens in any browser).
+#    Writes graph.html next to the graph (worked/wdt/graphify-out/graph.html).
+.venv/bin/graphify export html --graph worked/wdt/graphify-out/graph.json
+
+# 4. Export an Obsidian vault (notes + graph.canvas + .obsidian config).
+#    --dir is required here: it defaults to ./graphify-out/obsidian relative to
+#    the CWD, not to --graph, so point it back into the wdt folder explicitly.
+.venv/bin/graphify export obsidian \
+    --graph worked/wdt/graphify-out/graph.json \
+    --dir worked/wdt/graphify-out/obsidian
+
+# Export output:
+#   worked/wdt/graphify-out/graph.html          — interactive graph
+#   worked/wdt/graphify-out/obsidian/           — vault (open this folder in Obsidian)
+#   worked/wdt/graphify-out/obsidian/graph.canvas
