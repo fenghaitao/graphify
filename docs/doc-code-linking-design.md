@@ -298,6 +298,31 @@ two stay consistent:
   `::test_query_graph_text_reports_intent_in_header`;
   `tests/test_explain_cli.py::test_explain_groups_doc_bridges_by_intent`.
 
+- **`query --context doc|code`** (`serve.py` `_split_layer_filters` →
+  `_apply_layer_filter`) — directed cross-layer retrieval. The same `--context`
+  flag that prunes edges by AST context (`call`/`import`/…) also accepts two
+  **layer** values; these are split out and applied as a *node* filter **after**
+  traversal (the edge-context filter runs before BFS, so the two compose
+  cleanly). `doc` keeps `file_type ∈ {document, concept, rationale}`; `code`
+  keeps `file_type == code`. The **seed always survives** so the anchor shows
+  even when it is the opposite layer — that is what makes the two directed
+  helpers work:
+  - `query "save_parsed" --context doc` ⇒ "docs for X": the seed plus the
+    docstring (`rationale_for`), the doc concepts that `describe`/`motivate` it,
+    and the `document` files that `contain`/`reference` it — every code neighbour
+    stripped.
+  - `query "<concept>" --context code` ⇒ "code for Y": the doc concept seed plus
+    only the real code symbols it maps to.
+
+  Layer values: `doc`/`docs`/`document`/`documentation`/`concept`/`spec`/
+  `rationale` → doc; `code`/`implementation`/`impl`/`source` → code. The header
+  reports `Layer: doc`. Filtering is **explicit-only** (no NL auto-restriction) —
+  free-text intent gets the gentler ranking boost above, not a hard cut. Tests:
+  `tests/test_serve.py::test_split_layer_filters_partitions_values`,
+  `::test_query_layer_doc_keeps_only_doc_nodes_plus_seed`,
+  `::test_query_layer_code_keeps_only_code_nodes_plus_seed`,
+  `::test_query_layer_and_edge_context_compose`.
+
 ## Deferred / later
 
 - Deterministic leading-doc-comment extraction for non-Python (JSDoc, `///`, Go doc comments)

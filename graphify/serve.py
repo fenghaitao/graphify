@@ -407,6 +407,61 @@ _CONTEXT_FILTER_ALIASES: dict[str, str] = {
 }
 
 
+# Cross-layer node filters (#3 — directed cross-layer helpers). Restrict the
+# rendered answer to one KB layer so "docs for save_parsed" returns the
+# doc/spec/rationale nodes around a code symbol, and "code for <concept>"
+# returns the code a doc concept maps to. This is a *node* filter applied
+# AFTER traversal — distinct from the edge-context filter, which prunes edges
+# BEFORE BFS. The seed always survives (the anchor is shown even if it is the
+# opposite layer), and we keep the same-layer neighbours it reached. Layers are
+# read off each node's `file_type` (code | concept | rationale | document).
+_LAYER_FILE_TYPES: dict[str, frozenset[str]] = {
+    "code": frozenset({"code"}),
+    "doc": frozenset({"document", "concept", "rationale"}),
+}
+_LAYER_ALIASES: dict[str, str] = {
+    "code": "code", "implementation": "code", "impl": "code", "source": "code",
+    "doc": "doc", "docs": "doc", "document": "doc", "documents": "doc",
+    "documentation": "doc", "concept": "doc", "concepts": "doc",
+    "rationale": "doc", "spec": "doc", "specs": "doc", "specification": "doc",
+}
+
+
+def _split_layer_filters(filters: list[str] | None) -> tuple[set[str], list[str]]:
+    """Partition raw `--context` values into layer filters (code/doc) and the
+    remaining edge-context filters (call/import/…), so the two filtering
+    mechanisms stay independent."""
+    layers: set[str] = set()
+    contexts: list[str] = []
+    for value in filters or []:
+        key = _strip_diacritics(str(value)).strip().lower()
+        canon = _LAYER_ALIASES.get(key)
+        if canon:
+            layers.add(canon)
+        elif key:
+            contexts.append(value)
+    return layers, contexts
+
+
+def _apply_layer_filter(
+    G: nx.Graph,
+    nodes: set[str],
+    edges: list[tuple],
+    layers: set[str],
+    seeds: list[str],
+) -> tuple[set[str], list[tuple]]:
+    """Keep only seeds plus traversed nodes whose `file_type` is in a selected
+    layer; drop edges whose endpoints didn't survive."""
+    keep_types: set[str] = set().union(*(_LAYER_FILE_TYPES[l] for l in layers))
+    seed_set = set(seeds)
+    kept = {
+        n for n in nodes
+        if n in seed_set or G.nodes[n].get("file_type") in keep_types
+    }
+    kept_edges = [(u, v) for u, v in edges if u in kept and v in kept]
+    return kept, kept_edges
+
+
 def _normalize_context_filters(filters: list[str] | None) -> list[str]:
     if not filters:
         return []
@@ -620,14 +675,21 @@ def _query_graph_text(
     start_nodes = _pick_seeds(scored)
     if not start_nodes:
         return "No matching nodes found."
-    resolved_filters, filter_source = _resolve_context_filters(question, context_filters)
+    # Pull cross-layer (code/doc) values out of --context before the edge-context
+    # machinery sees them: they filter nodes after traversal, not edges before it.
+    layer_filters, edge_context_filters = _split_layer_filters(context_filters)
+    resolved_filters, filter_source = _resolve_context_filters(question, edge_context_filters)
     traversal_graph = _filter_graph_by_context(G, resolved_filters)
     nodes, edges = _dfs(traversal_graph, start_nodes, depth) if mode == "dfs" else _bfs(traversal_graph, start_nodes, depth)
+    if layer_filters:
+        nodes, edges = _apply_layer_filter(traversal_graph, nodes, edges, layer_filters, start_nodes)
     boost = _intent_relations(question)
     header_parts = [
         f"Traversal: {mode.upper()} depth={depth}",
         f"Start: {[G.nodes[n].get('label', n) for n in start_nodes]}",
     ]
+    if layer_filters:
+        header_parts.append(f"Layer: {', '.join(sorted(layer_filters))}")
     if resolved_filters:
         header_parts.append(f"Context: {', '.join(resolved_filters)} ({filter_source})")
     if boost:
@@ -805,7 +867,7 @@ def _build_server(graph_path: str):
                         "context_filter": {
                             "type": "array",
                             "items": {"type": "string"},
-                            "description": "Optional explicit edge-context filter, e.g. ['call', 'field']",
+                            "description": "Optional filter. Edge-context values prune relations: 'call','import','field','parameter_type','return_type'. Layer values restrict the answer to one KB layer: 'doc' (docs/specs/concepts/docstrings around the seed — 'docs for X') or 'code' (code a doc concept maps to — 'code for Y'). Combine, e.g. ['doc'] or ['call','code'].",
                         },
                     },
                     "required": ["question"],

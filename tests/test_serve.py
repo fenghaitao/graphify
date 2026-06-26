@@ -772,3 +772,65 @@ def test_query_graph_text_reports_intent_in_header():
     # a neutral query carries no Intent marker
     neutral = _query_graph_text(G, "save_parsed", mode="bfs", depth=2)
     assert "Intent:" not in neutral.splitlines()[0]
+
+
+# --- cross-layer node filters (#3: "docs for X" / "code for concept Y") ---
+
+def test_split_layer_filters_partitions_values():
+    from graphify.serve import _split_layer_filters
+    layers, contexts = _split_layer_filters(["doc", "call", "code", "import"])
+    assert layers == {"doc", "code"}
+    assert contexts == ["call", "import"]
+    # aliases normalise to the canonical layer
+    assert _split_layer_filters(["documentation"])[0] == {"doc"}
+    assert _split_layer_filters(["implementation"])[0] == {"code"}
+    # nothing layer-ish ⇒ no layers, all pass through as edge contexts
+    assert _split_layer_filters(["call"]) == (set(), ["call"])
+
+
+def _make_layer_graph() -> nx.Graph:
+    """A code seed wired to a code neighbour, a doc concept, a document file and
+    a docstring rationale — one of each KB layer."""
+    G = nx.Graph()
+    G.add_node("seed", label="save_parsed()", file_type="code", source_file="storage.py")
+    G.add_node("callee", label="save_index()", file_type="code", source_file="storage.py")
+    G.add_node("concept", label="Flat JSON Storage", file_type="concept", source_file="arch.md")
+    G.add_node("docfile", label="architecture.md", file_type="document", source_file="arch.md")
+    G.add_node("doc_rationale", label="Persist a record.", file_type="rationale", source_file="storage.py")
+    G.add_edge("seed", "callee", relation="calls")
+    G.add_edge("concept", "seed", relation="describes")
+    G.add_edge("docfile", "concept", relation="contains")
+    G.add_edge("seed", "doc_rationale", relation="rationale_for")
+    return G
+
+
+def test_query_layer_doc_keeps_only_doc_nodes_plus_seed():
+    G = _make_layer_graph()
+    out = _query_graph_text(G, "save_parsed", mode="bfs", depth=2, context_filters=["doc"])
+    assert "Layer: doc" in out.splitlines()[0]
+    rendered = {l.split("[")[0].strip()[5:].strip() for l in out.splitlines() if l.startswith("NODE ")}
+    assert "save_parsed()" in rendered          # seed always survives
+    assert "Flat JSON Storage" in rendered       # concept (doc layer)
+    assert "architecture.md" in rendered         # document (doc layer)
+    assert "Persist a record." in rendered       # rationale/docstring (doc layer)
+    assert "save_index()" not in rendered        # code neighbour filtered out
+
+
+def test_query_layer_code_keeps_only_code_nodes_plus_seed():
+    G = _make_layer_graph()
+    out = _query_graph_text(G, "Flat JSON Storage", mode="bfs", depth=2, context_filters=["code"])
+    assert "Layer: code" in out.splitlines()[0]
+    rendered = {l.split("[")[0].strip()[5:].strip() for l in out.splitlines() if l.startswith("NODE ")}
+    assert "Flat JSON Storage" in rendered       # seed (doc) always survives as anchor
+    assert "save_parsed()" in rendered           # code reached from the concept
+    assert "architecture.md" not in rendered     # document filtered out
+    assert "Persist a record." not in rendered   # rationale filtered out
+
+
+def test_query_layer_and_edge_context_compose():
+    G = _make_layer_graph()
+    # doc layer + a 'call' edge-context filter: the call edge is pruned pre-BFS so
+    # the code callee is unreachable, and the doc filter strips it anyway.
+    out = _query_graph_text(G, "save_parsed", mode="bfs", depth=2, context_filters=["doc", "call"])
+    header = out.splitlines()[0]
+    assert "Layer: doc" in header and "Context: call" in header

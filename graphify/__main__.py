@@ -2775,7 +2775,9 @@ def main() -> None:
             sys.exit(1)
     elif cmd == "query":
         if len(sys.argv) < 3:
-            print("Usage: graphify query \"<question>\" [--dfs] [--context C] [--budget N] [--graph path]", file=sys.stderr)
+            print("Usage: graphify query \"<question>\" [--dfs] [--context C] [--budget N] [--graph path]\n"
+                  "  --context call|import|field|...  filter relations by edge context\n"
+                  "  --context doc|code               restrict the answer to one layer (\"docs for X\" / \"code for Y\")", file=sys.stderr)
             sys.exit(1)
         from graphify.serve import _query_graph_text
         from graphify.security import sanitize_label
