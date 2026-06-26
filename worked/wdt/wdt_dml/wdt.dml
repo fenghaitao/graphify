@@ -24,7 +24,10 @@ saved bool first_enable;            // Track first enable for initialization
 saved bool interrupt_signal_high;   // Track interrupt signal state
 saved bool reset_signal_high;       // Track reset signal state
 
-// Event for timer countdown
+// Watchdog countdown event: fires when the counter reaches zero. On the first
+// timeout it latches the interrupt and reloads the counter; on a second timeout
+// (interrupt still pending) it asserts the reset signal when RESEN is enabled,
+// then keeps reloading and counting.
 event timeout_event is simple_cycle_event {
     method event() {
         // Counter has reached zero
@@ -52,19 +55,26 @@ event timeout_event is simple_cycle_event {
     }
 }
 
-// Helper method to check if device is locked
+// Returns true while the device is locked. When locked, all register writes
+// are ignored; the lock is cleared only by writing the magic unlock value
+// 0x1ACCE551 to WDOGLOCK.
 method is_device_locked() -> (bool) {
     return is_locked;
 }
 
-// Helper method to get clock divider value
+// Backing store for the watchdog down-counter. Holds the count and models it
+// lazily: the live value is derived from elapsed cycles and the clock divider
+// only when read, instead of being decremented every cycle.
 attribute counter_value is (uint64_attr) {
     param init_val = 0xFFFFFFFF;
+    // Resets the counter to its power-on value (0xFFFFFFFF).
     method reset() {
         this.val = init_val;
     }
 
-    // Helper method to calculate current counter value (lazy evaluation)
+    // Lazily computes the current count from the cycles elapsed since the last
+    // update, scaled by the clock divider. Returns 0 once the counter has
+    // underflowed, and the stored value while the timer is not running.
     method curr_value() -> (uint32) {
         if (WatchdogRegisters.WDOGCONTROL.INTEN.val == 0 || !wclk_en_state) {
             return this.val; // Timer not running
@@ -82,19 +92,25 @@ attribute counter_value is (uint64_attr) {
         return cast(this.val - decrements, uint32);
     }
 
+    // Folds the lazily-computed live value back into the stored counter.
     method refresh() {
         this.val = curr_value(); // Update to current value based on elapsed time
     }
 
+    // Stores a new counter value (used on reload and when freezing the counter).
     method set_value(uint64 new_val) {
         this.val = new_val;
     }
 
+    // Returns the stored counter value without recomputing elapsed time.
     method get_value() -> (uint64) {
         return this.val;
     }
 }
 
+// Maps the WDOGCONTROL.STEP_VALUE field to the clock divider (1/2/4/8/16),
+// defaulting to 1 for reserved encodings. The divider sets how many input
+// clock cycles correspond to one decrement of the watchdog counter.
 method get_divider() -> (uint64) {
     local uint64 step = WatchdogRegisters.WDOGCONTROL.STEP_VALUE.val;
     if (step == 0) return 1;
@@ -105,7 +121,9 @@ method get_divider() -> (uint64) {
     return 1; // Default to 1 for invalid values
 }
 
-// Helper method to schedule timeout event
+// (Re)posts the countdown event. Cancels any pending event, then, when the
+// timer is enabled (INTEN set and clock running), schedules the event for the
+// number of cycles until the counter reaches zero (remaining count * divider).
 method schedule_timeout() {
     if (timeout_event.posted()) {
         timeout_event.remove();
@@ -119,7 +137,9 @@ method schedule_timeout() {
     }
 }
 
-// Helper method to update interrupt signal
+// Drives the WDOGINT output to match interrupt state: asserts when an interrupt
+// is pending and INTEN is set, deasserts otherwise. Skipped in integration test
+// mode, where WDOGITOP drives the signal directly.
 method update_interrupt_signal() {
     local bool inten = WatchdogRegisters.WDOGCONTROL.INTEN.val == 1;
     local bool should_assert = interrupt_pending && inten;
@@ -139,7 +159,9 @@ method update_interrupt_signal() {
     }
 }
 
-// Helper method to update reset signal
+// Drives the WDOGRES output to match reset state: asserts when a reset is
+// pending, deasserts otherwise. Skipped in integration test mode, where
+// WDOGITOP drives the signal directly.
 method update_reset_signal() {
     // Check if in test mode
     if (WatchdogRegisters.WDOGITCR.INT_TEST_MODE_ENABLE.val == 1) {
@@ -157,9 +179,13 @@ method update_reset_signal() {
 }
 
 
-// Basic bank declaration is in wdt-registers.dml,
-// here is the register implementation with side-effects.
+// Register bank holding the device's runtime side-effects. The bank layout and
+// reset values come from the WatchdogRegisters_temp template in
+// wdt-registers.dml; this declaration adds the read/write behavior.
 bank WatchdogRegisters is WatchdogRegisters_temp {
+    // Load register: the value reloaded into the counter on each timeout and on
+    // interrupt clear. Writes are ignored while locked and do not reload the
+    // counter immediately unless INTEN transitions 0->1.
     register WDOGLOAD {
         method write_register(uint64 val, uint64 enabled_bytes, void *aux) {
             // Check lock state
@@ -179,12 +205,17 @@ bank WatchdogRegisters is WatchdogRegisters_temp {
             return this.val;
         }
     }
+    // Value register (read-only): returns the live counter value via lazy
+    // evaluation rather than a continuously decremented field.
     register WDOGVALUE {
         method read_register(uint64 enabled_bytes, void *aux) -> (uint64) {
             // Use lazy evaluation to calculate current counter value
             return counter_value.curr_value();
         }
     }
+    // Control register: INTEN enables the watchdog and RESEN enables reset on a
+    // second timeout. Toggling INTEN reloads or freezes the counter and
+    // (re)schedules the countdown; STEP_VALUE selects the clock divider.
     register WDOGCONTROL {
         method write_register(uint64 val, uint64 enabled_bytes, void *aux) {
             // Check lock state
@@ -238,6 +269,8 @@ bank WatchdogRegisters is WatchdogRegisters_temp {
             return this.val;
         }
     }
+    // Interrupt clear register: any write clears the pending interrupt, lowers
+    // WDOGINT, reloads the counter from WDOGLOAD and reschedules the countdown.
     register WDOGINTCLR {
         method write_register(uint64 val, uint64 enabled_bytes, void *aux) {
             // Check lock state
@@ -260,12 +293,16 @@ bank WatchdogRegisters is WatchdogRegisters_temp {
         }
 
     }
+    // Raw interrupt status register: bit 0 reflects the pending interrupt
+    // before masking by INTEN.
     register WDOGRIS {
         method read_register(uint64 enabled_bytes, void *aux) -> (uint64) {
             // Return raw interrupt status (bit 0 = interrupt_pending)
             return interrupt_pending ? 1 : 0;
         }
     }
+    // Masked interrupt status register: bit 0 is the raw status ANDed with
+    // INTEN, i.e. the interrupt as seen by the interrupt controller.
     register WDOGMIS {
         method read_register(uint64 enabled_bytes, void *aux) -> (uint64) {
             // Return masked interrupt status (WDOGRIS[0] AND INTEN)
@@ -273,6 +310,8 @@ bank WatchdogRegisters is WatchdogRegisters_temp {
             return (interrupt_pending && inten) ? 1 : 0;
         }
     }
+    // Lock register: writing the magic value 0x1ACCE551 unlocks the device; any
+    // other write locks it. Reads return 1 when locked, 0 when unlocked.
     register WDOGLOCK {
         method write_register(uint64 val, uint64 enabled_bytes, void *aux) {
             // Check if unlock code is written
@@ -288,6 +327,9 @@ bank WatchdogRegisters is WatchdogRegisters_temp {
             return is_locked ? 0x00000001 : 0x00000000;
         }
     }
+    // Integration test control register: enables integration test mode, in
+    // which the output signals are driven directly via WDOGITOP. Leaving test
+    // mode restores the normal interrupt and reset signal states.
     register WDOGITCR {
         method write_register(uint64 val, uint64 enabled_bytes, void *aux) {
             // Check lock state
@@ -310,6 +352,8 @@ bank WatchdogRegisters is WatchdogRegisters_temp {
             return this.val;
         }
     }
+    // Integration test output register: in test mode, directly drives the
+    // WDOGINT and WDOGRES output signals from bits [1] and [0] respectively.
     register WDOGITOP {
         method write_register(uint64 val, uint64 enabled_bytes, void *aux) {
             // Check lock state
@@ -442,8 +486,9 @@ bank WatchdogRegisters is WatchdogRegisters_temp {
     }
 }
 
-// Here are the signal interface implementations.
-// port is for input signals, and connect is for output signal
+// Signal interface implementations. Ports model input signals into the device;
+// connects model output signals the device drives. wclk is the watchdog clock
+// input; because counting is modeled lazily, its edges need no handling.
 port wclk {
     implement signal {
         // USER-TODO: implement wclk signal handling here.
@@ -453,6 +498,9 @@ port wclk {
         }
     }
 }
+// wclk_en input (clock enable): raising it resumes counting (refreshes the
+// counter and reschedules the event when enabled); lowering it pauses the timer
+// by cancelling the pending countdown event.
 port wclk_en {
     implement signal {
         method signal_raise() {
@@ -473,6 +521,8 @@ port wclk_en {
         }
     }
 }
+// wrst_n input (active-low watchdog reset): a falling edge performs a full
+// device reset; the deasserted (high) level is normal operation.
 port wrst_n {
     implement signal {
         method signal_raise() {
@@ -484,6 +534,8 @@ port wrst_n {
         }
     }
 }
+// prst_n input (active-low power-on reset): a falling edge performs a full
+// device reset; the deasserted (high) level is normal operation.
 port prst_n {
     implement signal {
         method signal_raise() {
@@ -495,6 +547,8 @@ port prst_n {
         }
     }
 }
+// wdogint output: the watchdog interrupt line. Raises/lowers the connected
+// signal with a NULL-object guard, so an unconnected interrupt is a no-op.
 connect wdogint {
     interface signal;
     method signal_raise() {
@@ -510,6 +564,8 @@ connect wdogint {
         }
     }
 }
+// wdogres output: the watchdog reset line. Raises/lowers the connected signal
+// with a NULL-object guard, so an unconnected reset is a no-op.
 connect wdogres {
     interface signal;
     method signal_raise() {
@@ -562,7 +618,9 @@ connect wdogres {
 //     }
 // }
 
-// Common methods
+// Performs a full watchdog reset: cancels pending events, clears the counter
+// and interrupt/reset state, restores the key registers to their defaults, and
+// lowers both output signals.
 method perform_reset() {
     // Cancel any pending timer events
     if (timeout_event.posted()) {
@@ -587,7 +645,9 @@ method perform_reset() {
     wdogres.signal_lower();
 }
 
-// Initialization
+// Device initialization: sets the counter and all state variables to their
+// power-on defaults (device unlocked, clock assumed enabled, output signals
+// low).
 method init() {
     // Initialize state variables
     counter_value.reset();
