@@ -1,0 +1,2755 @@
+{
+  "nodes": [
+    {
+      "id": "g0",
+      "type": "group",
+      "label": "Community 0",
+      "x": 0,
+      "y": 0,
+      "width": 1540,
+      "height": 1420,
+      "color": "1"
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_182",
+      "type": "file",
+      "file": "Register bank holding the device's runtime side-effects. The bank layout and reset values come from the WatchdogRegisters_temp template in wdt-registers.dml; this declaration adds the readwri_c2bc1266.md",
+      "x": 20,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid0",
+      "type": "file",
+      "file": "WDOGPCELLID0.md",
+      "x": 220,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogpcellid0",
+      "type": "file",
+      "file": "WDOGPCELLID0 Register.md",
+      "x": 420,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid1",
+      "type": "file",
+      "file": "WDOGPCELLID1.md",
+      "x": 20,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogpcellid1",
+      "type": "file",
+      "file": "WDOGPCELLID1 Register.md",
+      "x": 220,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid2",
+      "type": "file",
+      "file": "WDOGPCELLID2.md",
+      "x": 420,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogpcellid2",
+      "type": "file",
+      "file": "WDOGPCELLID2 Register.md",
+      "x": 20,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid3",
+      "type": "file",
+      "file": "WDOGPCELLID3.md",
+      "x": 220,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogpcellid3",
+      "type": "file",
+      "file": "WDOGPCELLID3 Register.md",
+      "x": 420,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid0",
+      "type": "file",
+      "file": "WDOGPERIPHID0.md",
+      "x": 20,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogperiphid0",
+      "type": "file",
+      "file": "WDOGPERIPHID0 Register.md",
+      "x": 220,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid1",
+      "type": "file",
+      "file": "WDOGPERIPHID1.md",
+      "x": 420,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogperiphid1",
+      "type": "file",
+      "file": "WDOGPERIPHID1 Register.md",
+      "x": 20,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid2",
+      "type": "file",
+      "file": "WDOGPERIPHID2.md",
+      "x": 220,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogperiphid2",
+      "type": "file",
+      "file": "WDOGPERIPHID2 Register.md",
+      "x": 420,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid3",
+      "type": "file",
+      "file": "WDOGPERIPHID3.md",
+      "x": 20,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogperiphid3",
+      "type": "file",
+      "file": "WDOGPERIPHID3 Register.md",
+      "x": 220,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid4",
+      "type": "file",
+      "file": "WDOGPERIPHID4.md",
+      "x": 420,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogperiphid4",
+      "type": "file",
+      "file": "WDOGPERIPHID4 Register.md",
+      "x": 20,
+      "y": 560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid5",
+      "type": "file",
+      "file": "WDOGPERIPHID5.md",
+      "x": 220,
+      "y": 560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogperiphid5",
+      "type": "file",
+      "file": "WDOGPERIPHID5 Register.md",
+      "x": 420,
+      "y": 560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid6",
+      "type": "file",
+      "file": "WDOGPERIPHID6.md",
+      "x": 20,
+      "y": 640,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogperiphid6",
+      "type": "file",
+      "file": "WDOGPERIPHID6 Register.md",
+      "x": 220,
+      "y": 640,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid7",
+      "type": "file",
+      "file": "WDOGPERIPHID7.md",
+      "x": 420,
+      "y": 640,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogperiphid7",
+      "type": "file",
+      "file": "WDOGPERIPHID7 Register.md",
+      "x": 20,
+      "y": 720,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters",
+      "type": "file",
+      "file": "WatchdogRegisters.md",
+      "x": 220,
+      "y": 720,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_temp",
+      "type": "file",
+      "file": "WatchdogRegisters_temp_1.md",
+      "x": 420,
+      "y": 720,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid4_read_register",
+      "type": "file",
+      "file": "read_register()_7.md",
+      "x": 20,
+      "y": 800,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid5_read_register",
+      "type": "file",
+      "file": "read_register()_8.md",
+      "x": 220,
+      "y": 800,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid6_read_register",
+      "type": "file",
+      "file": "read_register()_9.md",
+      "x": 420,
+      "y": 800,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid7_read_register",
+      "type": "file",
+      "file": "read_register()_10.md",
+      "x": 20,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid0_read_register",
+      "type": "file",
+      "file": "read_register()_11.md",
+      "x": 220,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid1_read_register",
+      "type": "file",
+      "file": "read_register()_12.md",
+      "x": 420,
+      "y": 880,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid2_read_register",
+      "type": "file",
+      "file": "read_register()_13.md",
+      "x": 20,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid3_read_register",
+      "type": "file",
+      "file": "read_register()_14.md",
+      "x": 220,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid0_read_register",
+      "type": "file",
+      "file": "read_register()_15.md",
+      "x": 420,
+      "y": 960,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid1_read_register",
+      "type": "file",
+      "file": "read_register()_16.md",
+      "x": 20,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid2_read_register",
+      "type": "file",
+      "file": "read_register()_17.md",
+      "x": 220,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid3_read_register",
+      "type": "file",
+      "file": "read_register()_18.md",
+      "x": 420,
+      "y": 1040,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g1",
+      "type": "group",
+      "label": "Community 1",
+      "x": 1620,
+      "y": 0,
+      "width": 1100,
+      "height": 1020,
+      "color": "2"
+    },
+    {
+      "id": "n_wdt_en_32bit_down_counter",
+      "type": "file",
+      "file": "32-bit Down Counter.md",
+      "x": 1640,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_489",
+      "type": "file",
+      "file": "Signal interface implementations. Ports model input signals into the device; connects model output signals the device drives. wclk is the watchdog clock input; because counting is modeled laz_b82a9da6.md",
+      "x": 1840,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_208",
+      "type": "file",
+      "file": "Value register (read-only) returns the live counter value via lazy evaluation rather than a continuously decremented field..md",
+      "x": 2040,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogvalue",
+      "type": "file",
+      "file": "WDOGVALUE.md",
+      "x": 1640,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogvalue",
+      "type": "file",
+      "file": "WDOGVALUE Register.md",
+      "x": 1840,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_watchdog_module",
+      "type": "file",
+      "file": "Watchdog Module.md",
+      "x": 2040,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_27",
+      "type": "file",
+      "file": "Watchdog countdown event fires when the counter reaches zero. On the first timeout it latches the interrupt and reloads the counter; on a second timeout (interrupt still pending) it asserts t_9f71f624.md",
+      "x": 1640,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_prst_n",
+      "type": "file",
+      "file": "prst_n.md",
+      "x": 1840,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_prst_n",
+      "type": "file",
+      "file": "prst_n APB Reset Signal.md",
+      "x": 2040,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_537",
+      "type": "file",
+      "file": "prst_n input (active-low power-on reset) a falling edge performs a full device reset; the deasserted (high) level is normal operation..md",
+      "x": 1640,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogvalue_read_register",
+      "type": "file",
+      "file": "read_register()_1.md",
+      "x": 1840,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_simics_devs_signal_dml",
+      "type": "file",
+      "file": "simicsdevssignal.dml.md",
+      "x": 2040,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_simple_cycle_event",
+      "type": "file",
+      "file": "simple_cycle_event.md",
+      "x": 1640,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_timeout_event",
+      "type": "file",
+      "file": "timeout_event.md",
+      "x": 1840,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wclk",
+      "type": "file",
+      "file": "wclk.md",
+      "x": 2040,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wclk",
+      "type": "file",
+      "file": "wclk Clock Signal.md",
+      "x": 1640,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wclk_en",
+      "type": "file",
+      "file": "wclk_en.md",
+      "x": 1840,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wclk_en",
+      "type": "file",
+      "file": "wclk_en Clock Enable Signal.md",
+      "x": 2040,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_501",
+      "type": "file",
+      "file": "wclk_en input (clock enable) raising it resumes counting (refreshes the counter and reschedules the event when enabled); lowering it pauses the timer by cancelling the pending countdown event..md",
+      "x": 1640,
+      "y": 560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_registers_dml",
+      "type": "file",
+      "file": "wdt-registers.dml_1.md",
+      "x": 1840,
+      "y": 560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt",
+      "type": "file",
+      "file": "wdt.dml.md",
+      "x": 2040,
+      "y": 560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en",
+      "type": "file",
+      "file": "wdt_en.md",
+      "x": 1640,
+      "y": 640,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wrst_n",
+      "type": "file",
+      "file": "wrst_n.md",
+      "x": 1840,
+      "y": 640,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wrst_n",
+      "type": "file",
+      "file": "wrst_n Reset Signal.md",
+      "x": 2040,
+      "y": 640,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_524",
+      "type": "file",
+      "file": "wrst_n input (active-low watchdog reset) a falling edge performs a full device reset; the deasserted (high) level is normal operation..md",
+      "x": 1640,
+      "y": 720,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g2",
+      "type": "group",
+      "label": "Community 2",
+      "x": 2800,
+      "y": 0,
+      "width": 1100,
+      "height": 820,
+      "color": "3"
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_124",
+      "type": "file",
+      "file": "(Re)posts the countdown event. Cancels any pending event, then, when the timer is enabled (INTEN set and clock running), schedules the event for the number of cycles until the counter reaches_5d6acdcf.md",
+      "x": 2820,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_65",
+      "type": "file",
+      "file": "Backing store for the watchdog down-counter. Holds the count and models it lazily the live value is derived from elapsed cycles and the clock divider only when read, instead of being decremen_264d0e40.md",
+      "x": 3020,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_140",
+      "type": "file",
+      "file": "Drives the WDOGINT output to match interrupt state asserts when an interrupt is pending and INTEN is set, deasserts otherwise. Skipped in integration test mode, where WDOGITOP drives the sign_a7201293.md",
+      "x": 3220,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_95",
+      "type": "file",
+      "file": "Folds the lazily-computed live value back into the stored counter..md",
+      "x": 2820,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_272",
+      "type": "file",
+      "file": "Interrupt clear register any write clears the pending interrupt, lowers WDOGINT, reloads the counter from WDOGLOAD and reschedules the countdown..md",
+      "x": 3020,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_75",
+      "type": "file",
+      "file": "Lazily computes the current count from the cycles elapsed since the last update, scaled by the clock divider. Returns 0 once the counter has underflowed, and the stored value while the timer _1a8c53b9.md",
+      "x": 3220,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_105",
+      "type": "file",
+      "file": "Returns the stored counter value without recomputing elapsed time..md",
+      "x": 2820,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_100",
+      "type": "file",
+      "file": "Stores a new counter value (used on reload and when freezing the counter)..md",
+      "x": 3020,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogintclr",
+      "type": "file",
+      "file": "WDOGINTCLR.md",
+      "x": 3220,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_counter_value",
+      "type": "file",
+      "file": "counter_value.md",
+      "x": 2820,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_counter_value_curr_value",
+      "type": "file",
+      "file": "curr_value().md",
+      "x": 3020,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_timeout_event_event",
+      "type": "file",
+      "file": "event().md",
+      "x": 3220,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_counter_value_get_value",
+      "type": "file",
+      "file": "get_value().md",
+      "x": 2820,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_counter_value_refresh",
+      "type": "file",
+      "file": "refresh().md",
+      "x": 3020,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_schedule_timeout",
+      "type": "file",
+      "file": "schedule_timeout().md",
+      "x": 3220,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_counter_value_set_value",
+      "type": "file",
+      "file": "set_value().md",
+      "x": 2820,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wclk_en_signal_signal_raise",
+      "type": "file",
+      "file": "signal_raise()_1.md",
+      "x": 3020,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_uint64_attr",
+      "type": "file",
+      "file": "uint64_attr.md",
+      "x": 3220,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_update_interrupt_signal",
+      "type": "file",
+      "file": "update_interrupt_signal().md",
+      "x": 2820,
+      "y": 560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "type": "file",
+      "file": "write_register()_1.md",
+      "x": 3020,
+      "y": 560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogintclr_write_register",
+      "type": "file",
+      "file": "write_register()_2.md",
+      "x": 3220,
+      "y": 560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g3",
+      "type": "group",
+      "label": "Community 3",
+      "x": 3980,
+      "y": 0,
+      "width": 1100,
+      "height": 820,
+      "color": "4"
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_162",
+      "type": "file",
+      "file": "Drives the WDOGRES output to match reset state asserts when a reset is pending, deasserts otherwise. Skipped in integration test mode, where WDOGITOP drives the signal directly..md",
+      "x": 4000,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_330",
+      "type": "file",
+      "file": "Integration test control register enables integration test mode, in which the output signals are driven directly via WDOGITOP. Leaving test mode restores the normal interrupt and reset signal states..md",
+      "x": 4200,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_494",
+      "type": "file",
+      "file": "USER-TODO implement wclk signal handling here..md",
+      "x": 4400,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogitcr",
+      "type": "file",
+      "file": "WDOGITCR.md",
+      "x": 4000,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogitcr_read_register",
+      "type": "file",
+      "file": "read_register()_6.md",
+      "x": 4200,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wdogint_signal",
+      "type": "file",
+      "file": "signal_5.md",
+      "x": 4400,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wdogres_signal",
+      "type": "file",
+      "file": "signal_6.md",
+      "x": 4000,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wclk_signal_signal_lower",
+      "type": "file",
+      "file": "signal_lower().md",
+      "x": 4200,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wdogint_signal_lower",
+      "type": "file",
+      "file": "signal_lower()_4.md",
+      "x": 4400,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wdogres_signal_lower",
+      "type": "file",
+      "file": "signal_lower()_5.md",
+      "x": 4000,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wclk_signal_signal_raise",
+      "type": "file",
+      "file": "signal_raise().md",
+      "x": 4200,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wdogint_signal_raise",
+      "type": "file",
+      "file": "signal_raise()_4.md",
+      "x": 4400,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wdogres_signal_raise",
+      "type": "file",
+      "file": "signal_raise()_5.md",
+      "x": 4000,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_update_reset_signal",
+      "type": "file",
+      "file": "update_reset_signal().md",
+      "x": 4200,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wdogint",
+      "type": "file",
+      "file": "wdogint.md",
+      "x": 4400,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_550",
+      "type": "file",
+      "file": "wdogint output the watchdog interrupt line. Raiseslowers the connected signal with a NULL-object guard, so an unconnected interrupt is a no-op..md",
+      "x": 4000,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wdogres",
+      "type": "file",
+      "file": "wdogres.md",
+      "x": 4200,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_567",
+      "type": "file",
+      "file": "wdogres output the watchdog reset line. Raiseslowers the connected signal with a NULL-object guard, so an unconnected reset is a no-op..md",
+      "x": 4400,
+      "y": 480,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogitcr_write_register",
+      "type": "file",
+      "file": "write_register()_4.md",
+      "x": 4000,
+      "y": 560,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g4",
+      "type": "group",
+      "label": "Community 4",
+      "x": 0,
+      "y": 1500,
+      "width": 880,
+      "height": 720,
+      "color": "5"
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_648",
+      "type": "file",
+      "file": "Device initialization sets the counter and all state variables to their power-on defaults (device unlocked, clock assumed enabled, output signals low)..md",
+      "x": 20,
+      "y": 1580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_621",
+      "type": "file",
+      "file": "Performs a full watchdog reset cancels pending events, clears the counter and interruptreset state, restores the key registers to their defaults, and lowers both output signals..md",
+      "x": 220,
+      "y": 1580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_70",
+      "type": "file",
+      "file": "Resets the counter to its power-on value (0xFFFFFFFF)..md",
+      "x": 420,
+      "y": 1580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_init",
+      "type": "file",
+      "file": "init().md",
+      "x": 20,
+      "y": 1660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_perform_reset",
+      "type": "file",
+      "file": "perform_reset().md",
+      "x": 220,
+      "y": 1660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_counter_value_reset",
+      "type": "file",
+      "file": "reset().md",
+      "x": 420,
+      "y": 1660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wclk_signal",
+      "type": "file",
+      "file": "signal.md",
+      "x": 20,
+      "y": 1740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_signal",
+      "type": "file",
+      "file": "signal_1.md",
+      "x": 220,
+      "y": 1740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wclk_en_signal",
+      "type": "file",
+      "file": "signal_2.md",
+      "x": 420,
+      "y": 1740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wrst_n_signal",
+      "type": "file",
+      "file": "signal_3.md",
+      "x": 20,
+      "y": 1820,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_prst_n_signal",
+      "type": "file",
+      "file": "signal_4.md",
+      "x": 220,
+      "y": 1820,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wclk_en_signal_signal_lower",
+      "type": "file",
+      "file": "signal_lower()_1.md",
+      "x": 420,
+      "y": 1820,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wrst_n_signal_signal_lower",
+      "type": "file",
+      "file": "signal_lower()_2.md",
+      "x": 20,
+      "y": 1900,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_prst_n_signal_signal_lower",
+      "type": "file",
+      "file": "signal_lower()_3.md",
+      "x": 220,
+      "y": 1900,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_wrst_n_signal_signal_raise",
+      "type": "file",
+      "file": "signal_raise()_2.md",
+      "x": 420,
+      "y": 1900,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_prst_n_signal_signal_raise",
+      "type": "file",
+      "file": "signal_raise()_3.md",
+      "x": 20,
+      "y": 1980,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g5",
+      "type": "group",
+      "label": "Community 5",
+      "x": 1620,
+      "y": 1500,
+      "width": 880,
+      "height": 620,
+      "color": "6"
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_216",
+      "type": "file",
+      "file": "Control register INTEN enables the watchdog and RESEN enables reset on a second timeout. Toggling INTEN reloads or freezes the counter and (re)schedules the countdown; STEP_VALUE selects the _27ac1234.md",
+      "x": 1640,
+      "y": 1580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_inten_bit",
+      "type": "file",
+      "file": "INTEN Bit.md",
+      "x": 1840,
+      "y": 1580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_111",
+      "type": "file",
+      "file": "Maps the WDOGCONTROL.STEP_VALUE field to the clock divider (124816), defaulting to 1 for reserved encodings. The divider sets how many input clock cycles correspond to one decrement of the wa_7eaa5102.md",
+      "x": 2040,
+      "y": 1580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_resen_bit",
+      "type": "file",
+      "file": "RESEN Bit.md",
+      "x": 1640,
+      "y": 1660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol",
+      "type": "file",
+      "file": "WDOGCONTROL.md",
+      "x": 1840,
+      "y": 1660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogcontrol",
+      "type": "file",
+      "file": "WDOGCONTROL Register.md",
+      "x": 2040,
+      "y": 1660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogitcr",
+      "type": "file",
+      "file": "WDOGITCR Register.md",
+      "x": 1640,
+      "y": 1740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogitop",
+      "type": "file",
+      "file": "WDOGITOP Register.md",
+      "x": 1840,
+      "y": 1740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_get_divider",
+      "type": "file",
+      "file": "get_divider().md",
+      "x": 2040,
+      "y": 1740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol_read_register",
+      "type": "file",
+      "file": "read_register()_2.md",
+      "x": 1640,
+      "y": 1820,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_step_value",
+      "type": "file",
+      "file": "step_value Field.md",
+      "x": 1840,
+      "y": 1820,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogint",
+      "type": "file",
+      "file": "wdogint Signal.md",
+      "x": 2040,
+      "y": 1820,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogres",
+      "type": "file",
+      "file": "wdogres Signal.md",
+      "x": 1640,
+      "y": 1900,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g6",
+      "type": "group",
+      "label": "Community 6",
+      "x": 2800,
+      "y": 1500,
+      "width": 660,
+      "height": 420,
+      "color": "1"
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_355",
+      "type": "file",
+      "file": "Integration test output register in test mode, directly drives the WDOGINT and WDOGRES output signals from bits 1 and 0 respectively..md",
+      "x": 2820,
+      "y": 1580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_186",
+      "type": "file",
+      "file": "Load register the value reloaded into the counter on each timeout and on interrupt clear. Writes are ignored while locked and do not reload the counter immediately unless INTEN transitions 0-1..md",
+      "x": 3020,
+      "y": 1580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_58",
+      "type": "file",
+      "file": "Returns true while the device is locked. When locked, all register writes are ignored; the lock is cleared only by writing the magic unlock value 0x1ACCE551 to WDOGLOCK..md",
+      "x": 3220,
+      "y": 1580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogitop",
+      "type": "file",
+      "file": "WDOGITOP.md",
+      "x": 2820,
+      "y": 1660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogload",
+      "type": "file",
+      "file": "WDOGLOAD.md",
+      "x": 3020,
+      "y": 1660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_is_device_locked",
+      "type": "file",
+      "file": "is_device_locked().md",
+      "x": 3220,
+      "y": 1660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogload_read_register",
+      "type": "file",
+      "file": "read_register().md",
+      "x": 2820,
+      "y": 1740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogload_write_register",
+      "type": "file",
+      "file": "write_register().md",
+      "x": 3020,
+      "y": 1740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogitop_write_register",
+      "type": "file",
+      "file": "write_register()_5.md",
+      "x": 3220,
+      "y": 1740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g7",
+      "type": "group",
+      "label": "Community 7",
+      "x": 3980,
+      "y": 1500,
+      "width": 660,
+      "height": 420,
+      "color": "2"
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_304",
+      "type": "file",
+      "file": "Masked interrupt status register bit 0 is the raw status ANDed with INTEN, i.e. the interrupt as seen by the interrupt controller..md",
+      "x": 4000,
+      "y": 1580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_296",
+      "type": "file",
+      "file": "Raw interrupt status register bit 0 reflects the pending interrupt before masking by INTEN..md",
+      "x": 4200,
+      "y": 1580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogmis",
+      "type": "file",
+      "file": "WDOGMIS.md",
+      "x": 4400,
+      "y": 1580,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogmis",
+      "type": "file",
+      "file": "WDOGMIS Register.md",
+      "x": 4000,
+      "y": 1660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogris",
+      "type": "file",
+      "file": "WDOGRIS.md",
+      "x": 4200,
+      "y": 1660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogris",
+      "type": "file",
+      "file": "WDOGRIS Register.md",
+      "x": 4400,
+      "y": 1660,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogris_read_register",
+      "type": "file",
+      "file": "read_register()_3.md",
+      "x": 4000,
+      "y": 1740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdogmis_read_register",
+      "type": "file",
+      "file": "read_register()_4.md",
+      "x": 4200,
+      "y": 1740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g8",
+      "type": "group",
+      "label": "Community 8",
+      "x": 0,
+      "y": 2300,
+      "width": 660,
+      "height": 420,
+      "color": "3"
+    },
+    {
+      "id": "n_wdt_dml_wdt_rationale_313",
+      "type": "file",
+      "file": "Lock register writing the magic value 0x1ACCE551 unlocks the device; any other write locks it. Reads return 1 when locked, 0 when unlocked..md",
+      "x": 20,
+      "y": 2380,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogintclr",
+      "type": "file",
+      "file": "WDOGINTCLR Register.md",
+      "x": 220,
+      "y": 2380,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdogload",
+      "type": "file",
+      "file": "WDOGLOAD Register.md",
+      "x": 420,
+      "y": 2380,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdoglock",
+      "type": "file",
+      "file": "WDOGLOCK.md",
+      "x": 20,
+      "y": 2460,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_en_wdoglock",
+      "type": "file",
+      "file": "WDOGLOCK Register.md",
+      "x": 220,
+      "y": 2460,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdoglock_read_register",
+      "type": "file",
+      "file": "read_register()_5.md",
+      "x": 420,
+      "y": 2460,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_watchdogregisters_wdoglock_write_register",
+      "type": "file",
+      "file": "write_register()_3.md",
+      "x": 20,
+      "y": 2540,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g9",
+      "type": "group",
+      "label": "Community 9",
+      "x": 1620,
+      "y": 2300,
+      "width": 600,
+      "height": 400,
+      "color": "4"
+    },
+    {
+      "id": "n_wdt_dml_wdt_registers_watchdogregisters_temp",
+      "type": "file",
+      "file": "WatchdogRegisters_temp.md",
+      "x": 1640,
+      "y": 2380,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_dml_builtins_dml",
+      "type": "file",
+      "file": "dml-builtins.dml.md",
+      "x": 1840,
+      "y": 2380,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_utility_dml",
+      "type": "file",
+      "file": "utility.dml.md",
+      "x": 2040,
+      "y": 2380,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_wdt_dml_wdt_registers",
+      "type": "file",
+      "file": "wdt-registers.dml.md",
+      "x": 1640,
+      "y": 2460,
+      "width": 180,
+      "height": 60
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_wdt_dml_wdt_registers_dml_builtins_dml",
+      "fromNode": "n_wdt_dml_wdt_registers",
+      "toNode": "n_dml_builtins_dml",
+      "label": "imports_from [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_registers_utility_dml",
+      "fromNode": "n_wdt_dml_wdt_registers",
+      "toNode": "n_utility_dml",
+      "label": "imports_from [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_registers_wdt_dml_wdt_registers_watchdogregisters_temp",
+      "fromNode": "n_wdt_dml_wdt_registers",
+      "toNode": "n_wdt_dml_wdt_registers_watchdogregisters_temp",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_simics_devs_signal_dml",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_simics_devs_signal_dml",
+      "label": "imports_from [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_counter_value",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_counter_value",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_get_divider",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_get_divider",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_init",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_init",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_is_device_locked",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_is_device_locked",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_perform_reset",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_perform_reset",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_prst_n",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_prst_n",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_schedule_timeout",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_schedule_timeout",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_timeout_event",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_timeout_event",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_update_interrupt_signal",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_update_interrupt_signal",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_update_reset_signal",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_update_reset_signal",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_watchdogregisters",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_wclk",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_wclk",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_wclk_en",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_wclk_en",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_wdogint",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_wdogint",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_wdogres",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_wdogres",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_dml_wdt_wrst_n",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_dml_wdt_wrst_n",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_registers_dml",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_registers_dml",
+      "label": "imports_from [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdt_en_watchdog_module",
+      "fromNode": "n_wdt_dml_wdt",
+      "toNode": "n_wdt_en_watchdog_module",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_timeout_event_wdt_dml_wdt_rationale_27",
+      "fromNode": "n_wdt_dml_wdt_timeout_event",
+      "toNode": "n_wdt_dml_wdt_rationale_27",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_timeout_event_wdt_dml_wdt_simple_cycle_event",
+      "fromNode": "n_wdt_dml_wdt_timeout_event",
+      "toNode": "n_wdt_dml_wdt_simple_cycle_event",
+      "label": "inherits [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_timeout_event_wdt_dml_wdt_timeout_event_event",
+      "fromNode": "n_wdt_dml_wdt_timeout_event",
+      "toNode": "n_wdt_dml_wdt_timeout_event_event",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_timeout_event_event_wdt_dml_wdt_counter_value_set_value",
+      "fromNode": "n_wdt_dml_wdt_timeout_event_event",
+      "toNode": "n_wdt_dml_wdt_counter_value_set_value",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_timeout_event_event_wdt_dml_wdt_schedule_timeout",
+      "fromNode": "n_wdt_dml_wdt_timeout_event_event",
+      "toNode": "n_wdt_dml_wdt_schedule_timeout",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_timeout_event_event_wdt_dml_wdt_update_interrupt_signal",
+      "fromNode": "n_wdt_dml_wdt_timeout_event_event",
+      "toNode": "n_wdt_dml_wdt_update_interrupt_signal",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_timeout_event_event_wdt_dml_wdt_update_reset_signal",
+      "fromNode": "n_wdt_dml_wdt_timeout_event_event",
+      "toNode": "n_wdt_dml_wdt_update_reset_signal",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_is_device_locked_wdt_dml_wdt_rationale_58",
+      "fromNode": "n_wdt_dml_wdt_is_device_locked",
+      "toNode": "n_wdt_dml_wdt_rationale_58",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_is_device_locked_wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "fromNode": "n_wdt_dml_wdt_is_device_locked",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_is_device_locked_wdt_dml_wdt_watchdogregisters_wdogintclr_write_register",
+      "fromNode": "n_wdt_dml_wdt_is_device_locked",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogintclr_write_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_is_device_locked_wdt_dml_wdt_watchdogregisters_wdogitcr_write_register",
+      "fromNode": "n_wdt_dml_wdt_is_device_locked",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogitcr_write_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_is_device_locked_wdt_dml_wdt_watchdogregisters_wdogitop_write_register",
+      "fromNode": "n_wdt_dml_wdt_is_device_locked",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogitop_write_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_is_device_locked_wdt_dml_wdt_watchdogregisters_wdogload_write_register",
+      "fromNode": "n_wdt_dml_wdt_is_device_locked",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogload_write_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_wdt_dml_wdt_counter_value_curr_value",
+      "fromNode": "n_wdt_dml_wdt_counter_value",
+      "toNode": "n_wdt_dml_wdt_counter_value_curr_value",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_wdt_dml_wdt_counter_value_get_value",
+      "fromNode": "n_wdt_dml_wdt_counter_value",
+      "toNode": "n_wdt_dml_wdt_counter_value_get_value",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_wdt_dml_wdt_counter_value_refresh",
+      "fromNode": "n_wdt_dml_wdt_counter_value",
+      "toNode": "n_wdt_dml_wdt_counter_value_refresh",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_wdt_dml_wdt_counter_value_reset",
+      "fromNode": "n_wdt_dml_wdt_counter_value",
+      "toNode": "n_wdt_dml_wdt_counter_value_reset",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_wdt_dml_wdt_counter_value_set_value",
+      "fromNode": "n_wdt_dml_wdt_counter_value",
+      "toNode": "n_wdt_dml_wdt_counter_value_set_value",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_wdt_dml_wdt_uint64_attr",
+      "fromNode": "n_wdt_dml_wdt_counter_value",
+      "toNode": "n_wdt_dml_wdt_uint64_attr",
+      "label": "inherits [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_wdt_dml_wdt_rationale_65",
+      "fromNode": "n_wdt_dml_wdt_counter_value",
+      "toNode": "n_wdt_dml_wdt_rationale_65",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_wdt_en_32bit_down_counter",
+      "fromNode": "n_wdt_dml_wdt_counter_value",
+      "toNode": "n_wdt_en_32bit_down_counter",
+      "label": "describes [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_reset_wdt_dml_wdt_init",
+      "fromNode": "n_wdt_dml_wdt_counter_value_reset",
+      "toNode": "n_wdt_dml_wdt_init",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_reset_wdt_dml_wdt_perform_reset",
+      "fromNode": "n_wdt_dml_wdt_counter_value_reset",
+      "toNode": "n_wdt_dml_wdt_perform_reset",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_reset_wdt_dml_wdt_rationale_70",
+      "fromNode": "n_wdt_dml_wdt_counter_value_reset",
+      "toNode": "n_wdt_dml_wdt_rationale_70",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_curr_value_wdt_dml_wdt_get_divider",
+      "fromNode": "n_wdt_dml_wdt_counter_value_curr_value",
+      "toNode": "n_wdt_dml_wdt_get_divider",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_curr_value_wdt_dml_wdt_counter_value_refresh",
+      "fromNode": "n_wdt_dml_wdt_counter_value_curr_value",
+      "toNode": "n_wdt_dml_wdt_counter_value_refresh",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_curr_value_wdt_dml_wdt_rationale_75",
+      "fromNode": "n_wdt_dml_wdt_counter_value_curr_value",
+      "toNode": "n_wdt_dml_wdt_rationale_75",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_curr_value_wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "fromNode": "n_wdt_dml_wdt_counter_value_curr_value",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_curr_value_wdt_dml_wdt_watchdogregisters_wdogvalue_read_register",
+      "fromNode": "n_wdt_dml_wdt_counter_value_curr_value",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogvalue_read_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_refresh_wdt_dml_wdt_rationale_95",
+      "fromNode": "n_wdt_dml_wdt_counter_value_refresh",
+      "toNode": "n_wdt_dml_wdt_rationale_95",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_refresh_wdt_dml_wdt_wclk_en_signal_signal_raise",
+      "fromNode": "n_wdt_dml_wdt_counter_value_refresh",
+      "toNode": "n_wdt_dml_wdt_wclk_en_signal_signal_raise",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_set_value_wdt_dml_wdt_rationale_100",
+      "fromNode": "n_wdt_dml_wdt_counter_value_set_value",
+      "toNode": "n_wdt_dml_wdt_rationale_100",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_set_value_wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "fromNode": "n_wdt_dml_wdt_counter_value_set_value",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_set_value_wdt_dml_wdt_watchdogregisters_wdogintclr_write_register",
+      "fromNode": "n_wdt_dml_wdt_counter_value_set_value",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogintclr_write_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_get_value_wdt_dml_wdt_rationale_105",
+      "fromNode": "n_wdt_dml_wdt_counter_value_get_value",
+      "toNode": "n_wdt_dml_wdt_rationale_105",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_counter_value_get_value_wdt_dml_wdt_schedule_timeout",
+      "fromNode": "n_wdt_dml_wdt_counter_value_get_value",
+      "toNode": "n_wdt_dml_wdt_schedule_timeout",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_get_divider_wdt_dml_wdt_rationale_111",
+      "fromNode": "n_wdt_dml_wdt_get_divider",
+      "toNode": "n_wdt_dml_wdt_rationale_111",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_get_divider_wdt_dml_wdt_schedule_timeout",
+      "fromNode": "n_wdt_dml_wdt_get_divider",
+      "toNode": "n_wdt_dml_wdt_schedule_timeout",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_get_divider_wdt_en_step_value",
+      "fromNode": "n_wdt_dml_wdt_get_divider",
+      "toNode": "n_wdt_en_step_value",
+      "label": "describes [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_schedule_timeout_wdt_dml_wdt_rationale_124",
+      "fromNode": "n_wdt_dml_wdt_schedule_timeout",
+      "toNode": "n_wdt_dml_wdt_rationale_124",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_schedule_timeout_wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "fromNode": "n_wdt_dml_wdt_schedule_timeout",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_schedule_timeout_wdt_dml_wdt_watchdogregisters_wdogintclr_write_register",
+      "fromNode": "n_wdt_dml_wdt_schedule_timeout",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogintclr_write_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_schedule_timeout_wdt_dml_wdt_wclk_en_signal_signal_raise",
+      "fromNode": "n_wdt_dml_wdt_schedule_timeout",
+      "toNode": "n_wdt_dml_wdt_wclk_en_signal_signal_raise",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_update_interrupt_signal_wdt_dml_wdt_rationale_140",
+      "fromNode": "n_wdt_dml_wdt_update_interrupt_signal",
+      "toNode": "n_wdt_dml_wdt_rationale_140",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_update_interrupt_signal_wdt_dml_wdt_wclk_signal_signal_lower",
+      "fromNode": "n_wdt_dml_wdt_update_interrupt_signal",
+      "toNode": "n_wdt_dml_wdt_wclk_signal_signal_lower",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_update_interrupt_signal_wdt_dml_wdt_wclk_signal_signal_raise",
+      "fromNode": "n_wdt_dml_wdt_update_interrupt_signal",
+      "toNode": "n_wdt_dml_wdt_wclk_signal_signal_raise",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_update_interrupt_signal_wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "fromNode": "n_wdt_dml_wdt_update_interrupt_signal",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_update_interrupt_signal_wdt_dml_wdt_watchdogregisters_wdogintclr_write_register",
+      "fromNode": "n_wdt_dml_wdt_update_interrupt_signal",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogintclr_write_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_update_interrupt_signal_wdt_dml_wdt_watchdogregisters_wdogitcr_write_register",
+      "fromNode": "n_wdt_dml_wdt_update_interrupt_signal",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogitcr_write_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_update_reset_signal_wdt_dml_wdt_rationale_162",
+      "fromNode": "n_wdt_dml_wdt_update_reset_signal",
+      "toNode": "n_wdt_dml_wdt_rationale_162",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_update_reset_signal_wdt_dml_wdt_wclk_signal_signal_lower",
+      "fromNode": "n_wdt_dml_wdt_update_reset_signal",
+      "toNode": "n_wdt_dml_wdt_wclk_signal_signal_lower",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_update_reset_signal_wdt_dml_wdt_wclk_signal_signal_raise",
+      "fromNode": "n_wdt_dml_wdt_update_reset_signal",
+      "toNode": "n_wdt_dml_wdt_wclk_signal_signal_raise",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_update_reset_signal_wdt_dml_wdt_watchdogregisters_wdogitcr_write_register",
+      "fromNode": "n_wdt_dml_wdt_update_reset_signal",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogitcr_write_register",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_rationale_182",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_rationale_182",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_temp",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_temp",
+      "label": "inherits [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogcontrol",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogintclr",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogintclr",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogitcr",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogitcr",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogitop",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogitop",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogload",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogload",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdoglock",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdoglock",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogmis",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogmis",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogpcellid0",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid0",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogpcellid1",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid1",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogpcellid2",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid2",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogpcellid3",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid3",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogperiphid0",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid0",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogperiphid1",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid1",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogperiphid2",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid2",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogperiphid3",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid3",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogperiphid4",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid4",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogperiphid5",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid5",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogperiphid6",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid6",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogperiphid7",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid7",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogris",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogris",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdt_dml_wdt_watchdogregisters_wdogvalue",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogvalue",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogload_wdt_dml_wdt_rationale_186",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogload",
+      "toNode": "n_wdt_dml_wdt_rationale_186",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogload_wdt_dml_wdt_watchdogregisters_wdogload_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogload",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogload_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogload_wdt_dml_wdt_watchdogregisters_wdogload_write_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogload",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogload_write_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogload_wdt_en_wdogload",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogload",
+      "toNode": "n_wdt_en_wdogload",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogvalue_wdt_dml_wdt_rationale_208",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogvalue",
+      "toNode": "n_wdt_dml_wdt_rationale_208",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogvalue_wdt_dml_wdt_watchdogregisters_wdogvalue_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogvalue",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogvalue_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogvalue_wdt_en_wdogvalue",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogvalue",
+      "toNode": "n_wdt_en_wdogvalue",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogcontrol_wdt_dml_wdt_rationale_216",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol",
+      "toNode": "n_wdt_dml_wdt_rationale_216",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogcontrol_wdt_dml_wdt_watchdogregisters_wdogcontrol_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogcontrol_wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogcontrol_wdt_en_inten_bit",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol",
+      "toNode": "n_wdt_en_inten_bit",
+      "label": "describes [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogcontrol_wdt_en_resen_bit",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol",
+      "toNode": "n_wdt_en_resen_bit",
+      "label": "describes [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogcontrol_wdt_en_step_value",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol",
+      "toNode": "n_wdt_en_step_value",
+      "label": "describes [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogcontrol_wdt_en_wdogcontrol",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogcontrol",
+      "toNode": "n_wdt_en_wdogcontrol",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogintclr_wdt_dml_wdt_rationale_272",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogintclr",
+      "toNode": "n_wdt_dml_wdt_rationale_272",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogintclr_wdt_dml_wdt_watchdogregisters_wdogintclr_write_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogintclr",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogintclr_write_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogintclr_wdt_en_wdogintclr",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogintclr",
+      "toNode": "n_wdt_en_wdogintclr",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogris_wdt_dml_wdt_rationale_296",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogris",
+      "toNode": "n_wdt_dml_wdt_rationale_296",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogris_wdt_dml_wdt_watchdogregisters_wdogris_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogris",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogris_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogris_wdt_en_wdogris",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogris",
+      "toNode": "n_wdt_en_wdogris",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogmis_wdt_dml_wdt_rationale_304",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogmis",
+      "toNode": "n_wdt_dml_wdt_rationale_304",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogmis_wdt_dml_wdt_watchdogregisters_wdogmis_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogmis",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogmis_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogmis_wdt_en_wdogmis",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogmis",
+      "toNode": "n_wdt_en_wdogmis",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdoglock_wdt_dml_wdt_rationale_313",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdoglock",
+      "toNode": "n_wdt_dml_wdt_rationale_313",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdoglock_wdt_dml_wdt_watchdogregisters_wdoglock_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdoglock",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdoglock_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdoglock_wdt_dml_wdt_watchdogregisters_wdoglock_write_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdoglock",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdoglock_write_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdoglock_wdt_en_wdoglock",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdoglock",
+      "toNode": "n_wdt_en_wdoglock",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogitcr_wdt_dml_wdt_rationale_330",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogitcr",
+      "toNode": "n_wdt_dml_wdt_rationale_330",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogitcr_wdt_dml_wdt_watchdogregisters_wdogitcr_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogitcr",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogitcr_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogitcr_wdt_dml_wdt_watchdogregisters_wdogitcr_write_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogitcr",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogitcr_write_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogitcr_wdt_en_wdogitcr",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogitcr",
+      "toNode": "n_wdt_en_wdogitcr",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogitop_wdt_dml_wdt_rationale_355",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogitop",
+      "toNode": "n_wdt_dml_wdt_rationale_355",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogitop_wdt_dml_wdt_watchdogregisters_wdogitop_write_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogitop",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogitop_write_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogitop_wdt_en_wdogitop",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogitop",
+      "toNode": "n_wdt_en_wdogitop",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogitop_write_register_wdt_dml_wdt_wclk_signal_signal_lower",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogitop_write_register",
+      "toNode": "n_wdt_dml_wdt_wclk_signal_signal_lower",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogitop_write_register_wdt_dml_wdt_wclk_signal_signal_raise",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogitop_write_register",
+      "toNode": "n_wdt_dml_wdt_wclk_signal_signal_raise",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid4_wdt_dml_wdt_watchdogregisters_wdogperiphid4_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid4",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid4_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid4_wdt_en_wdogperiphid4",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid4",
+      "toNode": "n_wdt_en_wdogperiphid4",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid5_wdt_dml_wdt_watchdogregisters_wdogperiphid5_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid5",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid5_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid5_wdt_en_wdogperiphid5",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid5",
+      "toNode": "n_wdt_en_wdogperiphid5",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid6_wdt_dml_wdt_watchdogregisters_wdogperiphid6_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid6",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid6_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid6_wdt_en_wdogperiphid6",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid6",
+      "toNode": "n_wdt_en_wdogperiphid6",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid7_wdt_dml_wdt_watchdogregisters_wdogperiphid7_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid7",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid7_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid7_wdt_en_wdogperiphid7",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid7",
+      "toNode": "n_wdt_en_wdogperiphid7",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid0_wdt_dml_wdt_watchdogregisters_wdogperiphid0_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid0",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid0_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid0_wdt_en_wdogperiphid0",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid0",
+      "toNode": "n_wdt_en_wdogperiphid0",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid1_wdt_dml_wdt_watchdogregisters_wdogperiphid1_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid1",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid1_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid1_wdt_en_wdogperiphid1",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid1",
+      "toNode": "n_wdt_en_wdogperiphid1",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid2_wdt_dml_wdt_watchdogregisters_wdogperiphid2_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid2",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid2_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid2_wdt_en_wdogperiphid2",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid2",
+      "toNode": "n_wdt_en_wdogperiphid2",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid3_wdt_dml_wdt_watchdogregisters_wdogperiphid3_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid3",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid3_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogperiphid3_wdt_en_wdogperiphid3",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogperiphid3",
+      "toNode": "n_wdt_en_wdogperiphid3",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogpcellid0_wdt_dml_wdt_watchdogregisters_wdogpcellid0_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid0",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid0_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogpcellid0_wdt_en_wdogpcellid0",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid0",
+      "toNode": "n_wdt_en_wdogpcellid0",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogpcellid1_wdt_dml_wdt_watchdogregisters_wdogpcellid1_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid1",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid1_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogpcellid1_wdt_en_wdogpcellid1",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid1",
+      "toNode": "n_wdt_en_wdogpcellid1",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogpcellid2_wdt_dml_wdt_watchdogregisters_wdogpcellid2_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid2",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid2_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogpcellid2_wdt_en_wdogpcellid2",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid2",
+      "toNode": "n_wdt_en_wdogpcellid2",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogpcellid3_wdt_dml_wdt_watchdogregisters_wdogpcellid3_read_register",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid3",
+      "toNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid3_read_register",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_watchdogregisters_wdogpcellid3_wdt_en_wdogpcellid3",
+      "fromNode": "n_wdt_dml_wdt_watchdogregisters_wdogpcellid3",
+      "toNode": "n_wdt_en_wdogpcellid3",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_wdt_dml_wdt_rationale_489",
+      "fromNode": "n_wdt_dml_wdt_wclk",
+      "toNode": "n_wdt_dml_wdt_rationale_489",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_wdt_dml_wdt_wclk_signal",
+      "fromNode": "n_wdt_dml_wdt_wclk",
+      "toNode": "n_wdt_dml_wdt_wclk_signal",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_wdt_en_wclk",
+      "fromNode": "n_wdt_dml_wdt_wclk",
+      "toNode": "n_wdt_en_wclk",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_signal_wdt_dml_wdt_signal",
+      "fromNode": "n_wdt_dml_wdt_wclk_signal",
+      "toNode": "n_wdt_dml_wdt_signal",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_signal_wdt_dml_wdt_wclk_signal_signal_lower",
+      "fromNode": "n_wdt_dml_wdt_wclk_signal",
+      "toNode": "n_wdt_dml_wdt_wclk_signal_signal_lower",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_signal_wdt_dml_wdt_wclk_signal_signal_raise",
+      "fromNode": "n_wdt_dml_wdt_wclk_signal",
+      "toNode": "n_wdt_dml_wdt_wclk_signal_signal_raise",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_signal_wdt_dml_wdt_prst_n_signal",
+      "fromNode": "n_wdt_dml_wdt_signal",
+      "toNode": "n_wdt_dml_wdt_prst_n_signal",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_signal_wdt_dml_wdt_wclk_en_signal",
+      "fromNode": "n_wdt_dml_wdt_signal",
+      "toNode": "n_wdt_dml_wdt_wclk_en_signal",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_signal_wdt_dml_wdt_wrst_n_signal",
+      "fromNode": "n_wdt_dml_wdt_signal",
+      "toNode": "n_wdt_dml_wdt_wrst_n_signal",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_signal_signal_raise_wdt_dml_wdt_rationale_494",
+      "fromNode": "n_wdt_dml_wdt_wclk_signal_signal_raise",
+      "toNode": "n_wdt_dml_wdt_rationale_494",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_signal_signal_raise_wdt_dml_wdt_wdogint_signal_raise",
+      "fromNode": "n_wdt_dml_wdt_wclk_signal_signal_raise",
+      "toNode": "n_wdt_dml_wdt_wdogint_signal_raise",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_signal_signal_raise_wdt_dml_wdt_wdogres_signal_raise",
+      "fromNode": "n_wdt_dml_wdt_wclk_signal_signal_raise",
+      "toNode": "n_wdt_dml_wdt_wdogres_signal_raise",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_signal_signal_lower_wdt_dml_wdt_perform_reset",
+      "fromNode": "n_wdt_dml_wdt_wclk_signal_signal_lower",
+      "toNode": "n_wdt_dml_wdt_perform_reset",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_signal_signal_lower_wdt_dml_wdt_wdogint_signal_lower",
+      "fromNode": "n_wdt_dml_wdt_wclk_signal_signal_lower",
+      "toNode": "n_wdt_dml_wdt_wdogint_signal_lower",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_signal_signal_lower_wdt_dml_wdt_wdogres_signal_lower",
+      "fromNode": "n_wdt_dml_wdt_wclk_signal_signal_lower",
+      "toNode": "n_wdt_dml_wdt_wdogres_signal_lower",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_en_wdt_dml_wdt_rationale_501",
+      "fromNode": "n_wdt_dml_wdt_wclk_en",
+      "toNode": "n_wdt_dml_wdt_rationale_501",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_en_wdt_dml_wdt_wclk_en_signal",
+      "fromNode": "n_wdt_dml_wdt_wclk_en",
+      "toNode": "n_wdt_dml_wdt_wclk_en_signal",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_en_wdt_en_wclk_en",
+      "fromNode": "n_wdt_dml_wdt_wclk_en",
+      "toNode": "n_wdt_en_wclk_en",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_en_signal_wdt_dml_wdt_wclk_en_signal_signal_lower",
+      "fromNode": "n_wdt_dml_wdt_wclk_en_signal",
+      "toNode": "n_wdt_dml_wdt_wclk_en_signal_signal_lower",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wclk_en_signal_wdt_dml_wdt_wclk_en_signal_signal_raise",
+      "fromNode": "n_wdt_dml_wdt_wclk_en_signal",
+      "toNode": "n_wdt_dml_wdt_wclk_en_signal_signal_raise",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wrst_n_wdt_dml_wdt_rationale_524",
+      "fromNode": "n_wdt_dml_wdt_wrst_n",
+      "toNode": "n_wdt_dml_wdt_rationale_524",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wrst_n_wdt_dml_wdt_wrst_n_signal",
+      "fromNode": "n_wdt_dml_wdt_wrst_n",
+      "toNode": "n_wdt_dml_wdt_wrst_n_signal",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wrst_n_wdt_en_wrst_n",
+      "fromNode": "n_wdt_dml_wdt_wrst_n",
+      "toNode": "n_wdt_en_wrst_n",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wrst_n_signal_wdt_dml_wdt_wrst_n_signal_signal_lower",
+      "fromNode": "n_wdt_dml_wdt_wrst_n_signal",
+      "toNode": "n_wdt_dml_wdt_wrst_n_signal_signal_lower",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wrst_n_signal_wdt_dml_wdt_wrst_n_signal_signal_raise",
+      "fromNode": "n_wdt_dml_wdt_wrst_n_signal",
+      "toNode": "n_wdt_dml_wdt_wrst_n_signal_signal_raise",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wrst_n_signal_signal_lower_wdt_dml_wdt_perform_reset",
+      "fromNode": "n_wdt_dml_wdt_wrst_n_signal_signal_lower",
+      "toNode": "n_wdt_dml_wdt_perform_reset",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_prst_n_wdt_dml_wdt_prst_n_signal",
+      "fromNode": "n_wdt_dml_wdt_prst_n",
+      "toNode": "n_wdt_dml_wdt_prst_n_signal",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_prst_n_wdt_dml_wdt_rationale_537",
+      "fromNode": "n_wdt_dml_wdt_prst_n",
+      "toNode": "n_wdt_dml_wdt_rationale_537",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_prst_n_wdt_en_prst_n",
+      "fromNode": "n_wdt_dml_wdt_prst_n",
+      "toNode": "n_wdt_en_prst_n",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_prst_n_signal_wdt_dml_wdt_prst_n_signal_signal_lower",
+      "fromNode": "n_wdt_dml_wdt_prst_n_signal",
+      "toNode": "n_wdt_dml_wdt_prst_n_signal_signal_lower",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_prst_n_signal_wdt_dml_wdt_prst_n_signal_signal_raise",
+      "fromNode": "n_wdt_dml_wdt_prst_n_signal",
+      "toNode": "n_wdt_dml_wdt_prst_n_signal_signal_raise",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_prst_n_signal_signal_lower_wdt_dml_wdt_perform_reset",
+      "fromNode": "n_wdt_dml_wdt_prst_n_signal_signal_lower",
+      "toNode": "n_wdt_dml_wdt_perform_reset",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdogint_wdt_dml_wdt_rationale_550",
+      "fromNode": "n_wdt_dml_wdt_wdogint",
+      "toNode": "n_wdt_dml_wdt_rationale_550",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdogint_wdt_dml_wdt_wdogint_signal",
+      "fromNode": "n_wdt_dml_wdt_wdogint",
+      "toNode": "n_wdt_dml_wdt_wdogint_signal",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdogint_wdt_dml_wdt_wdogint_signal_lower",
+      "fromNode": "n_wdt_dml_wdt_wdogint",
+      "toNode": "n_wdt_dml_wdt_wdogint_signal_lower",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdogint_wdt_dml_wdt_wdogint_signal_raise",
+      "fromNode": "n_wdt_dml_wdt_wdogint",
+      "toNode": "n_wdt_dml_wdt_wdogint_signal_raise",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdogint_wdt_en_wdogint",
+      "fromNode": "n_wdt_dml_wdt_wdogint",
+      "toNode": "n_wdt_en_wdogint",
+      "label": "describes [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdogres_wdt_dml_wdt_rationale_567",
+      "fromNode": "n_wdt_dml_wdt_wdogres",
+      "toNode": "n_wdt_dml_wdt_rationale_567",
+      "label": "rationale_for [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdogres_wdt_dml_wdt_wdogres_signal",
+      "fromNode": "n_wdt_dml_wdt_wdogres",
+      "toNode": "n_wdt_dml_wdt_wdogres_signal",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdogres_wdt_dml_wdt_wdogres_signal_lower",
+      "fromNode": "n_wdt_dml_wdt_wdogres",
+      "toNode": "n_wdt_dml_wdt_wdogres_signal_lower",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdogres_wdt_dml_wdt_wdogres_signal_raise",
+      "fromNode": "n_wdt_dml_wdt_wdogres",
+      "toNode": "n_wdt_dml_wdt_wdogres_signal_raise",
+      "label": "contains [EXTRACTED]"
+    },
+    {
+      "id": "e_wdt_dml_wdt_wdogres_wdt_en_wdogres",
+      "fromNode": "n_wdt_dml_wdt_wdogres",
+      "toNode": "n_wdt_en_wdogres",
+      "label": "describes [EXTRACTED]"
+    }
+  ]
+}

@@ -1,0 +1,307 @@
+{
+  "communities": {
+    "0": [
+      "simics_devs_signal_dml",
+      "wdt_dml_wdt",
+      "wdt_dml_wdt_counter_value_reset",
+      "wdt_dml_wdt_init",
+      "wdt_dml_wdt_perform_reset",
+      "wdt_dml_wdt_prst_n",
+      "wdt_dml_wdt_prst_n_signal",
+      "wdt_dml_wdt_prst_n_signal_signal_lower",
+      "wdt_dml_wdt_prst_n_signal_signal_raise",
+      "wdt_dml_wdt_rationale_27",
+      "wdt_dml_wdt_rationale_501",
+      "wdt_dml_wdt_rationale_524",
+      "wdt_dml_wdt_rationale_537",
+      "wdt_dml_wdt_rationale_621",
+      "wdt_dml_wdt_rationale_648",
+      "wdt_dml_wdt_rationale_70",
+      "wdt_dml_wdt_signal",
+      "wdt_dml_wdt_simple_cycle_event",
+      "wdt_dml_wdt_timeout_event",
+      "wdt_dml_wdt_wclk_en",
+      "wdt_dml_wdt_wclk_en_signal",
+      "wdt_dml_wdt_wclk_en_signal_signal_lower",
+      "wdt_dml_wdt_wrst_n",
+      "wdt_dml_wdt_wrst_n_signal",
+      "wdt_dml_wdt_wrst_n_signal_signal_lower",
+      "wdt_dml_wdt_wrst_n_signal_signal_raise",
+      "wdt_registers_dml"
+    ],
+    "1": [
+      "wdt_dml_wdt_rationale_162",
+      "wdt_dml_wdt_rationale_355",
+      "wdt_dml_wdt_rationale_489",
+      "wdt_dml_wdt_rationale_494",
+      "wdt_dml_wdt_rationale_550",
+      "wdt_dml_wdt_rationale_567",
+      "wdt_dml_wdt_update_reset_signal",
+      "wdt_dml_wdt_watchdogregisters_wdogitop",
+      "wdt_dml_wdt_watchdogregisters_wdogitop_write_register",
+      "wdt_dml_wdt_wclk",
+      "wdt_dml_wdt_wclk_signal",
+      "wdt_dml_wdt_wclk_signal_signal_lower",
+      "wdt_dml_wdt_wclk_signal_signal_raise",
+      "wdt_dml_wdt_wdogint",
+      "wdt_dml_wdt_wdogint_signal",
+      "wdt_dml_wdt_wdogint_signal_lower",
+      "wdt_dml_wdt_wdogint_signal_raise",
+      "wdt_dml_wdt_wdogres",
+      "wdt_dml_wdt_wdogres_signal",
+      "wdt_dml_wdt_wdogres_signal_lower",
+      "wdt_dml_wdt_wdogres_signal_raise"
+    ],
+    "2": [
+      "wdt_dml_wdt_counter_value",
+      "wdt_dml_wdt_counter_value_curr_value",
+      "wdt_dml_wdt_counter_value_get_value",
+      "wdt_dml_wdt_counter_value_refresh",
+      "wdt_dml_wdt_get_divider",
+      "wdt_dml_wdt_rationale_105",
+      "wdt_dml_wdt_rationale_111",
+      "wdt_dml_wdt_rationale_124",
+      "wdt_dml_wdt_rationale_208",
+      "wdt_dml_wdt_rationale_65",
+      "wdt_dml_wdt_rationale_75",
+      "wdt_dml_wdt_rationale_95",
+      "wdt_dml_wdt_schedule_timeout",
+      "wdt_dml_wdt_uint64_attr",
+      "wdt_dml_wdt_watchdogregisters_wdogvalue",
+      "wdt_dml_wdt_watchdogregisters_wdogvalue_read_register",
+      "wdt_dml_wdt_wclk_en_signal_signal_raise"
+    ],
+    "3": [
+      "wdt_dml_wdt_counter_value_set_value",
+      "wdt_dml_wdt_rationale_100",
+      "wdt_dml_wdt_rationale_140",
+      "wdt_dml_wdt_rationale_216",
+      "wdt_dml_wdt_rationale_272",
+      "wdt_dml_wdt_timeout_event_event",
+      "wdt_dml_wdt_update_interrupt_signal",
+      "wdt_dml_wdt_watchdogregisters_wdogcontrol",
+      "wdt_dml_wdt_watchdogregisters_wdogcontrol_read_register",
+      "wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "wdt_dml_wdt_watchdogregisters_wdogintclr",
+      "wdt_dml_wdt_watchdogregisters_wdogintclr_write_register"
+    ],
+    "4": [
+      "wdt_dml_wdt_is_device_locked",
+      "wdt_dml_wdt_rationale_186",
+      "wdt_dml_wdt_rationale_330",
+      "wdt_dml_wdt_rationale_58",
+      "wdt_dml_wdt_watchdogregisters_wdogitcr",
+      "wdt_dml_wdt_watchdogregisters_wdogitcr_read_register",
+      "wdt_dml_wdt_watchdogregisters_wdogitcr_write_register",
+      "wdt_dml_wdt_watchdogregisters_wdogload",
+      "wdt_dml_wdt_watchdogregisters_wdogload_read_register",
+      "wdt_dml_wdt_watchdogregisters_wdogload_write_register"
+    ],
+    "5": [
+      "wdt_dml_wdt_rationale_182",
+      "wdt_dml_wdt_watchdogregisters",
+      "wdt_dml_wdt_watchdogregisters_temp",
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid1",
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid1_read_register",
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid7",
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid7_read_register"
+    ],
+    "6": [
+      "dml_builtins_dml",
+      "utility_dml",
+      "wdt_dml_wdt_registers",
+      "wdt_dml_wdt_registers_watchdogregisters_temp"
+    ],
+    "7": [
+      "wdt_dml_wdt_rationale_313",
+      "wdt_dml_wdt_watchdogregisters_wdoglock",
+      "wdt_dml_wdt_watchdogregisters_wdoglock_read_register",
+      "wdt_dml_wdt_watchdogregisters_wdoglock_write_register"
+    ],
+    "8": [
+      "wdt_dml_wdt_rationale_296",
+      "wdt_dml_wdt_watchdogregisters_wdogris",
+      "wdt_dml_wdt_watchdogregisters_wdogris_read_register"
+    ],
+    "9": [
+      "wdt_dml_wdt_rationale_304",
+      "wdt_dml_wdt_watchdogregisters_wdogmis",
+      "wdt_dml_wdt_watchdogregisters_wdogmis_read_register"
+    ],
+    "10": [
+      "wdt_dml_wdt_watchdogregisters_wdogpcellid0",
+      "wdt_dml_wdt_watchdogregisters_wdogpcellid0_read_register"
+    ],
+    "11": [
+      "wdt_dml_wdt_watchdogregisters_wdogpcellid1",
+      "wdt_dml_wdt_watchdogregisters_wdogpcellid1_read_register"
+    ],
+    "12": [
+      "wdt_dml_wdt_watchdogregisters_wdogpcellid2",
+      "wdt_dml_wdt_watchdogregisters_wdogpcellid2_read_register"
+    ],
+    "13": [
+      "wdt_dml_wdt_watchdogregisters_wdogpcellid3",
+      "wdt_dml_wdt_watchdogregisters_wdogpcellid3_read_register"
+    ],
+    "14": [
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid0",
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid0_read_register"
+    ],
+    "15": [
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid2",
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid2_read_register"
+    ],
+    "16": [
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid3",
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid3_read_register"
+    ],
+    "17": [
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid4",
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid4_read_register"
+    ],
+    "18": [
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid5",
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid5_read_register"
+    ],
+    "19": [
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid6",
+      "wdt_dml_wdt_watchdogregisters_wdogperiphid6_read_register"
+    ]
+  },
+  "cohesion": {
+    "0": 0.08831908831908832,
+    "1": 0.11428571428571428,
+    "2": 0.13970588235294118,
+    "3": 0.19696969696969696,
+    "4": 0.2,
+    "5": 0.2857142857142857,
+    "6": 0.5,
+    "7": 0.5,
+    "8": 0.6666666666666666,
+    "9": 0.6666666666666666,
+    "10": 1.0,
+    "11": 1.0,
+    "12": 1.0,
+    "13": 1.0,
+    "14": 1.0,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0
+  },
+  "gods": [
+    {
+      "id": "wdt_dml_wdt_watchdogregisters",
+      "label": "WatchdogRegisters",
+      "degree": 24
+    },
+    {
+      "id": "wdt_dml_wdt_counter_value",
+      "label": "counter_value",
+      "degree": 8
+    },
+    {
+      "id": "wdt_dml_wdt_schedule_timeout",
+      "label": "schedule_timeout()",
+      "degree": 8
+    },
+    {
+      "id": "wdt_dml_wdt_update_interrupt_signal",
+      "label": "update_interrupt_signal()",
+      "degree": 8
+    },
+    {
+      "id": "wdt_dml_wdt_is_device_locked",
+      "label": "is_device_locked()",
+      "degree": 7
+    },
+    {
+      "id": "wdt_dml_wdt_wclk_signal_signal_raise",
+      "label": "signal_raise()",
+      "degree": 7
+    },
+    {
+      "id": "wdt_dml_wdt_wclk_signal_signal_lower",
+      "label": "signal_lower()",
+      "degree": 7
+    },
+    {
+      "id": "wdt_dml_wdt_counter_value_curr_value",
+      "label": "curr_value()",
+      "degree": 6
+    },
+    {
+      "id": "wdt_dml_wdt_update_reset_signal",
+      "label": "update_reset_signal()",
+      "degree": 6
+    },
+    {
+      "id": "wdt_dml_wdt_watchdogregisters_wdogcontrol_write_register",
+      "label": "write_register()",
+      "degree": 6
+    }
+  ],
+  "surprises": [
+    {
+      "source": "event()",
+      "target": "schedule_timeout()",
+      "source_files": [
+        "wdt_dml/wdt.dml",
+        "wdt_dml/wdt.dml"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "note": "Bridges community 3 \u2192 community 2"
+    },
+    {
+      "source": "event()",
+      "target": "update_reset_signal()",
+      "source_files": [
+        "wdt_dml/wdt.dml",
+        "wdt_dml/wdt.dml"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "note": "Bridges community 3 \u2192 community 1"
+    },
+    {
+      "source": "write_register()",
+      "target": "is_device_locked()",
+      "source_files": [
+        "wdt_dml/wdt.dml",
+        "wdt_dml/wdt.dml"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "note": "Bridges community 4 \u2192 community 3"
+    },
+    {
+      "source": "write_register()",
+      "target": "is_device_locked()",
+      "source_files": [
+        "wdt_dml/wdt.dml",
+        "wdt_dml/wdt.dml"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "note": "Bridges community 4 \u2192 community 1"
+    },
+    {
+      "source": "perform_reset()",
+      "target": "signal_lower()",
+      "source_files": [
+        "wdt_dml/wdt.dml",
+        "wdt_dml/wdt.dml"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "note": "Bridges community 1 \u2192 community 0"
+    }
+  ],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}
