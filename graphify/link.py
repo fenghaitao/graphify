@@ -660,7 +660,11 @@ def apply_doc_links(
         key = (e["source"], e["target"], e["relation"])
         if key in seen_edges:
             continue
-        if e["source"] in seen_ids:
+        # Guard BOTH endpoints (like the concept/LLM loops below): a stale or
+        # mismatched code-manifest.jsonl can name a target symbol that is not in
+        # the graph, which build_from_json silently drops — counting it here
+        # would report a doc→code edge that never persists.
+        if e["source"] in seen_ids and e["target"] in seen_ids:
             merged_edges.append(e); seen_edges.add(key); ref_added += 1
 
     # LLM concept→code linking (code-aware, edge-only) on the residual: doc concepts not

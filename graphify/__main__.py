@@ -4903,6 +4903,18 @@ def main() -> None:
         if backend is None:
             from graphify.llm import detect_backend as _detect_backend
             backend = _detect_backend()
+        # Validate the backend at the CLI boundary (mirrors `extract`) so an
+        # unknown name gives a clean error instead of a ValueError traceback from
+        # extract_corpus_parallel when there are uncached docs to extract.
+        if backend is not None:
+            from graphify.llm import BACKENDS as _BACKENDS
+            if backend not in _BACKENDS:
+                print(
+                    f"error: unknown backend '{backend}'. "
+                    f"Available: {', '.join(sorted(_BACKENDS))}",
+                    file=sys.stderr,
+                )
+                sys.exit(1)
         from graphify.link import apply_doc_links
         try:
             summary = apply_doc_links(

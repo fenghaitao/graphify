@@ -413,3 +413,58 @@ def test_link_docs_errors_without_manifest(tmp_path, capsys):
         m.main()
     assert exc.value.code == 1
     assert "code-manifest" in capsys.readouterr().err
+
+
+def test_link_docs_does_not_count_edges_with_missing_target(monkeypatch, tmp_path):
+    """A stale code-manifest target that is absent from the graph must NOT be
+    counted as a persisted doc→code edge — build_from_json silently drops such an
+    edge. Regression for the doc_edges merge loop that guarded only `source`."""
+    (tmp_path / "storage.py").write_text(
+        'def save_record(rec):\n    """Persist a record."""\n    return True\n'
+    )
+    (tmp_path / "design.md").write_text(
+        "# Design\nUses `save_record` and the now-removed `ghost_fn` helper.\n"
+    )
+    out_dir = tmp_path / "out"
+    gout = out_dir / "graphify-out"
+    _run_code_only(monkeypatch, tmp_path, out_dir)
+
+    # Inject a stale manifest record whose id is NOT a node in graph.json. The
+    # matcher will resolve the doc's `ghost_fn` mention to it, producing a
+    # reference edge with a dangling target.
+    manifest = gout / link.MANIFEST_FILENAME
+    with manifest.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(
+            {"id": "ghost_missing_id", "label": "ghost_fn", "source_file": "storage.py"}
+        ) + "\n")
+
+    summary = link.apply_doc_links(gout, tmp_path, match_code=True, backend=None)
+
+    graph = json.loads((gout / "graph.json").read_text())
+    edges = graph.get("edges", graph.get("links", []))
+    refs = [e for e in edges if e.get("relation") == "references"]
+    # the ghost target was never persisted ...
+    assert all(e.get("target") != "ghost_missing_id" for e in refs)
+    # ... the real reference still landed ...
+    assert len(refs) == 1
+    # ... and the reported count matches what actually persisted (no phantom count).
+    assert summary["reference_edges_added"] == len(refs)
+
+
+def test_link_docs_rejects_unknown_backend(monkeypatch, tmp_path, capsys):
+    """An invalid --backend is rejected at the CLI boundary (mirrors extract),
+    not surfaced as a ValueError traceback from extract_corpus_parallel."""
+    import pytest
+    (tmp_path / "graphify-out").mkdir()
+    (tmp_path / "graphify-out" / "graph.json").write_text('{"nodes": [], "edges": []}')
+    monkeypatch.setattr(mainmod, "_check_skill_version", lambda _: None)
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "link-docs", str(tmp_path), "--backend", "bogus-backend"],
+    )
+    with pytest.raises(SystemExit) as exc:
+        mainmod.main()
+    assert exc.value.code == 1
+    err = capsys.readouterr().err
+    assert "unknown backend" in err.lower()
+    assert "bogus-backend" in err
