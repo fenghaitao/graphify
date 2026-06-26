@@ -2,7 +2,6 @@
 source_file: "wdt_en.md"
 type: "document"
 community: "Community 0"
-location: "4.2.20"
 tags:
   - graphify/document
   - graphify/EXTRACTED

@@ -1,11 +1,11 @@
 ---
 source_file: "wdt_en.md"
 type: "document"
-community: "Community 1"
+community: "Community 4"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_1
+  - community/Community_4
 ---
 
 # wdt_en.md
@@ -39,9 +39,9 @@ tags:
 - [[prst_n APB Reset Signal]] - `contains` [EXTRACTED]
 - [[step_value Field]] - `contains` [EXTRACTED]
 - [[wclk Clock Signal]] - `contains` [EXTRACTED]
-- [[wclk_en Clock Enable Signal]] - `contains` [EXTRACTED]
+- [[wclk_en Clock Gate Signal]] - `contains` [EXTRACTED]
 - [[wdogint Signal]] - `contains` [EXTRACTED]
 - [[wdogres Signal]] - `contains` [EXTRACTED]
 - [[wrst_n Reset Signal]] - `contains` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_1
+#graphify/document #graphify/EXTRACTED #community/Community_4

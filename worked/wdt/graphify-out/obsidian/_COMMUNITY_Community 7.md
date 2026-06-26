@@ -1,21 +1,23 @@
 ---
 type: community
-members: 8
+members: 10
 ---
 
 # Community 7
 
-**Members:** 8 nodes
+**Members:** 10 nodes
 
 ## Members
-- [[Masked interrupt status register bit 0 is the raw status ANDed with INTEN, i.e. the interrupt as seen by the interrupt controller.]] - rationale - wdt_dml/wdt.dml
-- [[Raw interrupt status register bit 0 reflects the pending interrupt before masking by INTEN.]] - rationale - wdt_dml/wdt.dml
-- [[WDOGMIS]] - code - wdt_dml/wdt.dml
-- [[WDOGMIS Register]] - document - wdt_en.md
-- [[WDOGRIS]] - code - wdt_dml/wdt.dml
-- [[WDOGRIS Register]] - document - wdt_en.md
-- [[read_register()_3]] - code - wdt_dml/wdt.dml
-- [[read_register()_4]] - code - wdt_dml/wdt.dml
+- [[Signal interface implementations. Ports model input signals into the device; connects model output signals the device drives. wclk is the watchdog clock input; because counting is modeled laz_b82a9da6]] - rationale - wdt_dml/wdt.dml
+- [[signal]] - code - wdt_dml/wdt.dml
+- [[signal_1]] - code - wdt_dml/wdt.dml
+- [[signal_2]] - code - wdt_dml/wdt.dml
+- [[signal_lower()_1]] - code - wdt_dml/wdt.dml
+- [[wclk]] - code - wdt_dml/wdt.dml
+- [[wclk Clock Signal]] - document - wdt_en.md
+- [[wclk_en]] - code - wdt_dml/wdt.dml
+- [[wclk_en Clock Gate Signal]] - document - wdt_en.md
+- [[wclk_en input (clock enable) raising it resumes counting (refreshes the counter and reschedules the event when enabled); lowering it pauses the timer by cancelling the pending countdown event.]] - rationale - wdt_dml/wdt.dml
 
 ## Live Query (requires Dataview plugin)
 
@@ -25,12 +27,15 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 2 edges to [[_COMMUNITY_Community 0]]
-- 2 edges to [[_COMMUNITY_Community 1]]
-- 1 edge to [[_COMMUNITY_Community 5]]
+- 4 edges to [[_COMMUNITY_Community 1]]
+- 4 edges to [[_COMMUNITY_Community 4]]
+- 2 edges to [[_COMMUNITY_Community 3]]
+- 1 edge to [[_COMMUNITY_Community 6]]
+- 1 edge to [[_COMMUNITY_Community 2]]
 
 ## Top bridge nodes
-- [[WDOGMIS Register]] - degree 4, connects to 2 communities
-- [[WDOGRIS]] - degree 4, connects to 1 community
-- [[WDOGMIS]] - degree 4, connects to 1 community
-- [[WDOGRIS Register]] - degree 3, connects to 1 community
+- [[wclk Clock Signal]] - degree 6, connects to 2 communities
+- [[signal_1]] - degree 4, connects to 2 communities
+- [[wclk]] - degree 4, connects to 1 community
+- [[signal]] - degree 4, connects to 1 community
+- [[wclk_en]] - degree 4, connects to 1 community

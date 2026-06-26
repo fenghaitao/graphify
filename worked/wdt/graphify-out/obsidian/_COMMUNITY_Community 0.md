@@ -56,16 +56,13 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 14 edges to [[_COMMUNITY_Community 1]]
-- 2 edges to [[_COMMUNITY_Community 6]]
-- 2 edges to [[_COMMUNITY_Community 7]]
-- 1 edge to [[_COMMUNITY_Community 5]]
-- 1 edge to [[_COMMUNITY_Community 2]]
-- 1 edge to [[_COMMUNITY_Community 3]]
-- 1 edge to [[_COMMUNITY_Community 8]]
+- 13 edges to [[_COMMUNITY_Community 4]]
+- 4 edges to [[_COMMUNITY_Community 3]]
+- 3 edges to [[_COMMUNITY_Community 5]]
+- 2 edges to [[_COMMUNITY_Community 1]]
 
 ## Top bridge nodes
-- [[WatchdogRegisters]] - degree 24, connects to 7 communities
+- [[WatchdogRegisters]] - degree 24, connects to 4 communities
 - [[WDOGPERIPHID0 Register]] - degree 2, connects to 1 community
 - [[WDOGPERIPHID1 Register]] - degree 2, connects to 1 community
 - [[WDOGPERIPHID2 Register]] - degree 2, connects to 1 community

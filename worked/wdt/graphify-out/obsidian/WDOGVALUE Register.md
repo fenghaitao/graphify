@@ -1,19 +1,19 @@
 ---
 source_file: "wdt_en.md"
 type: "document"
-community: "Community 1"
-location: "4.2.3"
+community: "Community 5"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_1
+  - community/Community_5
 ---
 
 # WDOGVALUE Register
 
 ## Connections
 - [[32-bit Down Counter]] - `references` [EXTRACTED]
+- [[WDOGLOAD Register]] - `conceptually_related_to` [INFERRED]
 - [[WDOGVALUE]] - `describes` [EXTRACTED]
 - [[wdt_en]] - `contains` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_1
+#graphify/document #graphify/EXTRACTED #community/Community_5

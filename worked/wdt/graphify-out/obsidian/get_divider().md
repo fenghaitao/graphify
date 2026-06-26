@@ -1,12 +1,12 @@
 ---
 source_file: "wdt_dml/wdt.dml"
 type: "code"
-community: "Community 5"
+community: "Community 2"
 location: "L114"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_5
+  - community/Community_2
 ---
 
 # get_divider()
@@ -18,4 +18,4 @@ tags:
 - [[step_value Field]] - `describes` [INFERRED]
 - [[wdt.dml]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Community_5
+#graphify/code #graphify/INFERRED #community/Community_2

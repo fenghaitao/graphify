@@ -1,12 +1,12 @@
 ---
 source_file: "wdt_dml/wdt.dml"
 type: "rationale"
-community: "Community 7"
+community: "Community 3"
 location: "L296"
 tags:
   - graphify/rationale
   - graphify/EXTRACTED
-  - community/Community_7
+  - community/Community_3
 ---
 
 # Raw interrupt status register: bit 0 reflects the pending interrupt before masking by INTEN.
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[WDOGRIS]] - `rationale_for` [EXTRACTED]
 
-#graphify/rationale #graphify/EXTRACTED #community/Community_7
+#graphify/rationale #graphify/EXTRACTED #community/Community_3

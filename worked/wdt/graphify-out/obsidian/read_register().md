@@ -1,12 +1,12 @@
 ---
 source_file: "wdt_dml/wdt.dml"
 type: "code"
-community: "Community 6"
+community: "Community 5"
 location: "L203"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_6
+  - community/Community_5
 ---
 
 # read_register()
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[WDOGLOAD]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_6
+#graphify/code #graphify/EXTRACTED #community/Community_5

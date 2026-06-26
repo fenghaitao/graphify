@@ -1,22 +1,24 @@
 ---
 type: community
-members: 9
+members: 11
 ---
 
 # Community 6
 
-**Members:** 9 nodes
+**Members:** 11 nodes
 
 ## Members
-- [[Integration test output register in test mode, directly drives the WDOGINT and WDOGRES output signals from bits 1 and 0 respectively.]] - rationale - wdt_dml/wdt.dml
-- [[Load register the value reloaded into the counter on each timeout and on interrupt clear. Writes are ignored while locked and do not reload the counter immediately unless INTEN transitions 0-1.]] - rationale - wdt_dml/wdt.dml
-- [[Returns true while the device is locked. When locked, all register writes are ignored; the lock is cleared only by writing the magic unlock value 0x1ACCE551 to WDOGLOCK.]] - rationale - wdt_dml/wdt.dml
-- [[WDOGITOP]] - code - wdt_dml/wdt.dml
-- [[WDOGLOAD]] - code - wdt_dml/wdt.dml
-- [[is_device_locked()]] - code - wdt_dml/wdt.dml
-- [[read_register()]] - code - wdt_dml/wdt.dml
-- [[write_register()]] - code - wdt_dml/wdt.dml
-- [[write_register()_5]] - code - wdt_dml/wdt.dml
+- [[Device initialization sets the counter and all state variables to their power-on defaults (device unlocked, clock assumed enabled, output signals low).]] - rationale - wdt_dml/wdt.dml
+- [[Performs a full watchdog reset cancels pending events, clears the counter and interruptreset state, restores the key registers to their defaults, and lowers both output signals.]] - rationale - wdt_dml/wdt.dml
+- [[Resets the counter to its power-on value (0xFFFFFFFF).]] - rationale - wdt_dml/wdt.dml
+- [[init()]] - code - wdt_dml/wdt.dml
+- [[perform_reset()]] - code - wdt_dml/wdt.dml
+- [[prst_n]] - code - wdt_dml/wdt.dml
+- [[prst_n input (active-low power-on reset) a falling edge performs a full device reset; the deasserted (high) level is normal operation.]] - rationale - wdt_dml/wdt.dml
+- [[reset()]] - code - wdt_dml/wdt.dml
+- [[signal_4]] - code - wdt_dml/wdt.dml
+- [[signal_lower()_3]] - code - wdt_dml/wdt.dml
+- [[signal_raise()_3]] - code - wdt_dml/wdt.dml
 
 ## Live Query (requires Dataview plugin)
 
@@ -26,15 +28,14 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 3 edges to [[_COMMUNITY_Community 3]]
-- 2 edges to [[_COMMUNITY_Community 2]]
-- 2 edges to [[_COMMUNITY_Community 0]]
-- 1 edge to [[_COMMUNITY_Community 1]]
-- 1 edge to [[_COMMUNITY_Community 8]]
-- 1 edge to [[_COMMUNITY_Community 5]]
+- 4 edges to [[_COMMUNITY_Community 1]]
+- 2 edges to [[_COMMUNITY_Community 4]]
+- 1 edge to [[_COMMUNITY_Community 2]]
+- 1 edge to [[_COMMUNITY_Community 7]]
 
 ## Top bridge nodes
-- [[is_device_locked()]] - degree 7, connects to 3 communities
-- [[WDOGLOAD]] - degree 5, connects to 2 communities
-- [[WDOGITOP]] - degree 4, connects to 2 communities
-- [[write_register()_5]] - degree 4, connects to 1 community
+- [[perform_reset()]] - degree 6, connects to 2 communities
+- [[prst_n]] - degree 4, connects to 2 communities
+- [[reset()]] - degree 4, connects to 1 community
+- [[signal_4]] - degree 4, connects to 1 community
+- [[init()]] - degree 3, connects to 1 community

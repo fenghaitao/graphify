@@ -1,12 +1,12 @@
 ---
 source_file: "wdt_dml/wdt.dml"
 type: "code"
-community: "Community 1"
+community: "Community 6"
 location: "L539"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_1
+  - community/Community_6
 ---
 
 # prst_n
@@ -17,4 +17,4 @@ tags:
 - [[signal_4]] - `contains` [EXTRACTED]
 - [[wdt.dml]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_1
+#graphify/code #graphify/EXTRACTED #community/Community_6

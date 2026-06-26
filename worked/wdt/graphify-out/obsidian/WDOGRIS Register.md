@@ -1,12 +1,11 @@
 ---
 source_file: "wdt_en.md"
 type: "document"
-community: "Community 7"
-location: "4.2.6"
+community: "Community 3"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_7
+  - community/Community_3
 ---
 
 # WDOGRIS Register
@@ -14,6 +13,7 @@ tags:
 ## Connections
 - [[WDOGMIS Register]] - `references` [EXTRACTED]
 - [[WDOGRIS]] - `describes` [EXTRACTED]
+- [[wdogint Signal]] - `references` [INFERRED]
 - [[wdt_en]] - `contains` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_7
+#graphify/document #graphify/EXTRACTED #community/Community_3

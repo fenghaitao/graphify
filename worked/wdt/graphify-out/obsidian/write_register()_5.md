@@ -1,12 +1,12 @@
 ---
 source_file: "wdt_dml/wdt.dml"
 type: "code"
-community: "Community 6"
+community: "Community 1"
 location: "L358"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_6
+  - community/Community_1
 ---
 
 # write_register()
@@ -17,4 +17,4 @@ tags:
 - [[signal_lower()]] - `calls` [INFERRED]
 - [[signal_raise()]] - `calls` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Community_6
+#graphify/code #graphify/INFERRED #community/Community_1

@@ -1,12 +1,11 @@
 ---
 source_file: "wdt_en.md"
 type: "document"
-community: "Community 8"
-location: "4.2.2"
+community: "Community 5"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_8
+  - community/Community_5
 ---
 
 # WDOGLOAD Register
@@ -15,7 +14,7 @@ tags:
 - [[32-bit Down Counter]] - `references` [EXTRACTED]
 - [[WDOGINTCLR Register]] - `references` [EXTRACTED]
 - [[WDOGLOAD]] - `describes` [EXTRACTED]
-- [[WDOGLOCK Register]] - `references` [INFERRED]
+- [[WDOGVALUE Register]] - `conceptually_related_to` [INFERRED]
 - [[wdt_en]] - `contains` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_8
+#graphify/document #graphify/EXTRACTED #community/Community_5

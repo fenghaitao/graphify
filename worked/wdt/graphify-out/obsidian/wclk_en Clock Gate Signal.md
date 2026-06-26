@@ -8,14 +8,11 @@ tags:
   - community/Community_7
 ---
 
-# wclk Clock Signal
+# wclk_en Clock Gate Signal
 
 ## Connections
-- [[wclk]] - `describes` [EXTRACTED]
-- [[wclk_en Clock Gate Signal]] - `references` [EXTRACTED]
-- [[wdogint Signal]] - `references` [EXTRACTED]
-- [[wdogres Signal]] - `references` [EXTRACTED]
+- [[wclk Clock Signal]] - `references` [EXTRACTED]
+- [[wclk_en]] - `describes` [EXTRACTED]
 - [[wdt_en]] - `contains` [EXTRACTED]
-- [[wrst_n Reset Signal]] - `references` [EXTRACTED]
 
 #graphify/document #graphify/EXTRACTED #community/Community_7

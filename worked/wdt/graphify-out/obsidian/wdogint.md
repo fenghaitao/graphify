@@ -1,12 +1,12 @@
 ---
 source_file: "wdt_dml/wdt.dml"
 type: "code"
-community: "Community 3"
+community: "Community 1"
 location: "L552"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_3
+  - community/Community_1
 ---
 
 # wdogint
@@ -19,4 +19,4 @@ tags:
 - [[wdogint output the watchdog interrupt line. Raiseslowers the connected signal with a NULL-object guard, so an unconnected interrupt is a no-op.]] - `rationale_for` [EXTRACTED]
 - [[wdt.dml]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_3
+#graphify/code #graphify/EXTRACTED #community/Community_1

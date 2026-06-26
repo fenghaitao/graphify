@@ -1,12 +1,11 @@
 ---
 source_file: "wdt_en.md"
 type: "document"
-community: "Community 5"
-location: "4.2.10"
+community: "Community 3"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_5
+  - community/Community_3
 ---
 
 # WDOGITOP Register
@@ -18,4 +17,4 @@ tags:
 - [[wdogres Signal]] - `references` [EXTRACTED]
 - [[wdt_en]] - `contains` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_5
+#graphify/document #graphify/EXTRACTED #community/Community_3

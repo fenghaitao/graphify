@@ -1,12 +1,11 @@
 ---
 source_file: "wdt_en.md"
 type: "document"
-community: "Community 5"
-location: "4.2.4"
+community: "Community 3"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_5
+  - community/Community_3
 ---
 
 # INTEN Bit
@@ -17,4 +16,4 @@ tags:
 - [[wdogint Signal]] - `references` [EXTRACTED]
 - [[wdt_en]] - `contains` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_5
+#graphify/document #graphify/EXTRACTED #community/Community_3

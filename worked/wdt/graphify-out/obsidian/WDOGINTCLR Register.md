@@ -1,12 +1,11 @@
 ---
 source_file: "wdt_en.md"
 type: "document"
-community: "Community 8"
-location: "4.2.5"
+community: "Community 5"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_8
+  - community/Community_5
 ---
 
 # WDOGINTCLR Register
@@ -14,7 +13,7 @@ tags:
 ## Connections
 - [[WDOGINTCLR]] - `describes` [EXTRACTED]
 - [[WDOGLOAD Register]] - `references` [EXTRACTED]
-- [[WDOGLOCK Register]] - `references` [INFERRED]
+- [[wdogint Signal]] - `references` [INFERRED]
 - [[wdt_en]] - `contains` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_8
+#graphify/document #graphify/EXTRACTED #community/Community_5

@@ -1,12 +1,12 @@
 ---
 source_file: "wdt_dml/wdt.dml"
 type: "code"
-community: "Community 8"
+community: "Community 4"
 location: "L315"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_8
+  - community/Community_4
 ---
 
 # WDOGLOCK
@@ -18,4 +18,4 @@ tags:
 - [[read_register()_5]] - `contains` [EXTRACTED]
 - [[write_register()_3]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_8
+#graphify/code #graphify/EXTRACTED #community/Community_4

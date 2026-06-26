@@ -1,12 +1,12 @@
 ---
 source_file: "wdt_dml/wdt.dml"
 type: "rationale"
-community: "Community 5"
+community: "Community 3"
 location: "L216"
 tags:
   - graphify/rationale
   - graphify/EXTRACTED
-  - community/Community_5
+  - community/Community_3
 ---
 
 # Control register: INTEN enables the watchdog and RESEN enables reset on a second timeout. Toggling INTEN reloads or freezes the counter and (re)schedules the countdown; STEP_VALUE selects the clock divider.
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[WDOGCONTROL]] - `rationale_for` [EXTRACTED]
 
-#graphify/rationale #graphify/EXTRACTED #community/Community_5
+#graphify/rationale #graphify/EXTRACTED #community/Community_3

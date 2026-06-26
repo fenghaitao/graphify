@@ -1,12 +1,12 @@
 ---
 source_file: "wdt_dml/wdt.dml"
 type: "code"
-community: "Community 2"
+community: "Community 1"
 location: "L143"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_2
+  - community/Community_1
 ---
 
 # update_interrupt_signal()
@@ -21,4 +21,4 @@ tags:
 - [[write_register()_2]] - `calls` [INFERRED]
 - [[write_register()_4]] - `calls` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Community_2
+#graphify/code #graphify/INFERRED #community/Community_1

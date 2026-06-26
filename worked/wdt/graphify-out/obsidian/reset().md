@@ -1,12 +1,12 @@
 ---
 source_file: "wdt_dml/wdt.dml"
 type: "code"
-community: "Community 4"
+community: "Community 6"
 location: "L71"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_4
+  - community/Community_6
 ---
 
 # reset()
@@ -17,4 +17,4 @@ tags:
 - [[init()]] - `calls` [INFERRED]
 - [[perform_reset()]] - `calls` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_4
+#graphify/code #graphify/EXTRACTED #community/Community_6

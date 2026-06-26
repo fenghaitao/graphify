@@ -1,12 +1,12 @@
 ---
 source_file: "wdt_dml/wdt.dml"
 type: "code"
-community: "Community 6"
+community: "Community 1"
 location: "L61"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_6
+  - community/Community_1
 ---
 
 # is_device_locked()
@@ -20,4 +20,4 @@ tags:
 - [[write_register()_5]] - `calls` [INFERRED]
 - [[write_register()]] - `calls` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Community_6
+#graphify/code #graphify/INFERRED #community/Community_1

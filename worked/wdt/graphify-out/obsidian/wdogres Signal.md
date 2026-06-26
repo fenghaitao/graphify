@@ -1,12 +1,11 @@
 ---
 source_file: "wdt_en.md"
 type: "document"
-community: "Community 5"
-location: "3.1.4"
+community: "Community 3"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_5
+  - community/Community_3
 ---
 
 # wdogres Signal
@@ -15,7 +14,8 @@ tags:
 - [[RESEN Bit]] - `references` [EXTRACTED]
 - [[WDOGCONTROL Register]] - `references` [EXTRACTED]
 - [[WDOGITOP Register]] - `references` [EXTRACTED]
+- [[wclk Clock Signal]] - `references` [EXTRACTED]
 - [[wdogres]] - `describes` [EXTRACTED]
 - [[wdt_en]] - `contains` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_5
+#graphify/document #graphify/EXTRACTED #community/Community_3

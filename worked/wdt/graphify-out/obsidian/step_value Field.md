@@ -1,12 +1,11 @@
 ---
 source_file: "wdt_en.md"
 type: "document"
-community: "Community 5"
-location: "4.2.4"
+community: "Community 2"
 tags:
   - graphify/document
   - graphify/INFERRED
-  - community/Community_5
+  - community/Community_2
 ---
 
 # step_value Field
@@ -17,4 +16,4 @@ tags:
 - [[get_divider()]] - `describes` [INFERRED]
 - [[wdt_en]] - `contains` [EXTRACTED]
 
-#graphify/document #graphify/INFERRED #community/Community_5
+#graphify/document #graphify/INFERRED #community/Community_2

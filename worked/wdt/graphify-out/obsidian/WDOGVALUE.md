@@ -1,12 +1,12 @@
 ---
 source_file: "wdt_dml/wdt.dml"
 type: "code"
-community: "Community 1"
+community: "Community 5"
 location: "L210"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_1
+  - community/Community_5
 ---
 
 # WDOGVALUE
@@ -17,4 +17,4 @@ tags:
 - [[WatchdogRegisters]] - `contains` [EXTRACTED]
 - [[read_register()_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_1
+#graphify/code #graphify/EXTRACTED #community/Community_5

@@ -632,14 +632,16 @@ def apply_doc_links(
 
     # Assemble merged nodes with dedup + collision safety net: a synthesized/extracted
     # node must never shadow an existing CODE node id (the "no new code nodes" rule).
+    #
+    # Insert the doc *file* (container) nodes BEFORE their concept members. The graph
+    # is undirected, so node-link serialization orients each edge container→member by
+    # node insertion order (whichever endpoint was added first becomes `source`). AST
+    # already adds the file node before its children, so containers come first there;
+    # doing the same here keeps doc `contains` edges pointing the same way (document →
+    # concept) instead of the reverse. See synthesize_doc_containers / build_from_json.
     seen_ids = set(existing_by_id)
     merged_nodes = list(graph.get("nodes", []))
     concept_added = dropped = docnode_added = 0
-    for n in concept_nodes:
-        nid = n.get("id")
-        if not nid or nid in seen_ids:
-            continue
-        merged_nodes.append(n); seen_ids.add(nid); concept_added += 1
     for n in doc_nodes:
         nid = n["id"]
         clash = existing_by_id.get(nid)
@@ -649,6 +651,11 @@ def apply_doc_links(
         if nid in seen_ids:
             continue
         merged_nodes.append(n); seen_ids.add(nid); docnode_added += 1
+    for n in concept_nodes:
+        nid = n.get("id")
+        if not nid or nid in seen_ids:
+            continue
+        merged_nodes.append(n); seen_ids.add(nid); concept_added += 1
 
     # Merge edges, deduped; keep only edges whose endpoints exist.
     seen_edges = {(e.get("source"), e.get("target"), e.get("relation")) for e in existing_edges}

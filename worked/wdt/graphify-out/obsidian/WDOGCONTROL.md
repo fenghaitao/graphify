@@ -1,12 +1,12 @@
 ---
 source_file: "wdt_dml/wdt.dml"
 type: "code"
-community: "Community 5"
+community: "Community 3"
 location: "L219"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_5
+  - community/Community_3
 ---
 
 # WDOGCONTROL
@@ -21,4 +21,4 @@ tags:
 - [[step_value Field]] - `describes` [INFERRED]
 - [[write_register()_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_5
+#graphify/code #graphify/EXTRACTED #community/Community_3
