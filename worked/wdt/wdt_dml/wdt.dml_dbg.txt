@@ -1,0 +1,339 @@
+=== DML extraction debug: tests/dml/wdt/wdt.dml ===
+
+Nodes: 93
+Edges: 135
+Function bodies: 50
+
+--- Nodes ---
+  [tests_dml_wdt_wdt_dml] wdt.dml  (L1)
+  [wdt_registers_dml] wdt-registers.dml  (L12)
+  [simics_devs_signal_dml] simics/devs/signal.dml  (L13)
+  [wdt_wdt_timeout_event] timeout_event  (L28)
+  [wdt_wdt_simple_cycle_event] simple_cycle_event  (L28)
+  [wdt_wdt_timeout_event_event] event()  (L29)
+  [wdt_wdt_is_device_locked] is_device_locked()  (L56)
+  [wdt_wdt_counter_value] counter_value  (L61)
+  [wdt_wdt_uint64_attr] uint64_attr  (L61)
+  [wdt_wdt_counter_value_reset] reset()  (L63)
+  [wdt_wdt_counter_value_curr_value] curr_value()  (L68)
+  [wdt_wdt_counter_value_refresh] refresh()  (L85)
+  [wdt_wdt_counter_value_set_value] set_value()  (L89)
+  [wdt_wdt_counter_value_get_value] get_value()  (L93)
+  [wdt_wdt_get_divider] get_divider()  (L98)
+  [wdt_wdt_schedule_timeout] schedule_timeout()  (L109)
+  [wdt_wdt_update_interrupt_signal] update_interrupt_signal()  (L123)
+  [wdt_wdt_update_reset_signal] update_reset_signal()  (L143)
+  [wdt_wdt_watchdogregisters] WatchdogRegisters  (L162)
+  [wdt_wdt_watchdogregisters_temp] WatchdogRegisters_temp  (L162)
+  [wdt_wdt_watchdogregisters_wdogload] WDOGLOAD  (L163)
+  [wdt_wdt_watchdogregisters_wdogload_write_register] write_register()  (L164)
+  [wdt_wdt_watchdogregisters_wdogload_read_register] read_register()  (L177)
+  [wdt_wdt_watchdogregisters_wdogvalue] WDOGVALUE  (L182)
+  [wdt_wdt_watchdogregisters_wdogvalue_read_register] read_register()  (L183)
+  [wdt_wdt_watchdogregisters_wdogcontrol] WDOGCONTROL  (L188)
+  [wdt_wdt_watchdogregisters_wdogcontrol_write_register] write_register()  (L189)
+  [wdt_wdt_watchdogregisters_wdogcontrol_read_register] read_register()  (L236)
+  [wdt_wdt_watchdogregisters_wdogintclr] WDOGINTCLR  (L241)
+  [wdt_wdt_watchdogregisters_wdogintclr_write_register] write_register()  (L242)
+  [wdt_wdt_watchdogregisters_wdogris] WDOGRIS  (L263)
+  [wdt_wdt_watchdogregisters_wdogris_read_register] read_register()  (L264)
+  [wdt_wdt_watchdogregisters_wdogmis] WDOGMIS  (L269)
+  [wdt_wdt_watchdogregisters_wdogmis_read_register] read_register()  (L270)
+  [wdt_wdt_watchdogregisters_wdoglock] WDOGLOCK  (L276)
+  [wdt_wdt_watchdogregisters_wdoglock_write_register] write_register()  (L277)
+  [wdt_wdt_watchdogregisters_wdoglock_read_register] read_register()  (L286)
+  [wdt_wdt_watchdogregisters_wdogitcr] WDOGITCR  (L291)
+  [wdt_wdt_watchdogregisters_wdogitcr_write_register] write_register()  (L292)
+  [wdt_wdt_watchdogregisters_wdogitcr_read_register] read_register()  (L308)
+  [wdt_wdt_watchdogregisters_wdogitop] WDOGITOP  (L313)
+  [wdt_wdt_watchdogregisters_wdogitop_write_register] write_register()  (L314)
+  [wdt_wdt_watchdogregisters_wdogperiphid4] WDOGPERIPHID4  (L347)
+  [wdt_wdt_watchdogregisters_wdogperiphid4_read_register] read_register()  (L348)
+  [wdt_wdt_watchdogregisters_wdogperiphid5] WDOGPERIPHID5  (L355)
+  [wdt_wdt_watchdogregisters_wdogperiphid5_read_register] read_register()  (L356)
+  [wdt_wdt_watchdogregisters_wdogperiphid6] WDOGPERIPHID6  (L363)
+  [wdt_wdt_watchdogregisters_wdogperiphid6_read_register] read_register()  (L364)
+  [wdt_wdt_watchdogregisters_wdogperiphid7] WDOGPERIPHID7  (L371)
+  [wdt_wdt_watchdogregisters_wdogperiphid7_read_register] read_register()  (L372)
+  [wdt_wdt_watchdogregisters_wdogperiphid0] WDOGPERIPHID0  (L379)
+  [wdt_wdt_watchdogregisters_wdogperiphid0_read_register] read_register()  (L380)
+  [wdt_wdt_watchdogregisters_wdogperiphid1] WDOGPERIPHID1  (L387)
+  [wdt_wdt_watchdogregisters_wdogperiphid1_read_register] read_register()  (L388)
+  [wdt_wdt_watchdogregisters_wdogperiphid2] WDOGPERIPHID2  (L395)
+  [wdt_wdt_watchdogregisters_wdogperiphid2_read_register] read_register()  (L396)
+  [wdt_wdt_watchdogregisters_wdogperiphid3] WDOGPERIPHID3  (L403)
+  [wdt_wdt_watchdogregisters_wdogperiphid3_read_register] read_register()  (L404)
+  [wdt_wdt_watchdogregisters_wdogpcellid0] WDOGPCELLID0  (L411)
+  [wdt_wdt_watchdogregisters_wdogpcellid0_read_register] read_register()  (L412)
+  [wdt_wdt_watchdogregisters_wdogpcellid1] WDOGPCELLID1  (L419)
+  [wdt_wdt_watchdogregisters_wdogpcellid1_read_register] read_register()  (L420)
+  [wdt_wdt_watchdogregisters_wdogpcellid2] WDOGPCELLID2  (L427)
+  [wdt_wdt_watchdogregisters_wdogpcellid2_read_register] read_register()  (L428)
+  [wdt_wdt_watchdogregisters_wdogpcellid3] WDOGPCELLID3  (L435)
+  [wdt_wdt_watchdogregisters_wdogpcellid3_read_register] read_register()  (L436)
+  [wdt_wdt_wclk] wclk  (L447)
+  [wdt_wdt_wclk_signal] signal  (L448)
+  [wdt_wdt_signal] signal  (L448)
+  [wdt_wdt_wclk_signal_signal_raise] signal_raise()  (L450)
+  [wdt_wdt_wclk_signal_signal_lower] signal_lower()  (L452)
+  [wdt_wdt_wclk_en] wclk_en  (L456)
+  [wdt_wdt_wclk_en_signal] signal  (L457)
+  [wdt_wdt_wclk_en_signal_signal_raise] signal_raise()  (L458)
+  [wdt_wdt_wclk_en_signal_signal_lower] signal_lower()  (L467)
+  [wdt_wdt_wrst_n] wrst_n  (L476)
+  [wdt_wdt_wrst_n_signal] signal  (L477)
+  [wdt_wdt_wrst_n_signal_signal_raise] signal_raise()  (L478)
+  [wdt_wdt_wrst_n_signal_signal_lower] signal_lower()  (L481)
+  [wdt_wdt_prst_n] prst_n  (L487)
+  [wdt_wdt_prst_n_signal] signal  (L488)
+  [wdt_wdt_prst_n_signal_signal_raise] signal_raise()  (L489)
+  [wdt_wdt_prst_n_signal_signal_lower] signal_lower()  (L492)
+  [wdt_wdt_wdogint] wdogint  (L498)
+  [wdt_wdt_wdogint_signal] signal  (L499)
+  [wdt_wdt_wdogint_signal_raise] signal_raise()  (L500)
+  [wdt_wdt_wdogint_signal_lower] signal_lower()  (L506)
+  [wdt_wdt_wdogres] wdogres  (L513)
+  [wdt_wdt_wdogres_signal] signal  (L514)
+  [wdt_wdt_wdogres_signal_raise] signal_raise()  (L515)
+  [wdt_wdt_wdogres_signal_lower] signal_lower()  (L521)
+  [wdt_wdt_perform_reset] perform_reset()  (L566)
+  [wdt_wdt_init] init()  (L591)
+
+--- Edges ---
+  tests_dml_wdt_wdt_dml --imports_from--> wdt_registers_dml  [EXTRACTED]  LL12
+  tests_dml_wdt_wdt_dml --imports_from--> simics_devs_signal_dml  [EXTRACTED]  LL13
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_timeout_event  [EXTRACTED]  LL28
+  wdt_wdt_timeout_event --inherits--> wdt_wdt_simple_cycle_event  [EXTRACTED]  LL28
+  wdt_wdt_timeout_event --contains--> wdt_wdt_timeout_event_event  [EXTRACTED]  LL29
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_is_device_locked  [EXTRACTED]  LL56
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_counter_value  [EXTRACTED]  LL61
+  wdt_wdt_counter_value --inherits--> wdt_wdt_uint64_attr  [EXTRACTED]  LL61
+  wdt_wdt_counter_value --contains--> wdt_wdt_counter_value_reset  [EXTRACTED]  LL63
+  wdt_wdt_counter_value --contains--> wdt_wdt_counter_value_curr_value  [EXTRACTED]  LL68
+  wdt_wdt_counter_value --contains--> wdt_wdt_counter_value_refresh  [EXTRACTED]  LL85
+  wdt_wdt_counter_value --contains--> wdt_wdt_counter_value_set_value  [EXTRACTED]  LL89
+  wdt_wdt_counter_value --contains--> wdt_wdt_counter_value_get_value  [EXTRACTED]  LL93
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_get_divider  [EXTRACTED]  LL98
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_schedule_timeout  [EXTRACTED]  LL109
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_update_interrupt_signal  [EXTRACTED]  LL123
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_update_reset_signal  [EXTRACTED]  LL143
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_watchdogregisters  [EXTRACTED]  LL162
+  wdt_wdt_watchdogregisters --inherits--> wdt_wdt_watchdogregisters_temp  [EXTRACTED]  LL162
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogload  [EXTRACTED]  LL163
+  wdt_wdt_watchdogregisters_wdogload --contains--> wdt_wdt_watchdogregisters_wdogload_write_register  [EXTRACTED]  LL164
+  wdt_wdt_watchdogregisters_wdogload --contains--> wdt_wdt_watchdogregisters_wdogload_read_register  [EXTRACTED]  LL177
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogvalue  [EXTRACTED]  LL182
+  wdt_wdt_watchdogregisters_wdogvalue --contains--> wdt_wdt_watchdogregisters_wdogvalue_read_register  [EXTRACTED]  LL183
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogcontrol  [EXTRACTED]  LL188
+  wdt_wdt_watchdogregisters_wdogcontrol --contains--> wdt_wdt_watchdogregisters_wdogcontrol_write_register  [EXTRACTED]  LL189
+  wdt_wdt_watchdogregisters_wdogcontrol --contains--> wdt_wdt_watchdogregisters_wdogcontrol_read_register  [EXTRACTED]  LL236
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogintclr  [EXTRACTED]  LL241
+  wdt_wdt_watchdogregisters_wdogintclr --contains--> wdt_wdt_watchdogregisters_wdogintclr_write_register  [EXTRACTED]  LL242
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogris  [EXTRACTED]  LL263
+  wdt_wdt_watchdogregisters_wdogris --contains--> wdt_wdt_watchdogregisters_wdogris_read_register  [EXTRACTED]  LL264
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogmis  [EXTRACTED]  LL269
+  wdt_wdt_watchdogregisters_wdogmis --contains--> wdt_wdt_watchdogregisters_wdogmis_read_register  [EXTRACTED]  LL270
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdoglock  [EXTRACTED]  LL276
+  wdt_wdt_watchdogregisters_wdoglock --contains--> wdt_wdt_watchdogregisters_wdoglock_write_register  [EXTRACTED]  LL277
+  wdt_wdt_watchdogregisters_wdoglock --contains--> wdt_wdt_watchdogregisters_wdoglock_read_register  [EXTRACTED]  LL286
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogitcr  [EXTRACTED]  LL291
+  wdt_wdt_watchdogregisters_wdogitcr --contains--> wdt_wdt_watchdogregisters_wdogitcr_write_register  [EXTRACTED]  LL292
+  wdt_wdt_watchdogregisters_wdogitcr --contains--> wdt_wdt_watchdogregisters_wdogitcr_read_register  [EXTRACTED]  LL308
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogitop  [EXTRACTED]  LL313
+  wdt_wdt_watchdogregisters_wdogitop --contains--> wdt_wdt_watchdogregisters_wdogitop_write_register  [EXTRACTED]  LL314
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogperiphid4  [EXTRACTED]  LL347
+  wdt_wdt_watchdogregisters_wdogperiphid4 --contains--> wdt_wdt_watchdogregisters_wdogperiphid4_read_register  [EXTRACTED]  LL348
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogperiphid5  [EXTRACTED]  LL355
+  wdt_wdt_watchdogregisters_wdogperiphid5 --contains--> wdt_wdt_watchdogregisters_wdogperiphid5_read_register  [EXTRACTED]  LL356
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogperiphid6  [EXTRACTED]  LL363
+  wdt_wdt_watchdogregisters_wdogperiphid6 --contains--> wdt_wdt_watchdogregisters_wdogperiphid6_read_register  [EXTRACTED]  LL364
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogperiphid7  [EXTRACTED]  LL371
+  wdt_wdt_watchdogregisters_wdogperiphid7 --contains--> wdt_wdt_watchdogregisters_wdogperiphid7_read_register  [EXTRACTED]  LL372
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogperiphid0  [EXTRACTED]  LL379
+  wdt_wdt_watchdogregisters_wdogperiphid0 --contains--> wdt_wdt_watchdogregisters_wdogperiphid0_read_register  [EXTRACTED]  LL380
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogperiphid1  [EXTRACTED]  LL387
+  wdt_wdt_watchdogregisters_wdogperiphid1 --contains--> wdt_wdt_watchdogregisters_wdogperiphid1_read_register  [EXTRACTED]  LL388
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogperiphid2  [EXTRACTED]  LL395
+  wdt_wdt_watchdogregisters_wdogperiphid2 --contains--> wdt_wdt_watchdogregisters_wdogperiphid2_read_register  [EXTRACTED]  LL396
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogperiphid3  [EXTRACTED]  LL403
+  wdt_wdt_watchdogregisters_wdogperiphid3 --contains--> wdt_wdt_watchdogregisters_wdogperiphid3_read_register  [EXTRACTED]  LL404
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogpcellid0  [EXTRACTED]  LL411
+  wdt_wdt_watchdogregisters_wdogpcellid0 --contains--> wdt_wdt_watchdogregisters_wdogpcellid0_read_register  [EXTRACTED]  LL412
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogpcellid1  [EXTRACTED]  LL419
+  wdt_wdt_watchdogregisters_wdogpcellid1 --contains--> wdt_wdt_watchdogregisters_wdogpcellid1_read_register  [EXTRACTED]  LL420
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogpcellid2  [EXTRACTED]  LL427
+  wdt_wdt_watchdogregisters_wdogpcellid2 --contains--> wdt_wdt_watchdogregisters_wdogpcellid2_read_register  [EXTRACTED]  LL428
+  wdt_wdt_watchdogregisters --contains--> wdt_wdt_watchdogregisters_wdogpcellid3  [EXTRACTED]  LL435
+  wdt_wdt_watchdogregisters_wdogpcellid3 --contains--> wdt_wdt_watchdogregisters_wdogpcellid3_read_register  [EXTRACTED]  LL436
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_wclk  [EXTRACTED]  LL447
+  wdt_wdt_wclk --contains--> wdt_wdt_wclk_signal  [EXTRACTED]  LL448
+  wdt_wdt_wclk_signal --implements--> wdt_wdt_signal  [EXTRACTED]  LL448
+  wdt_wdt_wclk_signal --contains--> wdt_wdt_wclk_signal_signal_raise  [EXTRACTED]  LL450
+  wdt_wdt_wclk_signal --contains--> wdt_wdt_wclk_signal_signal_lower  [EXTRACTED]  LL452
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_wclk_en  [EXTRACTED]  LL456
+  wdt_wdt_wclk_en --contains--> wdt_wdt_wclk_en_signal  [EXTRACTED]  LL457
+  wdt_wdt_wclk_en_signal --implements--> wdt_wdt_signal  [EXTRACTED]  LL457
+  wdt_wdt_wclk_en_signal --contains--> wdt_wdt_wclk_en_signal_signal_raise  [EXTRACTED]  LL458
+  wdt_wdt_wclk_en_signal --contains--> wdt_wdt_wclk_en_signal_signal_lower  [EXTRACTED]  LL467
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_wrst_n  [EXTRACTED]  LL476
+  wdt_wdt_wrst_n --contains--> wdt_wdt_wrst_n_signal  [EXTRACTED]  LL477
+  wdt_wdt_wrst_n_signal --implements--> wdt_wdt_signal  [EXTRACTED]  LL477
+  wdt_wdt_wrst_n_signal --contains--> wdt_wdt_wrst_n_signal_signal_raise  [EXTRACTED]  LL478
+  wdt_wdt_wrst_n_signal --contains--> wdt_wdt_wrst_n_signal_signal_lower  [EXTRACTED]  LL481
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_prst_n  [EXTRACTED]  LL487
+  wdt_wdt_prst_n --contains--> wdt_wdt_prst_n_signal  [EXTRACTED]  LL488
+  wdt_wdt_prst_n_signal --implements--> wdt_wdt_signal  [EXTRACTED]  LL488
+  wdt_wdt_prst_n_signal --contains--> wdt_wdt_prst_n_signal_signal_raise  [EXTRACTED]  LL489
+  wdt_wdt_prst_n_signal --contains--> wdt_wdt_prst_n_signal_signal_lower  [EXTRACTED]  LL492
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_wdogint  [EXTRACTED]  LL498
+  wdt_wdt_wdogint --contains--> wdt_wdt_wdogint_signal  [EXTRACTED]  LL499
+  wdt_wdt_wdogint --contains--> wdt_wdt_wdogint_signal_raise  [EXTRACTED]  LL500
+  wdt_wdt_wdogint --contains--> wdt_wdt_wdogint_signal_lower  [EXTRACTED]  LL506
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_wdogres  [EXTRACTED]  LL513
+  wdt_wdt_wdogres --contains--> wdt_wdt_wdogres_signal  [EXTRACTED]  LL514
+  wdt_wdt_wdogres --contains--> wdt_wdt_wdogres_signal_raise  [EXTRACTED]  LL515
+  wdt_wdt_wdogres --contains--> wdt_wdt_wdogres_signal_lower  [EXTRACTED]  LL521
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_perform_reset  [EXTRACTED]  LL566
+  tests_dml_wdt_wdt_dml --contains--> wdt_wdt_init  [EXTRACTED]  LL591
+  wdt_wdt_timeout_event_event --calls--> wdt_wdt_update_interrupt_signal  [INFERRED]  LL34
+  wdt_wdt_timeout_event_event --calls--> wdt_wdt_counter_value_set_value  [INFERRED]  LL37
+  wdt_wdt_timeout_event_event --calls--> wdt_wdt_schedule_timeout  [INFERRED]  LL39
+  wdt_wdt_timeout_event_event --calls--> wdt_wdt_update_reset_signal  [INFERRED]  LL44
+  wdt_wdt_counter_value_curr_value --calls--> wdt_wdt_get_divider  [INFERRED]  LL75
+  wdt_wdt_counter_value_refresh --calls--> wdt_wdt_counter_value_curr_value  [INFERRED]  LL86
+  wdt_wdt_schedule_timeout --calls--> wdt_wdt_counter_value_get_value  [INFERRED]  LL114
+  wdt_wdt_schedule_timeout --calls--> wdt_wdt_get_divider  [INFERRED]  LL116
+  wdt_wdt_update_interrupt_signal --calls--> wdt_wdt_wclk_signal_signal_raise  [INFERRED]  LL134
+  wdt_wdt_update_interrupt_signal --calls--> wdt_wdt_wclk_signal_signal_lower  [INFERRED]  LL137
+  wdt_wdt_update_reset_signal --calls--> wdt_wdt_wclk_signal_signal_raise  [INFERRED]  LL151
+  wdt_wdt_update_reset_signal --calls--> wdt_wdt_wclk_signal_signal_lower  [INFERRED]  LL154
+  wdt_wdt_watchdogregisters_wdogload_write_register --calls--> wdt_wdt_is_device_locked  [INFERRED]  LL166
+  wdt_wdt_watchdogregisters_wdogvalue_read_register --calls--> wdt_wdt_counter_value_curr_value  [INFERRED]  LL185
+  wdt_wdt_watchdogregisters_wdogcontrol_write_register --calls--> wdt_wdt_is_device_locked  [INFERRED]  LL191
+  wdt_wdt_watchdogregisters_wdogcontrol_write_register --calls--> wdt_wdt_counter_value_curr_value  [INFERRED]  LL200
+  wdt_wdt_watchdogregisters_wdogcontrol_write_register --calls--> wdt_wdt_counter_value_set_value  [INFERRED]  LL210
+  wdt_wdt_watchdogregisters_wdogcontrol_write_register --calls--> wdt_wdt_schedule_timeout  [INFERRED]  LL215
+  wdt_wdt_watchdogregisters_wdogcontrol_write_register --calls--> wdt_wdt_update_interrupt_signal  [INFERRED]  LL233
+  wdt_wdt_watchdogregisters_wdogintclr_write_register --calls--> wdt_wdt_is_device_locked  [INFERRED]  LL244
+  wdt_wdt_watchdogregisters_wdogintclr_write_register --calls--> wdt_wdt_update_interrupt_signal  [INFERRED]  LL252
+  wdt_wdt_watchdogregisters_wdogintclr_write_register --calls--> wdt_wdt_counter_value_set_value  [INFERRED]  LL255
+  wdt_wdt_watchdogregisters_wdogintclr_write_register --calls--> wdt_wdt_schedule_timeout  [INFERRED]  LL259
+  wdt_wdt_watchdogregisters_wdogitcr_write_register --calls--> wdt_wdt_is_device_locked  [INFERRED]  LL294
+  wdt_wdt_watchdogregisters_wdogitcr_write_register --calls--> wdt_wdt_update_interrupt_signal  [INFERRED]  LL303
+  wdt_wdt_watchdogregisters_wdogitcr_write_register --calls--> wdt_wdt_update_reset_signal  [INFERRED]  LL304
+  wdt_wdt_watchdogregisters_wdogitop_write_register --calls--> wdt_wdt_is_device_locked  [INFERRED]  LL316
+  wdt_wdt_watchdogregisters_wdogitop_write_register --calls--> wdt_wdt_wclk_signal_signal_raise  [INFERRED]  LL328
+  wdt_wdt_watchdogregisters_wdogitop_write_register --calls--> wdt_wdt_wclk_signal_signal_lower  [INFERRED]  LL331
+  wdt_wdt_wclk_en_signal_signal_raise --calls--> wdt_wdt_counter_value_refresh  [INFERRED]  LL462
+  wdt_wdt_wclk_en_signal_signal_raise --calls--> wdt_wdt_schedule_timeout  [INFERRED]  LL464
+  wdt_wdt_wrst_n_signal_signal_lower --calls--> wdt_wdt_perform_reset  [INFERRED]  LL483
+  wdt_wdt_prst_n_signal_signal_lower --calls--> wdt_wdt_perform_reset  [INFERRED]  LL494
+  wdt_wdt_wdogint_signal_raise --calls--> wdt_wdt_wclk_signal_signal_raise  [INFERRED]  LL503
+  wdt_wdt_wdogint_signal_lower --calls--> wdt_wdt_wclk_signal_signal_lower  [INFERRED]  LL509
+  wdt_wdt_wdogres_signal_raise --calls--> wdt_wdt_wclk_signal_signal_raise  [INFERRED]  LL518
+  wdt_wdt_wdogres_signal_lower --calls--> wdt_wdt_wclk_signal_signal_lower  [INFERRED]  LL524
+  wdt_wdt_perform_reset --calls--> wdt_wdt_counter_value_reset  [INFERRED]  LL573
+  wdt_wdt_perform_reset --calls--> wdt_wdt_wclk_signal_signal_lower  [INFERRED]  LL586
+  wdt_wdt_init --calls--> wdt_wdt_counter_value_reset  [INFERRED]  LL593
+
+--- Function bodies (caller → body snippet) ---
+  wdt_wdt_timeout_event_event
+    '{\n        // Counter has reached zero\n        if (!interrupt_pending) {\n            // First timeout - generate interrupt\n            interrupt_pending = true;\n            update_interrupt_signal();\n\n            // Reload counter and reschedule\n            counter_value.set_value(WatchdogRegisters.WDOGLOAD.val);\n            last_update_time = SIM_cycle_count(dev.obj);\n            schedule_timeout();\n        } else {\n            // Second timeout - generate reset if enabled\n            if (WatchdogRegisters.WDOGCONTROL.RESEN.val == 1) {\n                reset_pending = true;\n                update_reset_signal();\n            }\n\n            // Continue reloading and counting\n            counter_value.set_value(WatchdogRegisters.WDOGLOAD.val);\n            last_update_time = SIM_cycle_count(dev.obj);\n            schedule_timeout();\n        }\n    }'
+  wdt_wdt_is_device_locked
+    '{\n    return is_locked;\n}'
+  wdt_wdt_counter_value_reset
+    '{\n        this.val = init_val;\n    }'
+  wdt_wdt_counter_value_curr_value
+    '{\n        if (WatchdogRegisters.WDOGCONTROL.INTEN.val == 0 || !wclk_en_state) {\n            return this.val; // Timer not running\n        }\n\n        local cycles_t now = SIM_cycle_count(dev.obj);\n        local cycles_t elapsed = now - this.val;\n        local uint64 divider = get_divider();\n        local uint64 decrements = elapsed / divider;\n\n        if (decrements >= this.val) {\n            return 0; // Counter has reached zero\n        }\n\n        return cast(this.val - decrements, uint32);\n    }'
+  wdt_wdt_counter_value_refresh
+    '{\n        this.val = curr_value(); // Update to current value based on elapsed time\n    }'
+  wdt_wdt_counter_value_set_value
+    '{\n        this.val = new_val;\n    }'
+  wdt_wdt_counter_value_get_value
+    '{\n        return this.val;\n    }'
+  wdt_wdt_get_divider
+    '{\n    local uint64 step = WatchdogRegisters.WDOGCONTROL.STEP_VALUE.val;\n    if (step == 0) return 1;\n    if (step == 1) return 2;\n    if (step == 2) return 4;\n    if (step == 3) return 8;\n    if (step == 4) return 16;\n    return 1; // Default to 1 for invalid values\n}'
+  wdt_wdt_schedule_timeout
+    '{\n    if (timeout_event.posted()) {\n        timeout_event.remove();\n    }\n\n    local uint64 last_wdt_count = counter_value.get_value();\n    if (WatchdogRegisters.WDOGCONTROL.INTEN.val == 1 && wclk_en_state && last_wdt_count > 0) {\n        local uint64 divider = get_divider();\n        local cycles_t cycles_to_zero = last_wdt_count * divider;\n        timeout_event.post(cycles_to_zero);\n    }\n}'
+  wdt_wdt_update_interrupt_signal
+    "{\n    local bool inten = WatchdogRegisters.WDOGCONTROL.INTEN.val == 1;\n    local bool should_assert = interrupt_pending && inten;\n\n    // Check if in test mode\n    if (WatchdogRegisters.WDOGITCR.INT_TEST_MODE_ENABLE.val == 1) {\n        return; // Don't update in test mode - WDOGITOP controls signals\n    }\n\n    // Only change signal if state changes\n    if (should_assert && !interrupt_signal_high) {\n        wdogint.signal_raise();\n        interrupt_signal_high = true;\n    } else if (!should_assert && interrupt_signal_high) {\n        wdogint.signal_lower();\n        interrupt_signal_high = false;\n    }\n}"
+  wdt_wdt_update_reset_signal
+    "{\n    // Check if in test mode\n    if (WatchdogRegisters.WDOGITCR.INT_TEST_MODE_ENABLE.val == 1) {\n        return; // Don't update in test mode - WDOGITOP controls signals\n    }\n\n    // Only change signal if state changes\n    if (reset_pending && !reset_signal_high) {\n        wdogres.signal_raise();\n        reset_signal_high = true;\n    } else if (!reset_pending && reset_signal_high) {\n        wdogres.signal_lower();\n        reset_signal_high = false;\n    }\n}"
+  wdt_wdt_watchdogregisters_wdogload_write_register
+    '{\n            // Check lock state\n            if (is_device_locked()) {\n                return; // Ignore write if locked\n            }\n\n            // Call default write behavior first\n            default(val, enabled_bytes, aux);\n\n            // Update load value - will be used on next reload\n            // Note: Does not immediately reload counter unless INTEN transitions 0→1\n        }'
+  wdt_wdt_watchdogregisters_wdogload_read_register
+    '{\n            // Return current load value\n            return this.val;\n        }'
+  wdt_wdt_watchdogregisters_wdogvalue_read_register
+    '{\n            // Use lazy evaluation to calculate current counter value\n            return counter_value.curr_value();\n        }'
+  wdt_wdt_watchdogregisters_wdogcontrol_write_register
+    '{\n            // Check lock state\n            if (is_device_locked()) {\n                return; // Ignore write if locked\n            }\n\n            // Save old INTEN value and capture current counter BEFORE updating register\n            local uint64 old_inten = this.INTEN.val;\n            local uint32 current_counter = 0;\n            if (old_inten == 1) {\n                // Timer is currently running, capture current counter value\n                current_counter = counter_value.curr_value();\n            }\n\n            // Call default write behavior\n            default(val, enabled_bytes, aux);\n\n            // Check for INTEN transitions\n            local uint64 new_inten = this.INTEN.val;\n            if (old_inten == 0 && new_inten == 1) {\n                // Reload counter from WDOGLOAD\n                counter_value.set_value(WatchdogRegisters.WDOGLOAD.val);\n                last_update_time = SIM_cycle_count(dev.obj);\n                first_enable = false;\n\n                // Schedule timeout event\n                schedule_timeout();\n            } else if (old_inten == 1 && new_inten == 0) {\n                // Timer disabled - freeze counter at current value\n                counter_value.set_value(current_counter);\n                last_update_time = SIM_cycle_count(dev.obj);\n                // Cancel event\n                if (timeout_event.posted()) {\n                    timeout_event.remove();\n                }\n            } else if (new_inten == 1) {\n                // INTEN still 1 but divider might have changed\n                // Update counter value to current, then reschedule\n                counter_value.set_value(current_counter);\n                last_update_time = SIM_cycle_count(dev.obj);\n                schedule_timeout();\n            }\n\n            // Update interrupt signal (INTEN might have changed)\n            update_interrupt_signal();\n        }'
+  wdt_wdt_watchdogregisters_wdogcontrol_read_register
+    '{\n            // Return current control register value\n            return this.val;\n        }'
+  wdt_wdt_watchdogregisters_wdogintclr_write_register
+    '{\n            // Check lock state\n            if (is_device_locked()) {\n                return; // Ignore write if locked\n            }\n\n            // Clear interrupt pending flag\n            interrupt_pending = false;\n\n            // Lower interrupt signal\n            update_interrupt_signal();\n\n            // Reload counter from WDOGLOAD\n            counter_value.set_value(WatchdogRegisters.WDOGLOAD.val);\n            last_update_time = SIM_cycle_count(dev.obj);\n\n            // Reschedule timer event\n            schedule_timeout();\n        }'
+  wdt_wdt_watchdogregisters_wdogris_read_register
+    '{\n            // Return raw interrupt status (bit 0 = interrupt_pending)\n            return interrupt_pending ? 1 : 0;\n        }'
+  wdt_wdt_watchdogregisters_wdogmis_read_register
+    '{\n            // Return masked interrupt status (WDOGRIS[0] AND INTEN)\n            local bool inten = WatchdogRegisters.WDOGCONTROL.INTEN.val == 1;\n            return (interrupt_pending && inten) ? 1 : 0;\n        }'
+  wdt_wdt_watchdogregisters_wdoglock_write_register
+    '{\n            // Check if unlock code is written\n            if (val == 0x1ACCE551) {\n                is_locked = false; // Unlock device\n            } else {\n                is_locked = true; // Lock device\n            }\n        }'
+  wdt_wdt_watchdogregisters_wdoglock_read_register
+    '{\n            // Return 0x0 if unlocked, 0x1 if locked\n            return is_locked ? 0x00000001 : 0x00000000;\n        }'
+  wdt_wdt_watchdogregisters_wdogitcr_write_register
+    '{\n            // Check lock state\n            if (is_device_locked()) {\n                return; // Ignore write if locked\n            }\n\n            // Call default write behavior first\n            default(val, enabled_bytes, aux);\n\n            // If exiting test mode, restore normal signal states\n            if (this.INT_TEST_MODE_ENABLE.val == 0) {\n                update_interrupt_signal();\n                update_reset_signal();\n            }\n        }'
+  wdt_wdt_watchdogregisters_wdogitcr_read_register
+    '{\n            // Return current test mode setting\n            return this.val;\n        }'
+  wdt_wdt_watchdogregisters_wdogitop_write_register
+    '{\n            // Check lock state\n            if (is_device_locked()) {\n                return; // Ignore write if locked\n            }\n\n            // Only have effect in test mode\n            if (WatchdogRegisters.WDOGITCR.INT_TEST_MODE_ENABLE.val == 1) {\n                // Directly control output signals with state tracking\n                local bool wdogint_val = ((val >> 1) & 1) != 0;\n                local bool wdogres_val = (val & 1) != 0;\n\n                // Update interrupt signal\n                if (wdogint_val && !interrupt_signal_high) {\n                    wdogint.signal_raise();\n                    interrupt_signal_high = true;\n                } else if (!wdogint_val && interrupt_signal_high) {\n                    wdogint.signal_lower();\n                    interrupt_signal_high = false;\n                }\n\n                // Update reset signal\n                if (wdogres_val && !reset_signal_high) {\n                    wdogres.signal_raise();\n                    reset_signal_high = true;\n                } else if (!wdogres_val && reset_signal_high) {\n                    wdogres.signal_lower();\n                    reset_signal_high = false;\n                }\n            }\n        }'
+  wdt_wdt_watchdogregisters_wdogperiphid4_read_register
+    '{\n            // USER-TODO: implement read side-effects for register WDOGPERIPHID4 here.\n            // Description: Watchdog Peripheral Identification Register 4. Fixed value for peripheral identification. This register is read-only and returns a fixed value. Reading this register when locked (WDOGLOCK != 0x1ACCE551) has no effect on device operation.\n            // USER-TODO: Add your implementation here.\n            return this.val;\n        }'
+  wdt_wdt_watchdogregisters_wdogperiphid5_read_register
+    '{\n            // USER-TODO: implement read side-effects for register WDOGPERIPHID5 here.\n            // Description: Watchdog Peripheral Identification Register 5. Fixed value for peripheral identification. This register is read-only and returns a fixed value. Reading this register when locked (WDOGLOCK != 0x1ACCE551) has no effect on device operation.\n            // USER-TODO: Add your implementation here.\n            return this.val;\n        }'
+  wdt_wdt_watchdogregisters_wdogperiphid6_read_register
+    '{\n            // USER-TODO: implement read side-effects for register WDOGPERIPHID6 here.\n            // Description: Watchdog Peripheral Identification Register 6. Fixed value for peripheral identification. This register is read-only and returns a fixed value. Reading this register when locked (WDOGLOCK != 0x1ACCE551) has no effect on device operation.\n            // USER-TODO: Add your implementation here.\n            return this.val;\n        }'
+  wdt_wdt_watchdogregisters_wdogperiphid7_read_register
+    '{\n            // USER-TODO: implement read side-effects for register WDOGPERIPHID7 here.\n            // Description: Watchdog Peripheral Identification Register 7. Fixed value for peripheral identification. This register is read-only and returns a fixed value. Reading this register when locked (WDOGLOCK != 0x1ACCE551) has no effect on device operation.\n            // USER-TODO: Add your implementation here.\n            return this.val;\n        }'
+  wdt_wdt_watchdogregisters_wdogperiphid0_read_register
+    '{\n            // USER-TODO: implement read side-effects for register WDOGPERIPHID0 here.\n            // Description: Watchdog Peripheral Identification Register 0. Fixed value for peripheral identification. This register is read-only and returns a fixed value. Reading this register when locked (WDOGLOCK != 0x1ACCE551) has no effect on device operation.\n            // USER-TODO: Add your implementation here.\n            return this.val;\n        }'
+  wdt_wdt_watchdogregisters_wdogperiphid1_read_register
+    '{\n            // USER-TODO: implement read side-effects for register WDOGPERIPHID1 here.\n            // Description: Watchdog Peripheral Identification Register 1. Fixed value for peripheral identification. This register is read-only and returns a fixed value. Reading this register when locked (WDOGLOCK != 0x1ACCE551) has no effect on device operation.\n            // USER-TODO: Add your implementation here.\n            return this.val;\n        }'
+  wdt_wdt_watchdogregisters_wdogperiphid2_read_register
+    '{\n            // USER-TODO: implement read side-effects for register WDOGPERIPHID2 here.\n            // Description: Watchdog Peripheral Identification Register 2. Fixed value for peripheral identification. This register is read-only and returns a fixed value. Reading this register when locked (WDOGLOCK != 0x1ACCE551) has no effect on device operation.\n            // USER-TODO: Add your implementation here.\n            return this.val;\n        }'
+  wdt_wdt_watchdogregisters_wdogperiphid3_read_register
+    '{\n            // USER-TODO: implement read side-effects for register WDOGPERIPHID3 here.\n            // Description: Watchdog Peripheral Identification Register 3. Fixed value for peripheral identification. This register is read-only and returns a fixed value. Reading this register when locked (WDOGLOCK != 0x1ACCE551) has no effect on device operation.\n            // USER-TODO: Add your implementation here.\n            return this.val;\n        }'
+  wdt_wdt_watchdogregisters_wdogpcellid0_read_register
+    '{\n            // USER-TODO: implement read side-effects for register WDOGPCELLID0 here.\n            // Description: Watchdog PrimeCell Identification Register 0. Fixed value for component identification. This register is read-only and returns a fixed value. Reading this register when locked (WDOGLOCK != 0x1ACCE551) has no effect on device operation.\n            // USER-TODO: Add your implementation here.\n            return this.val;\n        }'
+  wdt_wdt_watchdogregisters_wdogpcellid1_read_register
+    '{\n            // USER-TODO: implement read side-effects for register WDOGPCELLID1 here.\n            // Description: Watchdog PrimeCell Identification Register 1. Fixed value for component identification. This register is read-only and returns a fixed value. Reading this register when locked (WDOGLOCK != 0x1ACCE551) has no effect on device operation.\n            // USER-TODO: Add your implementation here.\n            return this.val;\n        }'
+  wdt_wdt_watchdogregisters_wdogpcellid2_read_register
+    '{\n            // USER-TODO: implement read side-effects for register WDOGPCELLID2 here.\n            // Description: Watchdog PrimeCell Identification Register 2. Fixed value for component identification. This register is read-only and returns a fixed value. Reading this register when locked (WDOGLOCK != 0x1ACCE551) has no effect on device operation.\n            // USER-TODO: Add your implementation here.\n            return this.val;\n        }'
+  wdt_wdt_watchdogregisters_wdogpcellid3_read_register
+    '{\n            // USER-TODO: implement read side-effects for register WDOGPCELLID3 here.\n            // Description: Watchdog PrimeCell Identification Register 3. Fixed value for component identification. This register is read-only and returns a fixed value. Reading this register when locked (WDOGLOCK != 0x1ACCE551) has no effect on device operation.\n            // USER-TODO: Add your implementation here.\n            return this.val;\n        }'
+  wdt_wdt_wclk_signal_signal_raise
+    '{\n        }'
+  wdt_wdt_wclk_signal_signal_lower
+    '{\n        }'
+  wdt_wdt_wclk_en_signal_signal_raise
+    '{\n            wclk_en_state = true;\n            // If timer is enabled, reschedule event\n            if (WatchdogRegisters.WDOGCONTROL.INTEN.val == 1) {\n                counter_value.refresh();\n                last_update_time = SIM_cycle_count(dev.obj);\n                schedule_timeout();\n            }\n        }'
+  wdt_wdt_wclk_en_signal_signal_lower
+    '{\n            wclk_en_state = false;\n            // Timer paused - cancel event\n            if (timeout_event.posted()) {\n                timeout_event.remove();\n            }\n        }'
+  wdt_wdt_wrst_n_signal_signal_raise
+    '{\n            // Reset signal deasserted (active low) - normal operation\n        }'
+  wdt_wdt_wrst_n_signal_signal_lower
+    '{\n            // Reset signal asserted (active low) - reset device\n            perform_reset();\n        }'
+  wdt_wdt_prst_n_signal_signal_raise
+    '{\n            // Reset signal deasserted (active low) - normal operation\n        }'
+  wdt_wdt_prst_n_signal_signal_lower
+    '{\n            // Reset signal asserted (active low) - reset device\n            perform_reset();\n        }'
+  wdt_wdt_wdogint_signal_raise
+    '{\n        // CRITICAL: NULL check before calling signal methods\n        if (this.obj != NULL) {\n            this.signal.signal_raise();\n        }\n    }'
+  wdt_wdt_wdogint_signal_lower
+    '{\n        // CRITICAL: NULL check before calling signal methods\n        if (this.obj != NULL) {\n            this.signal.signal_lower();\n        }\n    }'
+  wdt_wdt_wdogres_signal_raise
+    '{\n        // CRITICAL: NULL check before calling signal methods\n        if (this.obj != NULL) {\n            this.signal.signal_raise();\n        }\n    }'
+  wdt_wdt_wdogres_signal_lower
+    '{\n        // CRITICAL: NULL check before calling signal methods\n        if (this.obj != NULL) {\n            this.signal.signal_lower();\n        }\n    }'
+  wdt_wdt_perform_reset
+    '{\n    // Cancel any pending timer events\n    if (timeout_event.posted()) {\n        timeout_event.remove();\n    }\n\n    // Reset all state variables\n    counter_value.reset();\n    last_update_time = 0;\n    interrupt_pending = false;\n    reset_pending = false;\n    is_locked = false; // Device starts unlocked\n    first_enable = true;\n\n    // Reset all registers to their default values\n    WatchdogRegisters.WDOGLOAD.val = 0xFFFFFFFF;\n    WatchdogRegisters.WDOGCONTROL.val = 0x0;\n    WatchdogRegisters.WDOGITCR.val = 0x0;\n\n    // Lower all output signals\n    wdogint.signal_lower();\n    wdogres.signal_lower();\n}'
+  wdt_wdt_init
+    '{\n    // Initialize state variables\n    counter_value.reset();\n    last_update_time = 0;\n    interrupt_pending = false;\n    reset_pending = false;\n    is_locked = false; // Device starts unlocked\n    wclk_en_state = true; // Assume clock enabled by default\n    first_enable = true;\n    interrupt_signal_high = false;\n    reset_signal_high = false;\n}'
