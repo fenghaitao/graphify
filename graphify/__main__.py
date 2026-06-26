@@ -3135,15 +3135,43 @@ def main() -> None:
         for nb in G.predecessors(nid):
             connections.append(("in", nb, edge_data(G, nb, nid)))
         if connections:
-            print(f"\nConnections ({len(connections)}):")
             connections.sort(key=lambda c: G.degree(c[1]), reverse=True)
-            for direction, nb, edata in connections[:20]:
+            # Group by what the relation MEANS so the doc↔code bridges surface as
+            # "why it exists" and "documented by" instead of being buried in a flat
+            # list (see docs/doc-code-linking-design.md — utilizing link edges).
+            _WHY_RELS = {"motivates", "rationale_for", "caused_by"}
+            _DOC_RELS = {"describes", "specifies", "references", "documents"}
+
+            def _bucket(nb: str, edata: dict) -> str:
                 rel = edata.get("relation", "")
-                conf = edata.get("confidence", "")
-                arrow = "-->" if direction == "out" else "<--"
-                print(f"  {arrow} {G.nodes[nb].get('label', nb)} [{rel}] [{conf}]")
-            if len(connections) > 20:
-                print(f"  ... and {len(connections) - 20} more")
+                if rel in _WHY_RELS:
+                    return "why"
+                if rel in _DOC_RELS or (
+                    rel == "contains" and G.nodes[nb].get("file_type") == "document"
+                ):
+                    return "docs"
+                return "code"
+
+            grouped: dict[str, list] = {"why": [], "docs": [], "code": []}
+            for c in connections:
+                grouped[_bucket(c[1], c[2])].append(c)
+
+            def _print_section(title: str, items: list, limit: int) -> None:
+                if not items:
+                    return
+                print(f"\n{title} ({len(items)}):")
+                for direction, nb, edata in items[:limit]:
+                    rel = edata.get("relation", "")
+                    conf = edata.get("confidence", "")
+                    arrow = "-->" if direction == "out" else "<--"
+                    print(f"  {arrow} {G.nodes[nb].get('label', nb)} [{rel}] [{conf}]")
+                if len(items) > limit:
+                    print(f"  ... and {len(items) - limit} more")
+
+            print(f"\nConnections ({len(connections)}):")
+            _print_section("Why / rationale", grouped["why"], 10)
+            _print_section("Documentation", grouped["docs"], 10)
+            _print_section("Code", grouped["code"], 15)
         from graphify import querylog
         querylog.log_query(
             kind="explain",

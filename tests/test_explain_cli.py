@@ -54,3 +54,50 @@ def test_caller_shows_callee_as_outbound(monkeypatch, tmp_path, capsys):
     out = _run(monkeypatch, p, "createPatchHandler", capsys)
     assert "--> validateSanitySession() [calls]" in out
     assert "<-- " not in out
+
+
+def _write_doclinked_graph(tmp_path):
+    """A code function with a doc rationale (motivates), a doc reference, and a code call."""
+    graph_data = {
+        "directed": False, "multigraph": False, "graph": {},
+        "nodes": [
+            {"id": "save_parsed", "label": "save_parsed()", "file_type": "code",
+             "source_file": "raw/storage.py", "community": 0},
+            {"id": "load_index", "label": "load_index()", "file_type": "code",
+             "source_file": "raw/storage.py", "community": 0},
+            {"id": "twr", "label": "Transactional Write Risk", "file_type": "concept",
+             "source_file": "raw/architecture.md", "community": 1},
+            {"id": "arch", "label": "architecture.md", "file_type": "document",
+             "source_file": "raw/architecture.md", "community": 1},
+        ],
+        "links": [
+            {"source": "save_parsed", "target": "load_index",
+             "relation": "calls", "confidence": "EXTRACTED"},
+            {"source": "twr", "target": "save_parsed",
+             "relation": "motivates", "confidence": "INFERRED", "_origin": "link"},
+            {"source": "arch", "target": "save_parsed",
+             "relation": "references", "confidence": "EXTRACTED", "_origin": "link"},
+        ],
+    }
+    p = tmp_path / "graph.json"
+    p.write_text(json.dumps(graph_data))
+    return p
+
+
+def test_explain_groups_doc_bridges_by_intent(monkeypatch, tmp_path, capsys):
+    """The doc↔code edges are grouped: `motivates` under "Why / rationale", `references`
+    under "Documentation", and code calls under "Code" — so the WHY is no longer buried."""
+    p = _write_doclinked_graph(tmp_path)
+    out = _run(monkeypatch, p, "save_parsed", capsys)
+
+    assert "Why / rationale" in out
+    assert "Documentation" in out
+    assert "Code" in out
+
+    # The rationale must appear in the Why section, BEFORE the Code section.
+    why_idx = out.index("Why / rationale")
+    code_idx = out.index("\nCode (")
+    assert why_idx < code_idx
+    assert out.index("Transactional Write Risk") < code_idx
+    assert "<-- architecture.md [references]" in out
+    assert "--> load_index() [calls]" in out
