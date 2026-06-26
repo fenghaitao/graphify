@@ -22,6 +22,9 @@ from graphify.serve import (
     _query_graph_text,
     _resolve_context_filters,
     _subgraph_to_text,
+    _intent_relations,
+    _WHY_RELATIONS,
+    _DOC_RELATIONS,
     _load_graph,
     _community_header,
 )
@@ -707,3 +710,65 @@ def test_community_header_sanitizes_name():
     out = _community_header(3, "Pay\x00ments\x1b[31m")
     assert out.startswith("Community 3 — ")
     assert "\x00" not in out and "\x1b" not in out
+
+
+# --- intent-aware ranking (doc↔code bridge promotion) ---
+
+def test_intent_relations_detects_why_and_doc():
+    assert _intent_relations("why does save_parsed exist") == _WHY_RELATIONS
+    assert _intent_relations("where is save_parsed documented") == _DOC_RELATIONS
+    # both intents combine
+    assert _intent_relations("why is this documented") == _WHY_RELATIONS | _DOC_RELATIONS
+    # a plain symbol query triggers no boosting (ranking stays degree-based)
+    assert _intent_relations("save_parsed") == frozenset()
+    # 'specific' must not trip the 'spec' intent (word-boundary tokenisation)
+    assert _intent_relations("the specific call graph") == frozenset()
+
+
+def _make_bridge_graph() -> nx.Graph:
+    """A seed with one low-degree rationale neighbour and several high-degree
+    code neighbours, so the degree sort would bury the rationale."""
+    G = nx.Graph()
+    G.add_node("seed", label="save_parsed()", source_file="storage.py")
+    G.add_node("why", label="Transactional Write Risk", source_file="notes.md")
+    for i in range(5):
+        G.add_node(f"c{i}", label=f"caller{i}", source_file="x.py")
+        # give the code nodes extra degree so they outrank the rationale leaf
+        G.add_edge(f"c{i}", f"c{(i + 1) % 5}", relation="calls")
+        G.add_edge("seed", f"c{i}", relation="calls", confidence="EXTRACTED")
+    G.add_edge("seed", "why", relation="motivates", confidence="INFERRED")
+    return G
+
+
+def test_subgraph_boost_promotes_rationale_node_and_edge():
+    G = _make_bridge_graph()
+    nodes = set(G.nodes())
+    edges = list(G.edges())
+    # Without intent: the low-degree rationale node sorts after the code nodes.
+    plain = _subgraph_to_text(G, nodes, edges, seeds=["seed"])
+    # With 'why' intent: the rationale node and its motivates edge jump forward.
+    boosted = _subgraph_to_text(
+        G, nodes, edges, seeds=["seed"], boost_relations=_WHY_RELATIONS
+    )
+    plain_lines = plain.splitlines()
+    boosted_lines = boosted.splitlines()
+
+    def node_rank(lines, label):
+        return next(i for i, l in enumerate(lines) if l.startswith("NODE ") and label in l)
+
+    # the rationale node is promoted ahead of where it sat in the plain render
+    assert node_rank(boosted_lines, "Transactional Write Risk") < node_rank(plain_lines, "Transactional Write Risk")
+    # and it now precedes at least one code caller it previously trailed
+    assert node_rank(boosted_lines, "Transactional Write Risk") < node_rank(boosted_lines, "caller0")
+    # the first EDGE rendered under intent is the motivates bridge
+    first_edge = next(l for l in boosted_lines if l.startswith("EDGE "))
+    assert "motivates" in first_edge
+
+
+def test_query_graph_text_reports_intent_in_header():
+    G = _make_bridge_graph()
+    out = _query_graph_text(G, "why does save_parsed exist", mode="bfs", depth=2)
+    assert "Intent: why" in out.splitlines()[0]
+    # a neutral query carries no Intent marker
+    neutral = _query_graph_text(G, "save_parsed", mode="bfs", depth=2)
+    assert "Intent:" not in neutral.splitlines()[0]

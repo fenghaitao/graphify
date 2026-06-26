@@ -268,6 +268,36 @@ linker: **reject (or re-slug) any emitted node whose id collides with an existin
   the Step-2 manifest approach.
 - The two cadences (cheap code refresh vs scoped doc-link) map onto two existing commands.
 
+## Consuming the bridges (explain + query)
+
+The doc↔code edges are only worth minting if retrieval *surfaces* them. Both
+read commands are now layer-aware, keyed off the same relation buckets so the
+two stay consistent:
+
+- **`explain <symbol>`** (`__main__.py` ~3142) groups a node's connections into
+  **Why / rationale** (`motivates`, `rationale_for`, `caused_by`), **Documentation**
+  (`describes`, `specifies`, `references`, `documents`, plus `contains` into a
+  `document` node), and **Code** (everything else). The rationale that explains
+  *why* a symbol exists is low-degree, so the old flat degree-sort buried it
+  (position 8/9 on `save_parsed`); it now leads under its own header.
+- **`query "<question>"`** (`serve.py` `_intent_relations` → `_subgraph_to_text`)
+  infers intent from question wording ("why/rationale/purpose" ⇒ the Why
+  relations; "documented/spec/describe" ⇒ the Doc relations) and **promotes the
+  matching edges and the non-seed nodes they touch ahead of the degree-sorted
+  bulk**, so an intent-relevant bridge survives the token-budget truncation
+  instead of being cut as a low-degree leaf. A neutral query (a bare symbol)
+  triggers no boosting and the ranking is byte-identical to before. The header
+  reports the detected intent (`Intent: why (promoting motivates, …)`).
+
+  Verified on `worked/example`: `query "why does save_parsed exist"` leads with
+  `save_parsed --motivates--> Transactional Write Risk` and renders the
+  rationale node in the top group; the neutral `query "save_parsed"` keeps
+  `calls`/`contains` first with that same `motivates` edge demoted to ~position 8.
+  Tests: `tests/test_serve.py::test_intent_relations_detects_why_and_doc`,
+  `::test_subgraph_boost_promotes_rationale_node_and_edge`,
+  `::test_query_graph_text_reports_intent_in_header`;
+  `tests/test_explain_cli.py::test_explain_groups_doc_bridges_by_intent`.
+
 ## Deferred / later
 
 - Deterministic leading-doc-comment extraction for non-Python (JSDoc, `///`, Go doc comments)

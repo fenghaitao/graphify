@@ -110,6 +110,42 @@ _PREFIX_MATCH_BONUS = 100.0
 _SUBSTRING_MATCH_BONUS = 1.0
 _SOURCE_MATCH_BONUS = 0.5
 
+# Question-intent → relation boosting. A "why does X exist" / "where is X
+# documented" query should surface the doc↔code bridge edges (minted by
+# `link-docs`) that explain or document a symbol — but those rationale/doc nodes
+# have low degree, so the degree-sorted render in _subgraph_to_text buries them
+# under high-degree code neighbours and the token budget then truncates them
+# away entirely. When the question signals an intent, we promote the matching
+# edges (and their nodes) to the front of the render so they survive. Mirrors
+# the explain command's Why/Documentation grouping (__main__.py).
+_WHY_RELATIONS = frozenset({"motivates", "rationale_for", "caused_by"})
+_DOC_RELATIONS = frozenset({"describes", "specifies", "references", "documents"})
+_WHY_HINTS = frozenset({
+    "why", "reason", "reasons", "rationale", "motivation", "motivates",
+    "purpose", "because", "justification", "justify", "tradeoff", "tradeoffs",
+})
+_DOC_HINTS = frozenset({
+    "document", "documents", "documented", "documentation", "doc", "docs",
+    "spec", "specs", "specification", "specifies", "specified",
+    "describe", "describes", "described", "mention", "mentions", "mentioned",
+})
+
+
+def _intent_relations(question: str) -> frozenset[str]:
+    """Relation labels to promote in the render, inferred from question wording.
+
+    Returns the union of every intent the question triggers (a "why is X
+    documented" question boosts both), or an empty set when the question carries
+    no such signal — in which case ranking is unchanged from the degree sort.
+    """
+    words = {tok for tok in re.findall(r"\w+", question.lower())}
+    boosted: set[str] = set()
+    if words & _WHY_HINTS:
+        boosted |= _WHY_RELATIONS
+    if words & _DOC_HINTS:
+        boosted |= _DOC_RELATIONS
+    return frozenset(boosted)
+
 
 def _compute_idf(G: nx.Graph, terms: list[str]) -> dict[str, float]:
     """IDF weights for query terms, cached in G.graph['_idf_cache'].
@@ -482,17 +518,47 @@ def _dfs(G: nx.Graph, start_nodes: list[str], depth: int) -> tuple[set[str], lis
     return visited, edges_seen
 
 
-def _subgraph_to_text(G: nx.Graph, nodes: set[str], edges: list[tuple], token_budget: int = 2000, *, seeds: list[str] | None = None) -> str:
+def _edge_data(G: nx.Graph, u: str, v: str) -> dict:
+    raw = G[u][v]
+    return next(iter(raw.values()), {}) if isinstance(G, (nx.MultiGraph, nx.MultiDiGraph)) else raw
+
+
+def _subgraph_to_text(
+    G: nx.Graph,
+    nodes: set[str],
+    edges: list[tuple],
+    token_budget: int = 2000,
+    *,
+    seeds: list[str] | None = None,
+    boost_relations: frozenset[str] = frozenset(),
+) -> str:
     """Render subgraph as text, cutting at token_budget (approx 3 chars/token).
 
     seeds: exact-match nodes rendered first before the degree-sorted expansion,
     so the queried symbol always appears at the top of the output.
+
+    boost_relations: relation labels the question asked about (see
+    _intent_relations). Edges carrying these relations — and the non-seed nodes
+    they touch — are rendered ahead of the degree-sorted bulk so an intent-
+    relevant rationale/doc bridge survives the token-budget truncation instead of
+    being cut as a low-degree leaf. Empty set ⇒ unchanged degree ordering.
     """
     char_budget = token_budget * 3
     lines = []
     seed_set = set(seeds or [])
+    # Nodes touched by a boosted-relation edge (within the rendered edge set):
+    # they jump the degree queue so the "why"/"docs" answer isn't truncated.
+    boosted_nodes: set[str] = set()
+    if boost_relations:
+        for u, v in edges:
+            if u in nodes and v in nodes and _edge_data(G, u, v).get("relation") in boost_relations:
+                boosted_nodes.add(u)
+                boosted_nodes.add(v)
+        boosted_nodes -= seed_set
+    rest = nodes - seed_set - boosted_nodes
     ordered = [n for n in (seeds or []) if n in nodes] + \
-              sorted(nodes - seed_set, key=lambda n: G.degree(n), reverse=True)
+              sorted(boosted_nodes, key=lambda n: G.degree(n), reverse=True) + \
+              sorted(rest, key=lambda n: G.degree(n), reverse=True)
     for nid in ordered:
         d = G.nodes[nid]
         # Every LLM-derived field passes through sanitize_label before being
@@ -507,19 +573,24 @@ def _subgraph_to_text(G: nx.Graph, nodes: set[str], edges: list[tuple], token_bu
             f"community={sanitize_label(str(d.get('community_name') or d.get('community', '')))}]"
         )
         lines.append(line)
-    for u, v in edges:
-        if u in nodes and v in nodes:
-            raw = G[u][v]
-            d = next(iter(raw.values()), {}) if isinstance(G, (nx.MultiGraph, nx.MultiDiGraph)) else raw
-            context = d.get("context")
-            context_suffix = f" context={sanitize_label(str(context))}" if context else ""
-            line = (
-                f"EDGE {sanitize_label(G.nodes[u].get('label', u))} "
-                f"--{sanitize_label(str(d.get('relation', '')))} "
-                f"[{sanitize_label(str(d.get('confidence', '')))}{context_suffix}]--> "
-                f"{sanitize_label(G.nodes[v].get('label', v))}"
-            )
-            lines.append(line)
+    visible_edges = [(u, v) for u, v in edges if u in nodes and v in nodes]
+    if boost_relations:
+        # Stable partition: boosted-relation edges first (preserving discovery
+        # order within each group) so they render before the truncation point.
+        visible_edges.sort(
+            key=lambda uv: _edge_data(G, uv[0], uv[1]).get("relation") not in boost_relations
+        )
+    for u, v in visible_edges:
+        d = _edge_data(G, u, v)
+        context = d.get("context")
+        context_suffix = f" context={sanitize_label(str(context))}" if context else ""
+        line = (
+            f"EDGE {sanitize_label(G.nodes[u].get('label', u))} "
+            f"--{sanitize_label(str(d.get('relation', '')))} "
+            f"[{sanitize_label(str(d.get('confidence', '')))}{context_suffix}]--> "
+            f"{sanitize_label(G.nodes[v].get('label', v))}"
+        )
+        lines.append(line)
     output = "\n".join(lines)
     if len(output) > char_budget:
         cut_at = output[:char_budget].rfind("\n")
@@ -552,15 +623,22 @@ def _query_graph_text(
     resolved_filters, filter_source = _resolve_context_filters(question, context_filters)
     traversal_graph = _filter_graph_by_context(G, resolved_filters)
     nodes, edges = _dfs(traversal_graph, start_nodes, depth) if mode == "dfs" else _bfs(traversal_graph, start_nodes, depth)
+    boost = _intent_relations(question)
     header_parts = [
         f"Traversal: {mode.upper()} depth={depth}",
         f"Start: {[G.nodes[n].get('label', n) for n in start_nodes]}",
     ]
     if resolved_filters:
         header_parts.append(f"Context: {', '.join(resolved_filters)} ({filter_source})")
+    if boost:
+        intent = "why" if boost & _WHY_RELATIONS else ""
+        intent = (intent + "+docs" if boost & _DOC_RELATIONS else intent).strip("+") or "docs"
+        header_parts.append(f"Intent: {intent} (promoting {', '.join(sorted(boost))})")
     header_parts.append(f"{len(nodes)} nodes found")
     header = " | ".join(header_parts) + "\n\n"
-    return header + _subgraph_to_text(traversal_graph, nodes, edges, token_budget)
+    return header + _subgraph_to_text(
+        traversal_graph, nodes, edges, token_budget, seeds=start_nodes, boost_relations=boost
+    )
 
 
 def _find_node(G: nx.Graph, label: str) -> list[str]:
