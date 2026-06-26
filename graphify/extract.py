@@ -3963,7 +3963,10 @@ def extract_dml(path: Path) -> dict:
     """Extract DML device model elements: devices, templates, banks, registers,
     fields, connects, interfaces, attributes, events, ports, implements,
     subdevices, groups, and methods. Also extract imports, template inheritance,
-    interface implementation, and method calls."""
+    interface implementation, and method calls. Leading/trailing doc comments
+    are harvested as ``rationale`` nodes (``rationale_for`` edges), mirroring
+    Python docstrings, so the doc/code linker can fill the manifest ``doc``
+    field for DML."""
     try:
         import tree_sitter_dml._binding as tsdml_binding
         from tree_sitter import Language, Parser
@@ -4000,6 +4003,83 @@ def extract_dml(path: Path) -> dict:
 
     # Collected method bodies for call-graph pass: (caller_nid, compound_statement)
     function_bodies: list[tuple[str, object]] = []
+
+    # ── Doc-comment (rationale) pass ────────────────────────────────────────
+    # DML has no Python-style docstrings; documentation lives in `//` line
+    # comments and `/* */` block comments placed immediately above a
+    # declaration (leading) or inline after it (trailing). We harvest those as
+    # `rationale` nodes + `rationale_for` edges so the doc/code linker can fill
+    # the manifest's `doc` field for DML just as it does for Python docstrings.
+    src_lines = source.split(b"\n")
+    # end_line -> (start_line, raw_text) for standalone (own-line) comments
+    _comment_by_endline: dict[int, tuple[int, str]] = {}
+    # decl_line -> raw_text for inline (trailing) comments
+    _trailing_by_line: dict[int, str] = {}
+
+    def _collect_comments(node) -> None:
+        if node.type in ("comment", "line_comment"):
+            sline = node.start_point[0] + 1
+            eline = node.end_point[0] + 1
+            raw = _read_text(node, source)
+            col = node.start_point[1]
+            prefix = src_lines[sline - 1][:col] if sline - 1 < len(src_lines) else b""
+            if prefix.strip():
+                _trailing_by_line[sline] = raw  # code precedes it → trailing
+            else:
+                _comment_by_endline[eline] = (sline, raw)
+        for child in node.children:
+            _collect_comments(child)
+
+    _collect_comments(root)
+
+    def _clean_comment(text: str) -> str:
+        t = text.strip()
+        if t.startswith("//"):
+            return t[2:].strip()
+        if t.startswith("/*"):
+            t = t[2:]
+            if t.endswith("*/"):
+                t = t[:-2]
+            parts = [ln.strip().lstrip("*").strip() for ln in t.splitlines()]
+            return " ".join(p for p in parts if p)
+        return t
+
+    def _is_meaningful(s: str) -> bool:
+        # Drop separators ("// -----") and trivially short markers.
+        return len(s) >= 4 and any(ch.isalnum() for ch in s)
+
+    def _emit_rationale(text: str, comment_line: int, parent_nid: str) -> None:
+        # DML doc comments are prose (not one-line Python docstrings), so keep a
+        # more generous budget than Python's 80-char cap to preserve the
+        # multi-sentence purpose text the doc/code linker grounds `doc` on.
+        label = text[:280].replace("\r\n", " ").replace("\r", " ").replace("\n", " ").strip()
+        rid = _make_id(stem, "rationale", str(comment_line))
+        if rid not in seen_ids:
+            seen_ids.add(rid)
+            nodes.append({"id": rid, "label": label, "file_type": "rationale",
+                          "source_file": str_path, "source_location": f"L{comment_line}"})
+        add_edge(rid, parent_nid, "rationale_for", comment_line)
+
+    def _attach_rationale(nid: str, decl_line: int) -> None:
+        # Leading: contiguous comment block ending immediately above the decl.
+        block: list[tuple[int, str]] = []
+        probe = decl_line - 1
+        while probe in _comment_by_endline:
+            start_line, raw = _comment_by_endline[probe]
+            cleaned = _clean_comment(raw)
+            if cleaned:
+                block.insert(0, (start_line, cleaned))
+            probe = start_line - 1
+        if block:
+            joined = " ".join(text for _, text in block)
+            if _is_meaningful(joined):
+                _emit_rationale(joined, block[0][0], nid)
+        # Trailing: inline comment on the declaration line itself.
+        raw = _trailing_by_line.get(decl_line)
+        if raw:
+            cleaned = _clean_comment(raw)
+            if _is_meaningful(cleaned):
+                _emit_rationale(cleaned, decl_line, nid)
 
     # DML object types that should be extracted as structural nodes
     _DML_OBJECT_TYPES = frozenset({
@@ -4096,6 +4176,7 @@ def extract_dml(path: Path) -> dict:
                     # Top-level: scope to file stem (like Python's _make_id(stem, name))
                     nid = _make_id(stem, name)
                 add_node(nid, name, line)
+                _attach_rationale(nid, line)
                 p = parent_nid or file_nid
                 add_edge(p, nid, "contains", line)
                 # Handle is_template → inherits edges
@@ -4120,6 +4201,7 @@ def extract_dml(path: Path) -> dict:
                 else:
                     nid = _make_id(stem, name)
                 add_node(nid, f"{name}()", line)
+                _attach_rationale(nid, line)
                 p = parent_nid or file_nid
                 add_edge(p, nid, "contains", line)
                 # Collect body for call-graph pass
