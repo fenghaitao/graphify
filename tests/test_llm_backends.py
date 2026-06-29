@@ -109,6 +109,51 @@ def test_openai_compat_backends_resolve_full_output_cap(tmp_path, monkeypatch, b
     assert call.call_args.kwargs["max_completion_tokens"] == 16384
 
 
+def test_github_copilot_routes_through_litellm(tmp_path, monkeypatch):
+    # github_copilot authenticates via LiteLLM's OAuth device flow (no API key),
+    # so extract_files_direct must bypass the no-key guard and dispatch to
+    # _call_litellm rather than _call_openai_compat.
+    _clear_backend_env(monkeypatch)
+    source = tmp_path / "note.md"
+    source.write_text("# Architecture\n\nThe runner emits a snapshot.\n")
+    result = {"nodes": [], "edges": [], "hyperedges": [], "input_tokens": 1, "output_tokens": 1}
+
+    with patch("graphify.llm._call_litellm", return_value=result) as call:
+        assert (
+            llm.extract_files_direct([source], backend="github_copilot", root=tmp_path)
+            is result
+        )
+
+    # model passed positionally; default keeps the github_copilot/ route prefix.
+    assert call.call_args.args[0] == "github_copilot/gpt-4o"
+    user_msg = call.call_args.args[1]
+    assert '<untrusted_source path="note.md" sha256=' in user_msg
+    assert call.call_args.kwargs["temperature"] == 0
+    assert call.call_args.kwargs["max_tokens"] == 16384
+
+
+def test_github_copilot_not_auto_detected(monkeypatch):
+    # No env_key/base_url: it must never be selected by detect_backend; only an
+    # explicit --backend github_copilot routes to it (parity with claude-cli).
+    _clear_backend_env(monkeypatch)
+    monkeypatch.delenv("OLLAMA_BASE_URL", raising=False)
+    monkeypatch.delenv("AWS_PROFILE", raising=False)
+    monkeypatch.delenv("AWS_REGION", raising=False)
+    monkeypatch.delenv("AWS_DEFAULT_REGION", raising=False)
+    assert llm.detect_backend() is None
+    assert llm._backend_env_keys("github_copilot") == []
+
+
+def test_github_copilot_model_override_and_prefix(monkeypatch):
+    _clear_backend_env(monkeypatch)
+    # An explicit override is honoured verbatim when already prefixed...
+    monkeypatch.setenv("GRAPHIFY_COPILOT_MODEL", "github_copilot/gpt-4.1")
+    assert llm._default_model_for_backend("github_copilot") == "github_copilot/gpt-4.1"
+    # ...and a bare model id gets the github_copilot/ route added by _litellm_model.
+    assert llm._litellm_model("gpt-4o") == "github_copilot/gpt-4o"
+    assert llm._litellm_model("github_copilot/gpt-4o") == "github_copilot/gpt-4o"
+
+
 def test_gemini_model_can_be_overridden_by_env(tmp_path, monkeypatch):
     _clear_backend_env(monkeypatch)
     monkeypatch.setenv("GOOGLE_API_KEY", "google-key")

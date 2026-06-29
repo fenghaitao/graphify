@@ -66,6 +66,8 @@ kimi = ["openai", "tiktoken"]
 ollama = ["openai"]
 bedrock = ["boto3"]
 anthropic = ["anthropic"]
+# GitHub Copilot via LiteLLM's github_copilot/ provider (OAuth device flow; no API key).
+litellm = ["litellm"]
 gemini = ["openai", "tiktoken"]
 openai = ["openai", "tiktoken"]
 chinese = ["jieba"]

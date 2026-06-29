@@ -2270,7 +2270,7 @@ def main() -> None:
         print("    --top-k-edges N         per-symbol outbound edges in inspector (default 12)")
         print("    --label NAME            project label in header")
         print("  extract <path>          headless full extraction (AST + semantic LLM) for CI/scripts")
-        print("    --backend B             gemini|kimi|claude|openai|deepseek|ollama (default: whichever API key is set)")
+        print("    --backend B             gemini|kimi|claude|openai|deepseek|ollama|github_copilot (default: whichever API key is set)")
         print("                            openai also reaches self-hosted OpenAI-compatible servers (llama.cpp,")
         print("                            vLLM, LM Studio): set OPENAI_BASE_URL (e.g. http://localhost:8080/v1)")
         print("                            and OPENAI_MODEL to the model name your server serves")
@@ -4156,7 +4156,7 @@ def main() -> None:
         # has an API key set.
         if len(sys.argv) < 3:
             print(
-                "Usage: graphify extract <path> [--backend gemini|kimi|claude|openai|deepseek|ollama] "
+                "Usage: graphify extract <path> [--backend gemini|kimi|claude|openai|deepseek|ollama|github_copilot] "
                 "[--model M] [--mode deep] [--out DIR] [--google-workspace] [--no-cluster] "
                 "[--code-only] [--max-workers N] [--token-budget N] [--max-concurrency N] "
                 "[--api-timeout S] [--postgres DSN] [--cargo]",

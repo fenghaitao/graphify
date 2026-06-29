@@ -164,6 +164,24 @@ BACKENDS: dict[str, dict] = {
         # CLI's Read tool rather than as inline base64 (see `_call_claude_cli`).
         "vision": True,
     },
+    "github_copilot": {
+        # Routes through LiteLLM's `github_copilot/` provider. Authentication is
+        # GitHub's OAuth device flow handled entirely inside LiteLLM: on first use
+        # it prints a verification URL + device code and caches the token under
+        # ~/.config/litellm/github_copilot (override via GITHUB_COPILOT_TOKEN_DIR).
+        # Usage is billed to the user's GitHub Copilot subscription, so there is no
+        # base_url and no env_key — like bedrock/claude-cli this backend carries no
+        # graphify-managed credential. It is therefore excluded from the no-key
+        # guard and from auto-detection (select it with --backend github_copilot).
+        # The model id keeps the `github_copilot/` route prefix LiteLLM requires.
+        "default_model": "github_copilot/gpt-4o",
+        "model_env_key": "GRAPHIFY_COPILOT_MODEL",
+        "pricing": {"input": 0.0, "output": 0.0},  # billed to the Copilot plan, not per-token
+        "temperature": 0,
+        "max_tokens": 16384,
+        # gpt-4o is multimodal; LiteLLM forwards the OpenAI image_url content block.
+        "vision": True,
+    },
 }
 
 
@@ -1291,6 +1309,77 @@ def _call_bedrock(model: str, user_message: str, max_tokens: int = 8192, *, deep
     return result
 
 
+def _litellm_model(model: str) -> str:
+    """Ensure the model id carries an explicit LiteLLM provider route.
+
+    LiteLLM resolves the provider from the ``<provider>/<model>`` prefix, so a
+    bare ``gpt-4o`` passed via ``--model`` would be routed to OpenAI rather than
+    Copilot. Default any unprefixed id to the github_copilot route.
+    """
+    return model if "/" in model else f"github_copilot/{model}"
+
+
+def _call_litellm(
+    model: str,
+    user_message: str,
+    max_tokens: int = 8192,
+    *,
+    temperature: float | None = 0,
+    deep_mode: bool = False,
+    images: list[_ImageRef] | None = None,
+) -> dict:
+    """Call a model through LiteLLM (used by the github_copilot backend).
+
+    LiteLLM handles GitHub Copilot's OAuth device flow itself: on first use it
+    prints a verification URL + device code and caches the token, so graphify
+    carries no API key for this backend. The request/response shape is
+    OpenAI-compatible, so image refs reuse ``_openai_content`` and the result is
+    normalised exactly like ``_call_openai_compat`` (input/output tokens,
+    finish_reason, hollow-response detection).
+    """
+    try:
+        import litellm
+    except ImportError as exc:
+        raise ImportError(_backend_pkg_hint("litellm", "litellm")) from exc
+
+    # Drop params a given Copilot model doesn't accept (e.g. GPT-Codex models
+    # reject `temperature`) instead of raising — keeps one call path across the
+    # whole github_copilot model family.
+    litellm.drop_params = True
+
+    messages = [
+        {"role": "system", "content": _extraction_system(deep=deep_mode)},
+        {"role": "user", "content": _openai_content(user_message, images or [])},
+    ]
+    kwargs: dict = {
+        "model": _litellm_model(model),
+        "messages": messages,
+        "max_tokens": max_tokens,
+        "timeout": _resolve_api_timeout(),
+    }
+    if temperature is not None:
+        kwargs["temperature"] = temperature
+
+    resp = litellm.completion(**kwargs)
+    if not resp.choices or resp.choices[0].message is None:
+        raise ValueError("LiteLLM returned empty or filtered response")
+    raw_content = resp.choices[0].message.content
+    result = _parse_llm_json(raw_content or "{}")
+    usage = getattr(resp, "usage", None)
+    result["input_tokens"] = getattr(usage, "prompt_tokens", 0) or 0
+    result["output_tokens"] = getattr(usage, "completion_tokens", 0) or 0
+    result["model"] = model
+    result["finish_reason"] = resp.choices[0].finish_reason
+    if _response_is_hollow(raw_content, result) and result["finish_reason"] != "length":
+        print(
+            "[graphify] github_copilot returned a hollow response; treating as "
+            "truncation so adaptive retry can bisect the chunk.",
+            file=sys.stderr,
+        )
+        result["finish_reason"] = "length"
+    return result
+
+
 def extract_files_direct(
     files: list[Path],
     backend: str | None = None,
@@ -1340,7 +1429,7 @@ def extract_files_direct(
             file=sys.stderr,
         )
         key = "ollama"
-    if not key and backend not in ("bedrock", "claude-cli"):
+    if not key and backend not in ("bedrock", "claude-cli", "github_copilot"):
         raise ValueError(
             f"No API key for backend '{backend}'. "
             f"Set {_format_backend_env_keys(backend)} or pass api_key=."
@@ -1366,6 +1455,15 @@ def extract_files_direct(
         return _call_claude_cli(user_msg, max_tokens=max_out, deep_mode=deep_mode, images=image_refs)
     if backend == "bedrock":
         return _call_bedrock(mdl, user_msg, max_tokens=max_out, deep_mode=deep_mode, images=image_refs)
+    if backend == "github_copilot":
+        return _call_litellm(
+            mdl,
+            user_msg,
+            max_tokens=max_out,
+            temperature=_resolve_temperature(cfg.get("temperature", 0), mdl),
+            deep_mode=deep_mode,
+            images=image_refs,
+        )
     if backend == "azure":
         endpoint = os.environ.get("AZURE_OPENAI_ENDPOINT", "").strip()
         if not endpoint:
@@ -1862,7 +1960,7 @@ def _call_llm(
         ollama_url = os.environ.get("OLLAMA_BASE_URL", cfg.get("base_url", ""))
         _validate_ollama_base_url(ollama_url)
         key = "ollama"
-    if not key and backend not in ("bedrock", "claude-cli"):
+    if not key and backend not in ("bedrock", "claude-cli", "github_copilot"):
         raise ValueError(
             f"No API key for backend '{backend}'. Set {_format_backend_env_keys(backend)}."
         )
@@ -1948,6 +2046,26 @@ def _call_llm(
         resp = azure_client.chat.completions.create(**azure_kwargs)
         if not resp.choices or resp.choices[0].message is None:
             raise ValueError("Azure OpenAI returned empty or filtered response")
+        return resp.choices[0].message.content or ""
+
+    if backend == "github_copilot":
+        try:
+            import litellm
+        except ImportError as exc:
+            raise ImportError(_backend_pkg_hint("litellm", "litellm")) from exc
+        litellm.drop_params = True
+        lkwargs: dict = {
+            "model": _litellm_model(mdl),
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": max_tokens,
+            "timeout": _resolve_api_timeout(),
+        }
+        ltemp = _resolve_temperature(cfg.get("temperature", 0), mdl)
+        if ltemp is not None:
+            lkwargs["temperature"] = ltemp
+        resp = litellm.completion(**lkwargs)
+        if not resp.choices or resp.choices[0].message is None:
+            raise ValueError("LiteLLM returned empty or filtered response")
         return resp.choices[0].message.content or ""
 
     # OpenAI-compatible (kimi, openai, gemini, ollama)
@@ -2083,7 +2201,7 @@ def detect_backend() -> str | None:
         _validate_ollama_base_url(ollama_url)
         return "ollama"
     for name in BACKENDS:
-        if name not in ("gemini", "kimi", "claude", "openai", "deepseek", "azure", "bedrock", "ollama", "claude-cli"):
+        if name not in ("gemini", "kimi", "claude", "openai", "deepseek", "azure", "bedrock", "ollama", "claude-cli", "github_copilot"):
             if _get_backend_api_key(name):
                 return name
     return None
