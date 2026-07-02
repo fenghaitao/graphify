@@ -4158,7 +4158,7 @@ def main() -> None:
             print(
                 "Usage: graphify extract <path> [--backend gemini|kimi|claude|openai|deepseek|ollama|github_copilot] "
                 "[--model M] [--mode deep] [--out DIR] [--google-workspace] [--no-cluster] "
-                "[--code-only] [--max-workers N] [--token-budget N] [--max-concurrency N] "
+                "[--code-only] [--doc-only] [--max-workers N] [--token-budget N] [--max-concurrency N] "
                 "[--api-timeout S] [--postgres DSN] [--cargo]",
                 file=sys.stderr,
             )
@@ -4182,6 +4182,7 @@ def main() -> None:
         cli_cargo: bool = False
         no_cluster = False
         code_only = False
+        doc_only = False
         dedup_llm = False
         google_workspace = False
         global_merge = False
@@ -4242,6 +4243,8 @@ def main() -> None:
                 no_cluster = True; i += 1
             elif a == "--code-only":
                 code_only = True; i += 1
+            elif a == "--doc-only":
+                doc_only = True; i += 1
             elif a == "--dedup-llm":
                 dedup_llm = True; i += 1
             elif a == "--google-workspace":
@@ -4327,6 +4330,10 @@ def main() -> None:
         existing_graph_path = graphify_out / "graph.json"
         incremental_mode = manifest_path.exists() and existing_graph_path.exists() if has_path else False
 
+        if code_only and doc_only:
+            print("error: --code-only and --doc-only are mutually exclusive", file=sys.stderr)
+            sys.exit(2)
+
         if not has_path:
             code_files = []
             doc_files = []
@@ -4373,6 +4380,17 @@ def main() -> None:
                 f"{len(semantic_files)} doc/paper/image file(s); run `graphify link-docs` next"
             )
             semantic_files = []
+        if doc_only and code_files:
+            # --doc-only: semantic pipeline only, the counterpart of --code-only.
+            # Code files are detected (so the manifest's source paths stay
+            # meaningful) but never AST-extracted. Pairs with
+            # `link-docs --code-graph/--doc-graph`, which composes the resulting
+            # doc graph against an existing code graph.
+            print(
+                f"[graphify extract] --doc-only: skipping AST extraction of "
+                f"{len(code_files)} code file(s); semantic extraction only"
+            )
+            code_files = []
         if incremental_mode:
             print(
                 f"[graphify extract] {len(code_files)} code, {len(doc_files)} docs, "
@@ -4862,9 +4880,15 @@ def main() -> None:
         # reuse a cached semantic extraction, else LLM-extract the uncached docs), builds
         # the Gap 1+2 contains hierarchy, optionally adds deterministic doc→code edges
         # (--match-code), then merges + re-clusters. Runs after `extract --code-only`.
+        #
+        # Two-graph mode (--code-graph + --doc-graph): compose an existing code graph
+        # with an existing doc graph (built via `extract --doc-only`) instead of
+        # extracting docs here; writes the linked result to --out (default
+        # merged.json next to the doc graph) and mutates neither input.
         if len(sys.argv) < 3 or sys.argv[2].startswith("-"):
             print("Usage: graphify link-docs <path> [--out DIR] [--backend B] [--model M] "
-                  "[--match-code] [--link-code]", file=sys.stderr)
+                  "[--match-code] [--link-code] [--code-graph PATH --doc-graph PATH]",
+                  file=sys.stderr)
             sys.exit(1)
         target = Path(sys.argv[2]).resolve()
         if not target.exists():
@@ -4875,6 +4899,8 @@ def main() -> None:
         link_code = False
         backend = None
         model = None
+        code_graph_arg: "Path | None" = None
+        doc_graph_arg: "Path | None" = None
         i = 3
         while i < len(sys.argv):
             if sys.argv[i] in ("--out",) and i + 1 < len(sys.argv):
@@ -4889,12 +4915,23 @@ def main() -> None:
                 model = sys.argv[i + 1]; i += 2
             elif sys.argv[i].startswith("--model="):
                 model = sys.argv[i].split("=", 1)[1]; i += 1
+            elif sys.argv[i] == "--code-graph" and i + 1 < len(sys.argv):
+                code_graph_arg = Path(sys.argv[i + 1]); i += 2
+            elif sys.argv[i].startswith("--code-graph="):
+                code_graph_arg = Path(sys.argv[i].split("=", 1)[1]); i += 1
+            elif sys.argv[i] == "--doc-graph" and i + 1 < len(sys.argv):
+                doc_graph_arg = Path(sys.argv[i + 1]); i += 2
+            elif sys.argv[i].startswith("--doc-graph="):
+                doc_graph_arg = Path(sys.argv[i].split("=", 1)[1]); i += 1
             elif sys.argv[i] == "--match-code":
                 match_code = True; i += 1
             elif sys.argv[i] == "--link-code":
                 link_code = True; i += 1
             else:
                 i += 1
+        if (code_graph_arg is None) != (doc_graph_arg is None):
+            print("error: --code-graph and --doc-graph must be given together", file=sys.stderr)
+            sys.exit(1)
         out_root = out_dir.resolve() if out_dir else target
         graphify_out = out_root / _GRAPHIFY_OUT
         # Resolve a backend only to extract docs that are not already cached. Cached
@@ -4915,6 +4952,42 @@ def main() -> None:
                     file=sys.stderr,
                 )
                 sys.exit(1)
+        if code_graph_arg is not None and doc_graph_arg is not None:
+            # Two-graph mode. <path> is the doc corpus root (document nodes'
+            # source_file paths resolve against it for --match-code).
+            from graphify.link import link_graphs
+            if out_dir is not None:
+                _o = out_dir.resolve()
+                merged_out = _o if _o.suffix == ".json" else _o / "merged.json"
+            else:
+                merged_out = doc_graph_arg.resolve().parent / "merged.json"
+            try:
+                summary = link_graphs(
+                    code_graph_arg.resolve(), doc_graph_arg.resolve(), merged_out,
+                    doc_root=target, match_code=match_code, link_code=link_code,
+                    backend=backend, model=model,
+                )
+            except FileNotFoundError as exc:
+                print(f"error: {exc}", file=sys.stderr)
+                sys.exit(1)
+            print(
+                f"[graphify link-docs] two-graph mode: {summary['code_nodes']} code-side "
+                f"node(s) + {summary['doc_nodes_added']} doc-side node(s)"
+                + (f", {summary['dropped_collisions']} collision(s) dropped"
+                   if summary["dropped_collisions"] else "")
+            )
+            print(
+                "[graphify link-docs] "
+                + (f"+{summary['reference_edges_added']} doc→code reference edge(s)"
+                   if match_code else "doc→code matching off (pass --match-code to enable)")
+                + (f", +{summary['link_edges_added']} concept→code edge(s)" if link_code else "")
+            )
+            print(
+                f"[graphify link-docs] wrote {merged_out}: {summary['nodes']} nodes, "
+                f"{summary['edges']} edges, {summary['communities']} communities "
+                f"(inputs unchanged; input hashes recorded in graph.link_meta)"
+            )
+            sys.exit(0)
         from graphify.link import apply_doc_links
         try:
             summary = apply_doc_links(

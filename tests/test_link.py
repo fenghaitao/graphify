@@ -468,3 +468,191 @@ def test_link_docs_rejects_unknown_backend(monkeypatch, tmp_path, capsys):
     err = capsys.readouterr().err
     assert "unknown backend" in err.lower()
     assert "bogus-backend" in err
+
+
+# --- two-graph mode: extract --doc-only + link-docs --code-graph/--doc-graph ----
+
+def _write_two_graph_fixtures(tmp_path):
+    """A repo-side code graph + manifest and a vault-side doc graph + doc file, laid
+    out the way `extract --code-only` / `extract --doc-only` would leave them."""
+    code_out = tmp_path / "repo" / "graphify-out"
+    code_out.mkdir(parents=True)
+    code_nodes = [
+        {"id": "storage_py", "label": "storage.py", "file_type": "code",
+         "source_file": "storage.py", "source_location": None},
+        {"id": "storage_save_record", "label": "save_record()", "file_type": "code",
+         "source_file": "storage.py", "source_location": "L1"},
+    ]
+    code_edges = [
+        {"source": "storage_py", "target": "storage_save_record", "relation": "contains",
+         "confidence": "EXTRACTED", "confidence_score": 1.0,
+         "source_file": "storage.py", "source_location": None, "weight": 1.0},
+    ]
+    (code_out / "graph.json").write_text(json.dumps({"nodes": code_nodes, "edges": code_edges}))
+    manifest = [
+        {"id": "storage_py", "label": "storage.py", "source_file": "storage.py",
+         "source_location": None},
+        {"id": "storage_save_record", "label": "save_record()", "source_file": "storage.py",
+         "source_location": "L1"},
+    ]
+    (code_out / "code-manifest.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in manifest) + "\n"
+    )
+
+    doc_root = tmp_path / "vaultproj"
+    doc_out = doc_root / "graphify-out"
+    doc_out.mkdir(parents=True)
+    (doc_root / "design.md").write_text(
+        "# Design\nPersistence is handled by `storage.py` via save_record.\n"
+    )
+    doc_nodes = [
+        {"id": "design_md", "label": "design.md", "file_type": "document",
+         "source_file": "design.md", "source_location": None},
+        {"id": "design_persistence", "label": "Persistence Strategy", "file_type": "concept",
+         "source_file": "design.md", "source_location": None},
+    ]
+    doc_edges = [
+        {"source": "design_md", "target": "design_persistence", "relation": "contains",
+         "confidence": "EXTRACTED", "confidence_score": 1.0,
+         "source_file": "design.md", "source_location": None, "weight": 0.1},
+    ]
+    (doc_out / "graph.json").write_text(json.dumps({"nodes": doc_nodes, "edges": doc_edges}))
+    return code_out, doc_root, doc_out
+
+
+def test_link_graphs_composes_bridges_and_stamps_without_mutating_inputs(tmp_path):
+    """Two-graph mode: code ⊕ doc merge with deterministic bridges; neither input file
+    changes; the output records both input hashes under graph.link_meta."""
+    import hashlib
+
+    code_out, doc_root, doc_out = _write_two_graph_fixtures(tmp_path)
+    out = doc_out / "merged.json"
+    code_before = (code_out / "graph.json").read_bytes()
+    doc_before = (doc_out / "graph.json").read_bytes()
+
+    summary = link.link_graphs(
+        code_out / "graph.json", doc_out / "graph.json", out,
+        doc_root=doc_root, match_code=True,
+    )
+
+    assert out.exists()
+    assert (code_out / "graph.json").read_bytes() == code_before, "code graph must not be mutated"
+    assert (doc_out / "graph.json").read_bytes() == doc_before, "doc graph must not be mutated"
+
+    merged = json.loads(out.read_text())
+    ids = {n["id"] for n in merged["nodes"]}
+    assert {"storage_py", "storage_save_record", "design_md", "design_persistence"} <= ids
+
+    edges = merged.get("edges", merged.get("links", []))
+    refs = [e for e in edges
+            if e.get("relation") == "references" and e.get("_origin") == "link"]
+    assert refs, "the literal matcher must bridge design.md to the storage code"
+    assert summary["reference_edges_added"] == len(refs)
+
+    meta = merged.get("graph", {}).get("link_meta", {})
+    assert meta.get("code_graph_sha256") == hashlib.sha256(code_before).hexdigest()
+    assert meta.get("doc_graph_sha256") == hashlib.sha256(doc_before).hexdigest()
+    assert meta.get("linked_at")
+
+
+def test_link_graphs_derives_manifest_when_missing(tmp_path):
+    """Without a code-manifest.jsonl next to the code graph, the allowed-target list
+    is derived from the code graph itself, so any repo graph works as input."""
+    code_out, doc_root, doc_out = _write_two_graph_fixtures(tmp_path)
+    (code_out / "code-manifest.jsonl").unlink()
+    out = doc_out / "merged.json"
+
+    summary = link.link_graphs(
+        code_out / "graph.json", doc_out / "graph.json", out,
+        doc_root=doc_root, match_code=True,
+    )
+    assert summary["reference_edges_added"] >= 1
+
+
+def test_link_docs_cli_two_graph_mode(monkeypatch, tmp_path):
+    """CLI: link-docs <doc_root> --code-graph A --doc-graph B --match-code writes
+    merged.json next to the doc graph by default."""
+    code_out, doc_root, doc_out = _write_two_graph_fixtures(tmp_path)
+    monkeypatch.setattr(mainmod, "_check_skill_version", lambda _: None)
+    monkeypatch.setattr("graphify.llm.detect_backend", lambda: None)
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "link-docs", str(doc_root),
+         "--code-graph", str(code_out / "graph.json"),
+         "--doc-graph", str(doc_out / "graph.json"),
+         "--match-code"],
+    )
+    try:
+        mainmod.main()
+    except SystemExit as exc:
+        assert exc.code in (0, None)
+    assert (doc_out / "merged.json").exists()
+
+
+def test_link_docs_cli_requires_both_graph_flags(monkeypatch, tmp_path, capsys):
+    import pytest
+    code_out, doc_root, doc_out = _write_two_graph_fixtures(tmp_path)
+    monkeypatch.setattr(mainmod, "_check_skill_version", lambda _: None)
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "link-docs", str(doc_root),
+         "--code-graph", str(code_out / "graph.json")],
+    )
+    with pytest.raises(SystemExit) as exc:
+        mainmod.main()
+    assert exc.value.code == 1
+    assert "must be given together" in capsys.readouterr().err
+
+
+# --- extract --doc-only ----------------------------------------------------------
+
+def test_extract_doc_only_skips_ast(monkeypatch, tmp_path):
+    """--doc-only runs the semantic pipeline only: code files are detected but never
+    AST-extracted, so the graph holds doc entities and no code symbols."""
+    (tmp_path / "storage.py").write_text("def save_record(rec):\n    return True\n")
+    (tmp_path / "notes.md").write_text("# Notes\nAll about persistence.\n")
+    out_dir = tmp_path / "out"
+
+    monkeypatch.setattr(mainmod, "_check_skill_version", lambda _: None)
+    monkeypatch.setattr("graphify.llm.detect_backend", lambda: "gemini")
+    monkeypatch.setattr("graphify.llm._get_backend_api_key", lambda _b: "test-key")
+
+    def fake_corpus(paths, **kw):
+        cb = kw.get("on_chunk_done")
+        if cb:
+            cb(0, 1, {})
+        return {
+            "nodes": [{"id": "notes_md_persistence", "label": "Persistence",
+                       "file_type": "document", "source_file": "notes.md",
+                       "source_location": None}],
+            "edges": [], "hyperedges": [], "input_tokens": 10, "output_tokens": 5,
+        }
+    monkeypatch.setattr("graphify.llm.extract_corpus_parallel", fake_corpus)
+
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "extract", str(tmp_path), "--doc-only", "--out", str(out_dir)],
+    )
+    try:
+        mainmod.main()
+    except SystemExit as exc:
+        assert exc.code in (0, None)
+
+    graph = json.loads((out_dir / "graphify-out" / "graph.json").read_text())
+    labels = {n.get("label", "") for n in graph["nodes"]}
+    assert not any("save_record" in l for l in labels), "--doc-only must skip AST extraction"
+    assert any("Persistence" in l for l in labels)
+
+
+def test_extract_code_only_doc_only_conflict(monkeypatch, tmp_path, capsys):
+    import pytest
+    (tmp_path / "a.py").write_text("x = 1\n")
+    monkeypatch.setattr(mainmod, "_check_skill_version", lambda _: None)
+    monkeypatch.setattr(
+        mainmod.sys, "argv",
+        ["graphify", "extract", str(tmp_path), "--code-only", "--doc-only"],
+    )
+    with pytest.raises(SystemExit) as exc:
+        mainmod.main()
+    assert exc.value.code == 2
+    assert "mutually exclusive" in capsys.readouterr().err

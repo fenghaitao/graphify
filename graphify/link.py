@@ -742,3 +742,235 @@ def apply_doc_links(
         "edges": G.number_of_edges(),
         **info,
     }
+
+
+# --- two-graph linking (code graph ⊕ doc graph → composed graph) ----------------
+
+
+def _sha256_file(path: Path) -> str:
+    import hashlib
+
+    h = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _manifest_records_for_code_graph(
+    code_graph: dict, manifest_path: Path, code_root: Path | None
+) -> list[dict]:
+    """The LLM's allowed-target list for a code graph: the manifest file next to the
+    graph when present, else derived in-memory from the graph itself (signatures are
+    then best-effort — they need the source tree at ``code_root`` to resolve)."""
+    if manifest_path.exists():
+        return load_manifest(manifest_path)
+    G: nx.DiGraph = nx.DiGraph()
+    for n in code_graph.get("nodes", []):
+        if isinstance(n, dict) and n.get("id"):
+            G.add_node(n["id"], **{k: v for k, v in n.items() if k != "id"})
+    for e in code_graph.get("edges", code_graph.get("links", [])):
+        src, tgt = e.get("source"), e.get("target")
+        if src in G and tgt in G:
+            G.add_edge(src, tgt, **{k: v for k, v in e.items() if k not in ("source", "target")})
+    return list(iter_manifest_records(G, root=code_root))
+
+
+def link_graphs(
+    code_graph_path: str | Path,
+    doc_graph_path: str | Path,
+    out_path: str | Path,
+    *,
+    doc_root: str | Path,
+    match_code: bool = False,
+    link_code: bool = False,
+    backend: str | None = None,
+    model: str | None = None,
+) -> dict:
+    """Two-graph link pass: compose an existing code graph with an existing doc graph
+    (built via ``extract --doc-only``) into one linked graph at ``out_path``.
+
+    Both inputs are read-only — neither file is mutated. Nodes/edges are merged (a
+    doc node never shadows a code node id), doc→code bridges are added
+    (deterministic literal matcher with ``match_code``; LLM edge-only pass over the
+    residual with ``link_code``), the union is re-clustered, and the composed graph
+    is written to ``out_path``. The output records the sha256 of both inputs under
+    ``graph["link_meta"]`` so a caller can detect staleness: re-compose when either
+    input's hash no longer matches.
+
+    ``doc_root`` is the doc corpus root — document nodes' ``source_file`` paths
+    resolve against it for the literal matcher. The manifest (allowed LLM link
+    targets) is read from ``code-manifest.jsonl`` next to the code graph when
+    present, else derived from the code graph itself.
+    """
+    code_graph_path = Path(code_graph_path)
+    doc_graph_path = Path(doc_graph_path)
+    out_path = Path(out_path)
+    doc_root = Path(doc_root)
+    if not code_graph_path.exists():
+        raise FileNotFoundError(f"no code graph at {code_graph_path}")
+    if not doc_graph_path.exists():
+        raise FileNotFoundError(f"no doc graph at {doc_graph_path}")
+
+    code_hash = _sha256_file(code_graph_path)
+    doc_hash = _sha256_file(doc_graph_path)
+    code_graph = json.loads(code_graph_path.read_text(encoding="utf-8"))
+    doc_graph = json.loads(doc_graph_path.read_text(encoding="utf-8"))
+    records = _manifest_records_for_code_graph(
+        code_graph,
+        code_graph_path.parent / MANIFEST_FILENAME,
+        code_root=code_graph_path.parent.parent,
+    )
+
+    code_nodes = [n for n in code_graph.get("nodes", []) if isinstance(n, dict) and n.get("id")]
+    code_by_id = {n["id"]: n for n in code_nodes}
+    code_edges = list(code_graph.get("edges", code_graph.get("links", [])))
+
+    # Merge nodes: code graph first (its attributes win), then the doc side with the
+    # collision guard — a doc node must never shadow a CODE node id.
+    merged_nodes = list(code_nodes)
+    seen_ids = set(code_by_id)
+    doc_side_ids: set[str] = set()
+    doc_added = dropped = 0
+    for n in doc_graph.get("nodes", []):
+        if not isinstance(n, dict) or not n.get("id"):
+            continue
+        nid = n["id"]
+        clash = code_by_id.get(nid)
+        if clash is not None:
+            if clash.get("file_type") == "code":
+                dropped += 1
+            else:
+                doc_side_ids.add(nid)  # same doc ingested on both sides — keep one copy
+            continue
+        if nid in seen_ids:
+            continue
+        merged_nodes.append(n)
+        seen_ids.add(nid)
+        doc_side_ids.add(nid)
+        doc_added += 1
+
+    seen_edges = {(e.get("source"), e.get("target"), e.get("relation")) for e in code_edges}
+    merged_edges = list(code_edges)
+    for e in doc_graph.get("edges", doc_graph.get("links", [])):
+        if not isinstance(e, dict):
+            continue
+        key = (e.get("source"), e.get("target"), e.get("relation"))
+        if key in seen_edges:
+            continue
+        if e.get("source") in seen_ids and e.get("target") in seen_ids:
+            merged_edges.append(e)
+            seen_edges.add(key)
+
+    # Deterministic doc→code bridges: scan each doc *file* (document container node)
+    # for literal mentions of manifest symbols. Opt-in, same as apply_doc_links.
+    ref_added = 0
+    if match_code and records:
+        index = _MatchIndex(records)
+        for n in merged_nodes:
+            nid = n.get("id")
+            if nid not in doc_side_ids or n.get("file_type") != "document":
+                continue
+            sf = n.get("source_file") or ""
+            if not sf:
+                continue
+            p = Path(sf)
+            if not p.is_absolute():
+                p = doc_root / p
+            try:
+                text = p.read_text(encoding="utf-8", errors="replace")
+            except Exception:
+                continue
+            for code_id in sorted(scan_doc_references(text, index)):
+                if code_id not in seen_ids:
+                    continue
+                key = (nid, code_id, "references")
+                if key in seen_edges:
+                    continue
+                merged_edges.append({
+                    "source": nid,
+                    "target": code_id,
+                    "relation": "references",
+                    "confidence": "EXTRACTED",
+                    "confidence_score": 1.0,
+                    "source_file": sf,
+                    "source_location": None,
+                    "weight": 1.0,
+                    "_origin": "link",
+                })
+                seen_edges.add(key)
+                ref_added += 1
+
+    # LLM concept→code linking (edge-only) on the residual doc-side concepts.
+    # Membership comes from doc-graph provenance (doc_side_ids), not file extension:
+    # the doc graph is authoritative about what is doc-side.
+    link_edge_added = 0
+    if link_code and backend and records:
+        node_by_id = {n.get("id"): n for n in merged_nodes if isinstance(n, dict)}
+        already_linked = {
+            e.get("source") for e in merged_edges if e.get("relation") in LINK_RELATIONS
+        }
+        residual = []
+        for nid in sorted(doc_side_ids):
+            n = node_by_id.get(nid)
+            if (
+                n is not None
+                and n.get("file_type") in ("concept", "document")
+                and n.get("_origin") != "link"
+                and nid not in already_linked
+            ):
+                residual.append({
+                    "id": nid,
+                    "label": n.get("label", ""),
+                    "description": concept_description(n),
+                    "source_file": n.get("source_file"),
+                })
+        if residual:
+            try:
+                llm_edges = link_concepts_to_code(residual, records, backend=backend, model=model)
+            except Exception as exc:  # never let the LLM bridge abort the pass
+                print(f"[graphify link-docs] warning: concept→code linking failed: {exc}", file=sys.stderr)
+                llm_edges = []
+            for e in llm_edges:
+                key = (e["source"], e["target"], e["relation"])
+                if key in seen_edges or e["source"] not in seen_ids or e["target"] not in seen_ids:
+                    continue
+                merged_edges.append(e)
+                seen_edges.add(key)
+                link_edge_added += 1
+
+    merged = {"nodes": merged_nodes, "edges": merged_edges}
+
+    from datetime import datetime, timezone
+
+    from graphify.build import build_from_json
+    from graphify.cluster import cluster, score_all
+    from graphify.export import to_json
+
+    G = build_from_json(merged, root=doc_root)
+    synthesize_doc_containers(G)  # idempotent — no-op for containers already present
+    communities = cluster(G)
+    score_all(G, communities)
+    # Staleness stamp: node_link serialization keeps graph-level attributes, so the
+    # composed file itself says which inputs it was built from.
+    G.graph["link_meta"] = {
+        "code_graph": str(code_graph_path),
+        "code_graph_sha256": code_hash,
+        "doc_graph": str(doc_graph_path),
+        "doc_graph_sha256": doc_hash,
+        "linked_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+    }
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    to_json(G, communities, str(out_path), force=True)
+
+    return {
+        "code_nodes": len(code_nodes),
+        "doc_nodes_added": doc_added,
+        "dropped_collisions": dropped,
+        "reference_edges_added": ref_added,
+        "link_edges_added": link_edge_added,
+        "communities": len(communities),
+        "nodes": G.number_of_nodes(),
+        "edges": G.number_of_edges(),
+        "out": str(out_path),
+    }
