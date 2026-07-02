@@ -3479,6 +3479,20 @@ def main() -> None:
         _backup(out)
         to_json(G, communities, str(out / "graph.json"), community_labels=labels)
         labels_path.write_text(json.dumps({str(k): v for k, v in labels.items()}, ensure_ascii=False), encoding="utf-8")
+        # `export wiki` requires .graphify_analysis.json (community node IDs) and
+        # refuses to run without it (#data-loss guard in wiki.py). `extract` always
+        # writes one; `cluster-only`/`label` didn't, so any graph built via
+        # merge-graphs -> cluster-only (no prior `extract` in that directory, e.g.
+        # the global tier) had no analysis file and `export wiki` failed outright.
+        analysis_path = out / ".graphify_analysis.json"
+        analysis = {
+            "communities": {str(k): v for k, v in communities.items()},
+            "cohesion": {str(k): v for k, v in cohesion.items()},
+            "gods": gods,
+            "surprises": surprises,
+            "tokens": tokens,
+        }
+        analysis_path.write_text(json.dumps(analysis, indent=2), encoding="utf-8")
 
         # Mirror watch.py pattern: gate to_html so core outputs (graph.json +
         # GRAPH_REPORT.md) always land. Honor --no-viz explicitly; otherwise
@@ -3890,6 +3904,14 @@ def main() -> None:
                 labels_path = graph_out_dir / ".graphify_labels.json"
             if not report_path_explicit:
                 report_path = graph_out_dir / "GRAPH_REPORT.md"
+            # `export` has no --analysis flag (unlike `reflect`), so this file
+            # always follows --graph. Without this, `--graph <other-dir>/graph.json`
+            # silently read the *cwd's own* graphify-out/.graphify_analysis.json —
+            # a different graph's community data — instead of the one next to the
+            # graph actually being exported, and to_wiki() saw zero overlapping
+            # node IDs ("all community node IDs are stale") even with a fresh,
+            # correct analysis file sitting right next to --graph.
+            analysis_path = graph_out_dir / ".graphify_analysis.json"
         labels_path = labels_path.expanduser()
         report_path = report_path.expanduser()
 

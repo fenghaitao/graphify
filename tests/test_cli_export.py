@@ -454,3 +454,69 @@ def test_export_html_no_community_data_at_all_still_succeeds(tmp_path):
     # code stays clean — same behaviour as the pre-fallback empty-communities
     # path, just no longer silently failing on the common case.
     assert r.returncode == 0, r.stderr
+
+
+# ── cluster-only must produce a usable .graphify_analysis.json ──────────────
+# Discovered validating the global-tier flow (merge-graphs -> cluster-only ->
+# export wiki): merge-graphs never writes an analysis sidecar (it only unions
+# nodes/edges), and cluster-only silently didn't either — only `extract` did.
+# `export wiki` refuses to run without one ("communities dict is empty").
+
+def test_cluster_only_writes_analysis_file(tmp_path):
+    """cluster-only must (re)write .graphify_analysis.json, not just graph.json
+    + GRAPH_REPORT.md, so a graph that only ever went through merge-graphs
+    (never `extract`) can still be wiki-exported afterward.
+    """
+    out = _make_graph(tmp_path)
+    (out / ".graphify_analysis.json").unlink()
+
+    r = _run(["cluster-only", ".", "--no-viz"], tmp_path)
+    assert r.returncode == 0, r.stderr
+    analysis_path = out / ".graphify_analysis.json"
+    assert analysis_path.exists(), "cluster-only must regenerate the analysis sidecar"
+
+    analysis = json.loads(analysis_path.read_text(encoding="utf-8"))
+    assert analysis.get("communities"), "regenerated analysis must have non-empty communities"
+
+    # And the real downstream consumer must now succeed end-to-end.
+    r2 = _run(["export", "wiki", "--graph", str(out / "graph.json")], tmp_path)
+    assert r2.returncode == 0, r2.stderr
+    assert (out / "wiki" / "index.md").exists()
+
+
+# ── export's --analysis path must follow --graph, not the cwd default ───────
+# Discovered in the same validation: when --graph points somewhere other than
+# ./graphify-out/graph.json, `labels`/`report` paths already re-derive from
+# graph_path.parent, but `analysis_path` didn't — it silently kept reading
+# ./graphify-out/.graphify_analysis.json (the cwd's OWN, unrelated graph's
+# community data) instead of erroring or using the file that actually sits
+# next to --graph. Every node ID then looks "stale" (zero overlap) even
+# though a perfectly valid analysis file exists right beside the real graph.
+
+def test_export_wiki_analysis_follows_explicit_graph_path(tmp_path):
+    """A foreign .graphify_analysis.json at the cwd default location must not
+    be used when --graph points elsewhere with its own valid analysis file.
+    """
+    # cwd's own default graphify-out/ has a foreign analysis file whose
+    # community node IDs don't exist in the graph we're actually exporting.
+    foreign_out = tmp_path / "graphify-out"
+    foreign_out.mkdir()
+    (foreign_out / ".graphify_analysis.json").write_text(json.dumps({
+        "communities": {"0": ["foreign::node_a", "foreign::node_b"]},
+        "cohesion": {}, "gods": [], "surprises": [],
+        "tokens": {"input": 0, "output": 0},
+    }), encoding="utf-8")
+
+    # The real graph lives elsewhere, with its own correct analysis file.
+    elsewhere = tmp_path / "elsewhere"
+    elsewhere.mkdir()
+    real_out = _make_graph(elsewhere)
+
+    r = _run(["export", "wiki", "--graph", str(real_out / "graph.json")], tmp_path)
+    assert r.returncode == 0, r.stderr
+    assert "stale" not in r.stderr.lower(), (
+        f"export wiki used the cwd's foreign analysis file instead of the one "
+        f"next to --graph. stderr: {r.stderr}"
+    )
+    assert (real_out / "wiki" / "index.md").exists()
+    assert r.returncode == 0, r.stderr
